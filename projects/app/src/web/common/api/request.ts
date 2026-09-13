@@ -16,6 +16,7 @@ import { getAuthLoginRedirectPath } from '@/web/support/user/loginRedirect/url';
 import { getLanguageRequestHeaders } from '@fastgpt/web/i18n/utils';
 import { ToastHandledError } from '@fastgpt/global/common/error/utils';
 import { isLogoutInProgress } from '@/web/support/user/logoutState';
+import { getAppEntryRequestHeaders } from '@/web/core/appEntry/route';
 import {
   FASTGPT_WEB_REQUEST_HEADER,
   FASTGPT_WEB_REQUEST_VALUE
@@ -153,6 +154,13 @@ function startInterceptors(config: InternalAxiosRequestConfig): InternalAxiosReq
   }
   if (Object.keys(languageHeaders).length > 0) {
     Object.assign(config.headers, languageHeaders);
+  }
+  if (typeof window !== 'undefined') {
+    const pathnameWithoutSubRoute =
+      subRoute && window.location.pathname.startsWith(`${subRoute}/app/`)
+        ? window.location.pathname.slice(subRoute.length)
+        : window.location.pathname;
+    Object.assign(config.headers, getAppEntryRequestHeaders(pathnameWithoutSubRoute));
   }
 
   return config;

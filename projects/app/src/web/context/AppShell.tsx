@@ -16,6 +16,7 @@ import { appClientEnv } from '@/web/common/system/env';
 import ClientI18nBoundary from '@fastgpt/web/i18n/ClientI18nBoundary';
 import ClientI18nGate from '@fastgpt/web/i18n/ClientI18nGate';
 import { LANG_KEY } from '@fastgpt/web/i18n/utils';
+import { isAppEntryRoute } from '@/web/core/appEntry/route';
 
 type NextPageWithLayout = NextPage & {
   setLayout?: (page: ReactElement) => JSX.Element;
@@ -48,8 +49,11 @@ const AppContent = ({ Component, pageProps, renderPage }: AppPropsWithLayout) =>
 
   const setLayout = Component.setLayout || ((page) => <>{page}</>);
   const router = useRouter();
-  const showHead = !router?.pathname || !routesWithCustomHead.includes(router.pathname);
-  const shouldUseLayout = !router?.pathname || !routesWithoutLayout.includes(router.pathname);
+  const isAppEntryPage = isAppEntryRoute(router.pathname);
+  const showHead =
+    !router?.pathname || (!routesWithCustomHead.includes(router.pathname) && !isAppEntryPage);
+  const shouldUseLayout =
+    !routesWithoutLayout.includes(router.pathname) && !isAppEntryPage;
   const headDesc = appClientEnv.systemDescription || t('common:system_intro', { title });
   const headIcon = getWebReqUrl(feConfigs?.favicon || appClientEnv.systemFavicon);
   const page = setLayout(renderPage ? renderPage() : <Component {...pageProps} />);
@@ -66,9 +70,8 @@ const AppContent = ({ Component, pageProps, renderPage }: AppPropsWithLayout) =>
   return (
     <>
       {showHead && <NextHead title={title} desc={headDesc} icon={headIcon} />}
-      {scripts?.map((item, i) => (
-        <Script key={i} strategy="lazyOnload" {...item} />
-      ))}
+      {!isAppEntryPage &&
+        scripts?.map((item, i) => <Script key={i} strategy="lazyOnload" {...item} />)}
       {shouldUseLayout ? <Layout>{page}</Layout> : page}
     </>
   );

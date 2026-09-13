@@ -24,12 +24,15 @@ import { authSkill } from '@fastgpt/service/support/permission/skill/auth';
 import { AppTypeEnum } from '@fastgpt/global/core/app/constants';
 import { buildChatTargetResponse } from '@fastgpt/global/openapi/core/chat/api';
 import { createChatAgentHelperAppConfig } from '@fastgpt/global/core/ai/auxiliaryGeneration/chatAgentHelper';
+import { authAppEntryChatTarget } from '@/service/core/appEntry/config';
 
 async function handler(req: NextApiRequest): Promise<InitChatResponseType> {
   const { sourceType, sourceId, chatId } = parseApiInput({
     req,
     querySchema: InitChatQuerySchema
   }).query;
+
+  await authAppEntryChatTarget({ req, sourceType, sourceId });
 
   if (sourceType === ChatSourceTypeEnum.skillEdit) {
     const [{ skill }, chat] = await Promise.all([

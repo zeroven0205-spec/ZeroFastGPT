@@ -14,6 +14,7 @@ import { MongoUser } from '@fastgpt/service/support/user/schema';
 import { MongoTeamMember } from '@fastgpt/service/support/user/team/teamMemberSchema';
 import { ChatSourceTypeEnum } from '@fastgpt/global/core/chat/constants';
 import { UserError } from '@fastgpt/global/common/error/utils';
+import { authAppEntryChatTarget } from '@/service/core/appEntry/config';
 
 /**
  * 解析 Chat Completions 请求最终应归属的团队成员。
@@ -122,6 +123,12 @@ export const authChatCompletionHeaderRequest = async ({
   authProxy?: ChatCompletionAuthProxy;
   showSkillReferences?: boolean;
 }): Promise<AuthResponseType> => {
+  await authAppEntryChatTarget({
+    req,
+    sourceType: ChatSourceTypeEnum.app,
+    sourceId: appId
+  });
+
   const { legacyAppId, parsedAppId, apiKeyAuthProxy, teamId, tmbId, authType, sourceName, apikey } =
     await authCert({
       req,

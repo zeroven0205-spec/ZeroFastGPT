@@ -33,7 +33,20 @@ import {
   toChatAuthApiTarget
 } from '@/web/core/chat/utils';
 import { ChatSourceTypeEnum } from '@fastgpt/global/core/chat/constants';
-import { resolveChatFileUploadMode } from './utils/file';
+import { resolveChatFileSelectConfig, resolveChatFileUploadMode } from './utils/file';
+
+export type ChatBoxPresentation = {
+  /** 输入框占位文案覆盖；未提供时保持现有多语言行为。 */
+  inputPlaceholder?: string;
+  /** Agent Ask 自定义回答文案覆盖。 */
+  agentAskCustomAnswer?: string;
+  /** 是否展示共享合规提示；默认展示。 */
+  showComplianceTip?: boolean;
+  /** 行内错误标题覆盖。 */
+  errorTitle?: string;
+  /** 页面级错误展示映射；只影响 UI，不改变请求和服务端错误语义。 */
+  formatError?: (error: unknown, fallback: string) => string;
+};
 
 export type ChatProviderProps = {
   /** 标准内部 chat target。ChatBox 不再接收 appId/skillId raw 形态。 */
@@ -48,6 +61,8 @@ export type ChatProviderProps = {
   wideLogo?: string;
   squareLogo?: string;
   slogan?: string;
+  /** 页面级展示覆盖，用于隔离白标入口且不改变普通 Chat 默认行为。 */
+  presentation?: ChatBoxPresentation;
 
   quickAppList?: ChatQuickAppType[];
   onSwitchQuickApp?: (appId: string) => Promise<void>;
@@ -152,10 +167,13 @@ const Provider = ({
   chatId,
   outLinkAuthData,
   chatType,
+  enableFileUpload = true,
   enableTTS = true,
   children,
   ...props
 }: ChatProviderProps & {
+  /** 文件上传能力开关，由 ChatBox features 下沉；关闭时强制覆盖 App 的文件配置。 */
+  enableFileUpload?: boolean;
   /** AI 回复朗读和自动 TTS 能力开关，由 ChatBox features 下沉。 */
   enableTTS?: boolean;
   children: React.ReactNode;
@@ -201,9 +219,17 @@ const Provider = ({
     ChatItemContext,
     (v) => v.chatBoxData?.app?.chatConfig?.chatInputGuide ?? defaultChatInputGuideConfig
   );
-  const fileSelectConfig = useContextSelector(
+  const appFileSelectConfig = useContextSelector(
     ChatItemContext,
     (v) => v.chatBoxData?.app?.chatConfig?.fileSelectConfig ?? defaultAppSelectFileConfig
+  );
+  const fileSelectConfig = useMemo<AppFileSelectConfigType>(
+    () =>
+      resolveChatFileSelectConfig({
+        fileSelectConfig: appFileSelectConfig,
+        enabled: enableFileUpload
+      }),
+    [appFileSelectConfig, enableFileUpload]
   );
   const fileUploadMode = resolveChatFileUploadMode({
     chatType,
