@@ -297,6 +297,10 @@ const VoiceInput = forwardRef<VoiceInputComponentRef, VoiceInputProps>(
     const sourceTarget = useContextSelector(WorkflowRuntimeContext, (v) => v.sourceTarget);
     const chatId = useContextSelector(WorkflowRuntimeContext, (v) => v.chatId);
     const whisperConfig = useContextSelector(ChatBoxContext, (v) => v.whisperConfig);
+    const formatDisplayError = useContextSelector(
+      ChatBoxContext,
+      (value) => value.presentation?.formatError
+    );
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     const {
@@ -312,7 +316,8 @@ const VoiceInput = forwardRef<VoiceInputComponentRef, VoiceInputProps>(
       sourceType: sourceTarget.sourceType,
       sourceId: sourceTarget.sourceId,
       chatId,
-      outLinkAuthData
+      outLinkAuthData,
+      formatError: formatDisplayError
     });
 
     // Canvas render

@@ -82,8 +82,17 @@ const ChatInput = ({
   const dialogTips = useContextSelector(ChatBoxContext, (v) => v.dialogTips);
   const autoTTSResponse = useContextSelector(ChatBoxContext, (v) => v.autoTTSResponse);
   const chatType = useContextSelector(ChatBoxContext, (v) => v.chatType);
+  const inputPlaceholder = useContextSelector(
+    ChatBoxContext,
+    (value) => value.presentation?.inputPlaceholder
+  );
+  const showComplianceTip = useContextSelector(
+    ChatBoxContext,
+    (value) => value.presentation?.showComplianceTip ?? true
+  );
   const appName = useContextSelector(ChatItemContext, (v) => v.chatBoxData.app.name);
-  const placeholderAppName = chatType === ChatTypeEnum.home ? 'FastGPT' : appName || 'FastGPT';
+  const placeholderAppName =
+    chatType === ChatTypeEnum.home ? 'FastGPT' : appName || 'FastGPT';
   const appNamePlaceholderParts = useMemo(() => {
     const placeholderText = String(
       t('common:core.chat.Type a message to app', {
@@ -314,18 +323,26 @@ const ChatInput = ({
               overflow={'hidden'}
               whiteSpace={'nowrap'}
             >
-              <Box flexShrink={0}>{appNamePlaceholderParts.prefix}</Box>
-              <Box
-                flex={'0 1 auto'}
-                minW={0}
-                maxW={'100%'}
-                overflow={'hidden'}
-                textOverflow={'ellipsis'}
-                whiteSpace={'nowrap'}
-              >
-                {placeholderAppName}
-              </Box>
-              <Box flexShrink={0}>{appNamePlaceholderParts.suffix}</Box>
+              {inputPlaceholder ? (
+                <Box minW={0} overflow={'hidden'} textOverflow={'ellipsis'} whiteSpace={'nowrap'}>
+                  {inputPlaceholder}
+                </Box>
+              ) : (
+                <>
+                  <Box flexShrink={0}>{appNamePlaceholderParts.prefix}</Box>
+                  <Box
+                    flex={'0 1 auto'}
+                    minW={0}
+                    maxW={'100%'}
+                    overflow={'hidden'}
+                    textOverflow={'ellipsis'}
+                    whiteSpace={'nowrap'}
+                  >
+                    {placeholderAppName}
+                  </Box>
+                  <Box flexShrink={0}>{appNamePlaceholderParts.suffix}</Box>
+                </>
+              )}
             </Flex>
           )}
         </Flex>
@@ -338,6 +355,7 @@ const ChatInput = ({
       appNamePlaceholderParts.prefix,
       appNamePlaceholderParts.suffix,
       placeholderAppName,
+      inputPlaceholder,
       isPc,
       inputValue,
       onFocus,
@@ -603,7 +621,7 @@ const ChatInput = ({
 
         {!mobilePreSpeak && <Box>{RenderButtonGroup}</Box>}
       </Flex>
-      <ComplianceTip type={'chat'} pt={4} pb={0} />
+      {showComplianceTip && <ComplianceTip type={'chat'} pt={4} pb={0} />}
     </Box>
   );
 };

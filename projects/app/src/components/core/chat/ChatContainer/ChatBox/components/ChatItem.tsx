@@ -80,6 +80,7 @@ const ChatItem = (props: Props) => {
 
   const isChatting = useContextSelector(ChatBoxContext, (v) => v.isChatting);
   const boxBodyProps = useContextSelector(ChatBoxContext, (v) => v.boxBodyProps);
+  const presentation = useContextSelector(ChatBoxContext, (v) => v.presentation);
   const chatType = useContextSelector(ChatBoxContext, (v) => v.chatType);
   const showRunningStatus = useContextSelector(ChatItemContext, (v) => v.showRunningStatus);
   const isHumanMessage = chat.obj === ChatRoleEnum.Human;
@@ -111,11 +112,14 @@ const ChatItem = (props: Props) => {
       chat.moduleName ||
       t('common:core.module.template.ai_chat', { defaultValue: 'AI 对话' });
 
+    const fallbackMessage = t('common:core.chat.error.Chat error');
+    const rawMessage = t(errorText?.errorText || chat.errorMsg || 'Unknow error');
+
     return {
-      title: `${t('chat:log.error.error_prefix')} - ${t(moduleName)}`,
-      message: t(errorText?.errorText || chat.errorMsg || 'Unknow error')
+      title: presentation?.errorTitle ?? `${t('chat:log.error.error_prefix')} - ${t(moduleName)}`,
+      message: presentation?.formatError?.(rawMessage, fallbackMessage) ?? rawMessage
     };
-  }, [chat.errorMsg, chat.moduleName, errorText, t]);
+  }, [chat.errorMsg, chat.moduleName, errorText, presentation, t]);
   const showInlineError = shouldShowChatItemInlineError({
     hasInlineError: !!inlineErrorInfo,
     isChatting,

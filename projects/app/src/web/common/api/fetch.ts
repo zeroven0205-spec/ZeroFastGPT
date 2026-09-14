@@ -21,7 +21,7 @@ import {
   type FetchEventSourceInit
 } from '@fortaine/fetch-event-source';
 import { formatTime2YMDHMW } from '@fastgpt/global/common/string/time';
-import { getWebReqUrl } from '@fastgpt/web/common/system/utils';
+import { getWebReqUrl, subRoute } from '@fastgpt/web/common/system/utils';
 import type { OnOptimizePromptProps } from '@/components/common/PromptEditor/OptimizerPopover';
 import type { OnOptimizeCodeProps } from '@/pageComponents/app/detail/WorkflowComponents/Flow/nodes/NodeCode/Copilot';
 import { AuxiliaryGenerationEventEnum } from '@fastgpt/global/core/ai/auxiliaryGeneration/constants';
@@ -31,6 +31,7 @@ import {
   FASTGPT_WEB_REQUEST_VALUE
 } from '@fastgpt/global/common/system/constants';
 import { getLanguageRequestHeaders } from '@fastgpt/web/i18n/utils';
+import { getAppEntryRequestHeaders } from '@/web/core/appEntry/route';
 
 type StreamFetchProps = {
   url?: string;
@@ -276,6 +277,16 @@ function headersInitToRecord(headers: HeadersInit | undefined): Record<string, s
   return headers;
 }
 
+const getCurrentAppEntryRequestHeaders = () => {
+  if (typeof window === 'undefined') return {};
+
+  const pathname =
+    subRoute && window.location.pathname.startsWith(`${subRoute}/app/`)
+      ? window.location.pathname.slice(subRoute.length)
+      : window.location.pathname;
+  return getAppEntryRequestHeaders(pathname);
+};
+
 type SSEFetchParams = {
   url: string;
   requestInit: RequestInit;
@@ -372,6 +383,7 @@ function $ssefetch(params: SSEFetchParams) {
         ...restRequestInit,
         headers: {
           ...getLanguageRequestHeaders(),
+          ...getCurrentAppEntryRequestHeaders(),
           ...headersInitToRecord(initHeaders)
         },
         signal,
@@ -551,6 +563,7 @@ function $resumefetch({
       await fetchEventSource(req, {
         headers: {
           ...getLanguageRequestHeaders(),
+          ...getCurrentAppEntryRequestHeaders(),
           [FASTGPT_WEB_REQUEST_HEADER]: FASTGPT_WEB_REQUEST_VALUE
         },
         signal: signal,

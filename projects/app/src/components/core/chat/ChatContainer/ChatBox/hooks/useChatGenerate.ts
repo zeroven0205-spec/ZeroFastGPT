@@ -163,6 +163,10 @@ export const useChatGenerate = ({
   const sourceKey = useContextSelector(WorkflowRuntimeContext, (v) => v.sourceKey);
   const chatId = useContextSelector(WorkflowRuntimeContext, (v) => v.chatId);
   const variableList = useContextSelector(ChatBoxContext, (v) => v.variableList);
+  const formatDisplayError = useContextSelector(
+    ChatBoxContext,
+    (value) => value.presentation?.formatError
+  );
   const startSegmentedAudio = useContextSelector(ChatBoxContext, (v) => v.startSegmentedAudio);
   const finishSegmentedAudio = useContextSelector(ChatBoxContext, (v) => v.finishSegmentedAudio);
   const setAudioPlayingChatId = useContextSelector(ChatBoxContext, (v) => v.setAudioPlayingChatId);
@@ -820,7 +824,13 @@ export const useChatGenerate = ({
                 const responseData = mergeNodeResponseDataByIdAndParent(item.responseData || []);
                 if (!abortSignal?.signal?.aborted) {
                   const errorText = getChatItemErrorText(responseData)?.errorText;
-                  const errorMsg = errorText ? t(errorText) : undefined;
+                  const translatedError = errorText ? t(errorText) : undefined;
+                  const errorMsg = translatedError
+                    ? (formatDisplayError?.(
+                        translatedError,
+                        t('common:core.chat.error.Chat error')
+                      ) ?? translatedError)
+                    : undefined;
 
                   return {
                     ...item,
@@ -899,7 +909,9 @@ export const useChatGenerate = ({
               return;
             }
 
-            const errorMsg = t(getErrText(err, t('common:core.chat.error.Chat error') as any));
+            const fallbackError = t('common:core.chat.error.Chat error');
+            const rawError = t(getErrText(err, fallbackError as any));
+            const errorMsg = formatDisplayError?.(err, fallbackError) ?? rawError;
 
             setChatRecords((state) =>
               state.map((item, index) => {

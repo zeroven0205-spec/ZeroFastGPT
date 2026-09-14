@@ -11,9 +11,12 @@ export const useSpeech = (props?: {
   sourceId: string;
   chatId: string;
   outLinkAuthData?: OutLinkChatAuthProps;
+  /** 页面级可见错误映射；未提供时保持共享语音输入原有行为。 */
+  formatError?: (error: unknown, fallback: string) => string;
 }) => {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const formatError = props?.formatError;
 
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isTransCription, setIsTransCription] = useState(false);
@@ -457,7 +460,9 @@ export const useSpeech = (props?: {
             } catch (error) {
               toast({
                 status: 'warning',
-                title: getErrText(error, t('common:speech_error_tip'))
+                title:
+                  formatError?.(error, t('common:speech_error_tip')) ??
+                  getErrText(error, t('common:speech_error_tip'))
               });
             }
             setIsTransCription(false);
@@ -485,12 +490,12 @@ export const useSpeech = (props?: {
       } catch (error) {
         toast({
           status: 'warning',
-          title: getErrText(error, 'Whisper error')
+          title: formatError?.(error, 'Whisper error') ?? getErrText(error, 'Whisper error')
         });
         console.log(error);
       }
     },
-    [toast, t, props]
+    [formatError, toast, t, props]
   );
 
   const stopSpeak = useCallback((cancel = false) => {
