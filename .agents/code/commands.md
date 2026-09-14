@@ -47,7 +47,7 @@ feat/fix/refactor/docs/chore -> dev -> main
 - `main`：生产稳定和正式发布分支。
 - `feat/*`、`fix/*`、`refactor/*`、`docs/*`、`chore/*`：普通开发分支，默认从最新 `origin/dev` 创建。
 - `hotfix/*`：生产紧急修复分支，从最新 `origin/main` 创建，但必须先 PR 到 `dev`。
-- `sync/upstream-*`：集中同步官方 FastGPT 更新的临时分支。
+- `import/external-*`：导入用户提供的本地外部代码的临时分支。
 - `backup/*`：rebase、复杂同步或其他高风险操作前的安全快照。
 
 普通分支命名使用小写 kebab-case，例如：
@@ -55,23 +55,25 @@ feat/fix/refactor/docs/chore -> dev -> main
 ```text
 feat/app-h5-white-label-mvp
 fix/chat-input-mobile-focus
-sync/upstream-v4.17.1
+import/external-v4.17.1
 hotfix/auth-token-expiration
 ```
 
 ### 2. 固定远程职责和跟踪关系
 
+本地开发 Git 只允许配置项目自有仓库：
+
 ```text
 origin    git@github.com:zeroven0205-spec/ZeroFastGPT.git
-upstream  git@github.com:labring/FastGPT.git
 ```
 
-- `origin`：项目自有仓库，用于项目分支的拉取和推送。
-- `upstream`：官方 FastGPT 仓库，只用于获取官方更新，禁止推送。
+- `origin` 是本地开发 Git 唯一允许配置的 remote。
+- 所有拉取、推送和 PR 均必须围绕 `origin` 执行。
 - `main` 应跟踪 `origin/main`。
 - `dev` 应跟踪 `origin/dev`。
 - 普通功能分支应跟踪 `origin/<同名分支>`。
-- 功能分支不得跟踪 `upstream/main`。
+- 禁止新增、保留或使用任何第二 remote、外部 remote 或外部 remote-tracking branch。
+- 禁止执行针对外部官方仓库的 `git remote add`、`fetch`、`pull`、`push`、`merge`、rebase 或 cherry-pick。
 
 每次同步或推送前必须检查：
 
@@ -82,7 +84,7 @@ git status --short --branch
 git branch -vv
 ```
 
-如果 remote 地址、当前分支或跟踪关系异常，必须停止操作，不得继续 push、merge 或 rebase。
+如果发现存在第二 remote、外部仓库关联或错误跟踪关系，必须停止操作并先清理本地 Git 配置。
 
 ### 3. 创建普通功能分支
 
@@ -180,7 +182,7 @@ refactor/*
 docs/*
 chore/*
 hotfix/*
-sync/upstream-*
+import/external-*
 ```
 
 开发分支禁止直接 PR 到 `main` 或其他仓库。唯一的发布例外是：
@@ -230,13 +232,13 @@ dev -> main
 |---|---|
 | `feat/* -> dev` | Squash Merge |
 | `fix/* -> dev` | Squash Merge |
-| `sync/upstream-* -> dev` | Merge Commit |
+| `import/external-* -> dev` | Merge Commit |
 | `dev -> main` | Merge Commit |
 | `hotfix/* -> dev` | Squash Merge，完成后再由 `dev -> main` 发布 |
 
 `dev` 和 `main` 正常情况下只能通过 PR 更新，禁止本地直接 merge 后 push。
 
-### 6. Hotfix 和官方同步
+### 6. Hotfix 和外部代码导入
 
 生产紧急修复：
 
@@ -249,24 +251,27 @@ git switch -c hotfix/<问题描述>
 
 生产紧急修复必须使用 `hotfix/* -> dev` PR，完成测试和验收后再由 `dev -> main` 发布。禁止创建 `hotfix/* -> main` PR。
 
-官方更新必须集中处理：
+项目不通过 Git remote 直接联系任何外部官方仓库。需要引入外部代码时，只能使用用户已经提供并落盘的 patch、压缩包或本地代码分支：
 
 ```bash
 git fetch origin --prune
-git fetch upstream --prune
 git switch dev
 git merge --ff-only origin/dev
-git switch -c sync/upstream-$(date +%Y%m%d)
-git merge upstream/main
+git switch -c import/external-$(date +%Y%m%d)
 ```
 
-完成冲突处理、测试和构建后，在 `zeroven0205-spec/ZeroFastGPT` 创建：
+导入后完成冲突处理、测试和构建，在 `zeroven0205-spec/ZeroFastGPT` 创建：
 
 ```text
-sync/upstream-* -> dev PR
+import/external-* -> dev PR
 ```
 
-禁止直接在 `dev` 上合并 `upstream/main`，普通功能分支也不应重复合并官方更新。
+禁止：
+
+- 执行针对外部官方仓库的 `git remote add`、`fetch`、`pull`、`push`、`merge` 或 rebase；
+- 在本地保留指向外部官方仓库的 remote 或 remote-tracking branch；
+- 普通功能分支直接导入外部代码；
+- 绕过 `dev` 将外部代码直接 PR 到 `main`。
 
 ### 7. 高风险操作和备份
 
@@ -316,7 +321,7 @@ git log --oneline --decorate origin/dev..HEAD
 
 必须确认：
 
-1. 目标 remote 是预期的 `origin`，不得向 `upstream` 推送。
+1. 本地 Git 只存在项目 `origin` remote，目标 remote 必须是 `origin`。
 2. 当前分支是明确的普通开发分支；不得直接推送 `dev`、`main` 或 `release/*`。
 3. 普通开发分支的 PR 仓库必须是 `zeroven0205-spec/ZeroFastGPT`，base 必须是 `dev`。
 4. 除 `dev -> main` 发布 PR 外，开发分支不得直接 PR 到 `main`。
