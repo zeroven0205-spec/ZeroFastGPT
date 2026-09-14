@@ -26,8 +26,9 @@ feat/fix/refactor/docs/chore
 
 - 个人独占功能分支允许 rebase 到最新 `origin/dev`。
 - 已共享或已被其他人使用的功能分支，默认 merge 最新 `origin/dev`，不得擅自 rebase。
+- 所有开发分支的 PR 必须提交到 `zeroven0205-spec/ZeroFastGPT` 仓库，且 base 分支固定为 `dev`；开发分支不得直接 PR 到 `main` 或其他仓库。
 - 普通功能 PR 合入 `dev` 使用 Squash Merge；合入后删除功能分支。
-- `dev -> main` 发布 PR 使用 Merge Commit，保留长期分支的祖先关系。
+- 只有 `dev -> main` 的验收发布 PR 可以将 base 设为 `main`，使用 Merge Commit，保留长期分支的祖先关系。
 - `dev` 和 `main` 禁止直接 push，正常更新必须经过 PR。
 - `origin` 是项目自有仓库；`upstream` 只用于获取官方 FastGPT 更新，不得向其推送。
 - 功能分支只能跟踪 `origin` 下的同名远程分支，不得跟踪 `upstream/main`。
@@ -84,6 +85,7 @@ upstream/main
 集成、测试和验收分支。
 
 - 普通功能和修复必须通过 PR 合入。
+- 普通开发分支的 PR base 必须是 `dev`，目标仓库必须是 `zeroven0205-spec/ZeroFastGPT`。
 - 禁止直接开发。
 - 禁止直接 push。
 - 禁止 force push。
@@ -98,7 +100,7 @@ upstream/main
 | `refactor/*` | 不改变业务目标的重构 | `origin/dev` |
 | `docs/*` | 文档变更 | `origin/dev` |
 | `chore/*` | 依赖、脚本和工程维护 | `origin/dev` |
-| `hotfix/*` | 生产紧急修复 | `origin/main` |
+| `hotfix/*` | 生产紧急修复，先回流集成分支 | `origin/main` |
 | `sync/upstream-*` | 集中同步官方更新 | `origin/dev` |
 | `backup/*` | 高风险操作前的安全快照 | 当前分支 HEAD |
 
@@ -277,7 +279,8 @@ Merge Commit 能保留 `dev` 提交作为 `main` 的祖先，避免长期分支�
 发布前必须确认：
 
 - `dev` 已完成测试和业务验收；
-- PR 的目标分支为 `main`；
+- PR 所属仓库为 `zeroven0205-spec/ZeroFastGPT`；
+- PR 的目标分支为 `main`，且来源只能是已验收的 `dev`；
 - 没有未解决的 review 对话和 CI 失败；
 - 发布变更范围只包含已验收内容。
 
@@ -289,7 +292,7 @@ Merge Commit 能保留 `dev` 提交作为 `main` 的祖先，避免长期分支�
 | `fix/* -> dev` | Squash Merge | 压缩修复过程中的临时提交 |
 | `sync/upstream-* -> dev` | Merge Commit | 保留官方同步边界和来源 |
 | `dev -> main` | Merge Commit | 保留长期分支祖先关系 |
-| `hotfix/* -> main` | Merge 或 Squash | 按修复规模决定，完成后必须回流 `dev` |
+| `hotfix/* -> dev` | Squash Merge | 先回流集成分支，再通过 `dev -> main` 发布 |
 
 ## 8. Hotfix 流程
 
@@ -302,19 +305,19 @@ git merge --ff-only origin/main
 git switch -c hotfix/<问题描述>
 ```
 
-修复完成后：
+修复完成后必须先创建：
 
 ```text
-hotfix/* -> main PR
+hotfix/* -> dev PR
 ```
 
-生产修复合入 `main` 并发布后，必须将实际修复内容同步回 `dev`：
+确认修复在 `dev` 完成测试和验收后，再通过：
 
 ```text
-hotfix/* 或 main -> dev PR
+dev -> main PR
 ```
 
-不能只修复 `main` 而遗漏 `dev`。如果 `main` 仅多出发布 merge commit、没有额外代码改动，则不需要为了同步 merge commit 本身而制造重复合并。
+生产 hotfix 不得直接创建 `hotfix/* -> main` PR。这样可以保证所有开发变更都先经过项目集成分支。
 
 ## 9. 官方代码同步流程
 
@@ -329,7 +332,7 @@ git switch -c sync/upstream-$(date +%Y%m%d)
 git merge upstream/main
 ```
 
-完成冲突处理、局部测试和必要构建后，创建：
+完成冲突处理、局部测试和必要构建后，在目标仓库 `zeroven0205-spec/ZeroFastGPT` 创建：
 
 ```text
 sync/upstream-* -> dev PR
@@ -391,7 +394,7 @@ git log --oneline origin/main..backup/<备份分支>
 
 ## 11. 推送前强制检查
 
-任何远程写入前必须执行并检查：
+任何远程写入或创建 PR 前必须执行并检查：
 
 ```bash
 git remote -v
@@ -400,6 +403,14 @@ git status --short --branch
 git diff --check
 git diff --name-only --diff-filter=U
 git branch -vv
+```
+
+创建或审核 PR 时还必须检查以下固定目标：
+
+```text
+仓库：zeroven0205-spec/ZeroFastGPT
+普通开发分支 base：dev
+发布 PR 例外：仅允许 dev -> main
 ```
 
 还必须根据本次 PR 的基线检查提交范围，例如普通功能分支：
@@ -411,7 +422,9 @@ git log --oneline --decorate origin/dev..HEAD
 检查要求：
 
 1. remote 必须是预期的 `origin` 或明确批准的目标 remote；
-2. 普通开发只能推送当前功能分支；
+2. 普通开发分支的 PR 仓库必须是 `zeroven0205-spec/ZeroFastGPT`，base 必须是 `dev`；
+3. 除 `dev -> main` 发布 PR 外，开发分支不得直接 PR 到 `main`；
+4. 普通开发只能推送当前功能分支；
 3. `dev`、`main`、`release/*` 不得直接推送；
 4. 不存在未解决冲突；
 5. 工作区中的未提交文件不会被 push，必须确认待交付内容已经提交；

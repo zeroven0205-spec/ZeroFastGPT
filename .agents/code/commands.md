@@ -46,7 +46,7 @@ feat/fix/refactor/docs/chore -> dev -> main
 - `dev`：集成、测试和验收分支。
 - `main`：生产稳定和正式发布分支。
 - `feat/*`、`fix/*`、`refactor/*`、`docs/*`、`chore/*`：普通开发分支，默认从最新 `origin/dev` 创建。
-- `hotfix/*`：生产紧急修复分支，从最新 `origin/main` 创建。
+- `hotfix/*`：生产紧急修复分支，从最新 `origin/main` 创建，但必须先 PR 到 `dev`。
 - `sync/upstream-*`：集中同步官方 FastGPT 更新的临时分支。
 - `backup/*`：rebase、复杂同步或其他高风险操作前的安全快照。
 
@@ -157,6 +157,57 @@ git rebase --abort
 
 ### 5. PR 合并规则
 
+#### 5.1 固定 PR 仓库和目标分支
+
+所有开发分支的 PR 必须创建在以下仓库：
+
+```text
+https://github.com/zeroven0205-spec/ZeroFastGPT/
+```
+
+所有开发分支的 PR base 必须是：
+
+```text
+dev
+```
+
+适用范围包括：
+
+```text
+feat/*
+fix/*
+refactor/*
+docs/*
+chore/*
+hotfix/*
+sync/upstream-*
+```
+
+开发分支禁止直接 PR 到 `main` 或其他仓库。唯一的发布例外是：
+
+```text
+dev -> main
+```
+
+该 PR 必须来自项目自有仓库，用于验收通过后的正式发布。
+
+创建 PR 前检查：
+
+```bash
+git remote get-url origin
+git branch --show-current
+git log --oneline --decorate origin/dev..HEAD
+```
+
+网页端必须再次确认：
+
+- Repository 是 `zeroven0205-spec/ZeroFastGPT`；
+- Base 是 `dev`；
+- Compare/Head 是当前开发分支；
+- 不是将开发分支直接提交到 `main`。
+
+#### 5.2 普通功能合并
+
 普通功能、修复、重构和文档变更：
 
 ```text
@@ -181,7 +232,7 @@ dev -> main
 | `fix/* -> dev` | Squash Merge |
 | `sync/upstream-* -> dev` | Merge Commit |
 | `dev -> main` | Merge Commit |
-| `hotfix/* -> main` | Merge 或 Squash，完成后必须回流 `dev` |
+| `hotfix/* -> dev` | Squash Merge，完成后再由 `dev -> main` 发布 |
 
 `dev` 和 `main` 正常情况下只能通过 PR 更新，禁止本地直接 merge 后 push。
 
@@ -196,7 +247,7 @@ git merge --ff-only origin/main
 git switch -c hotfix/<问题描述>
 ```
 
-使用 `hotfix/* -> main` PR 发布后，必须通过 PR 将实际修复回流 `dev`。如果 `main` 只有发布 merge commit、没有额外代码改动，不需要为了同步该 merge commit 本身而制造重复合并。
+生产紧急修复必须使用 `hotfix/* -> dev` PR，完成测试和验收后再由 `dev -> main` 发布。禁止创建 `hotfix/* -> main` PR。
 
 官方更新必须集中处理：
 
@@ -209,7 +260,7 @@ git switch -c sync/upstream-$(date +%Y%m%d)
 git merge upstream/main
 ```
 
-完成冲突处理、测试和构建后，创建：
+完成冲突处理、测试和构建后，在 `zeroven0205-spec/ZeroFastGPT` 创建：
 
 ```text
 sync/upstream-* -> dev PR
@@ -246,7 +297,7 @@ git clean -fd
 
 ### 8. 推送前强制检查
 
-任何远程写入前必须执行：
+任何远程写入或创建 PR 前必须执行：
 
 ```bash
 git remote -v
@@ -266,12 +317,14 @@ git log --oneline --decorate origin/dev..HEAD
 必须确认：
 
 1. 目标 remote 是预期的 `origin`，不得向 `upstream` 推送。
-2. 当前分支是明确的普通功能分支；不得直接推送 `dev`、`main` 或 `release/*`。
-3. 没有未解决冲突。
-4. 待推送提交全部属于当前任务，不包含无关修改、临时提交或敏感信息。
-5. 未提交文件不会被 push，必须确认目标内容已经提交。
-6. 已完成改动范围所需的局部 lint、类型检查和测试。
-7. Agent 执行 push、删除远程分支或修改远程标签前，必须获得用户针对具体 remote 和 branch 的明确授权。
+2. 当前分支是明确的普通开发分支；不得直接推送 `dev`、`main` 或 `release/*`。
+3. 普通开发分支的 PR 仓库必须是 `zeroven0205-spec/ZeroFastGPT`，base 必须是 `dev`。
+4. 除 `dev -> main` 发布 PR 外，开发分支不得直接 PR 到 `main`。
+5. 没有未解决冲突。
+6. 待推送提交全部属于当前任务，不包含无关修改、临时提交或敏感信息。
+7. 未提交文件不会被 push，必须确认目标内容已经提交。
+8. 已完成改动范围所需的局部 lint、类型检查和测试。
+9. Agent 执行 push、删除远程分支或修改远程标签前，必须获得用户针对具体 remote 和 branch 的明确授权。
 
 ### 9. 推送功能分支
 
