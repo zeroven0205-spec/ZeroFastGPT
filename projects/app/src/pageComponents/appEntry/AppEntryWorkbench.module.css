@@ -122,6 +122,11 @@
   opacity: 0.72;
 }
 
+.actionButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
 .content {
   flex: 1 1 auto;
   min-height: 0;

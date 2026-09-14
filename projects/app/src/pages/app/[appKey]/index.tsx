@@ -13,10 +13,11 @@ import { getAppEntryLoginPath, getAppEntryPath } from '@/web/core/appEntry/route
 
 type Props = {
   appKey: string;
+  appId: string;
   config: AppEntryPublicConfig;
 };
 
-const AppEntryHomePage: NextPage<Props> = ({ appKey, config }) => (
+const AppEntryHomePage: NextPage<Props> = ({ appKey, appId, config }) => (
   <>
     <NextHead
       appEntry
@@ -30,7 +31,7 @@ const AppEntryHomePage: NextPage<Props> = ({ appKey, config }) => (
       contentOverflow="hidden"
       contentPaddingBottom={0}
     >
-      <AppEntryHome appKey={appKey} />
+      <AppEntryHome appKey={appKey} appId={appId} />
     </AppEntryLayout>
   </>
 );
@@ -61,7 +62,13 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     };
   }
 
-  return { props: { appKey, config: toPublicAppEntryConfig({ config }) } };
+  return {
+    props: {
+      appKey,
+      appId: config.appId,
+      config: toPublicAppEntryConfig({ config })
+    }
+  };
 };
 
 export default AppEntryHomePage;

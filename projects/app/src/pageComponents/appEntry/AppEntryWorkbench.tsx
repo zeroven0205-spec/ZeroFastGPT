@@ -1,7 +1,14 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
+import { ChatSourceEnum } from '@fastgpt/global/core/chat/constants';
 import { getAppEntryLoginPath, getAppEntryPath } from '@/web/core/appEntry/route';
 import { logoutAppEntry } from '@/web/core/appEntry/auth';
+import { useChatStore } from '@/web/core/chat/context/useChatStore';
+import {
+  clearAppEntryHistories,
+  loadAppEntryHistories,
+  type AppEntryHistoryItem
+} from '@/web/core/appEntry/history';
 import { useAppEntryBrand } from './AppEntryBrandProvider';
 import styles from './AppEntryWorkbench.module.css';
 
@@ -13,13 +20,6 @@ type Agent = {
   name: string;
   role: string;
   real: boolean;
-};
-
-type HistoryItem = {
-  id: string;
-  question: string;
-  answer: string;
-  time: string;
 };
 
 const AGENTS: Agent[] = [
@@ -80,13 +80,32 @@ const nowTime = () =>
     hour12: false
   });
 
-const AppEntryWorkbench = ({ appKey }: { appKey: string }) => {
+const AppEntryWorkbench = ({ appKey, appId }: { appKey: string; appId: string }) => {
   const router = useRouter();
   const { brand } = useAppEntryBrand();
   const [tab, setTab] = useState<WorkbenchTab>('workbench');
   const [clock, setClock] = useState('09:41');
   const [toast, setToast] = useState('');
-  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [history, setHistory] = useState<AppEntryHistoryItem[]>([]);
+  const [historyTotal, setHistoryTotal] = useState(0);
+  const [historyLoading, setHistoryLoading] = useState(true);
+  const [historyError, setHistoryError] = useState('');
+  const [historyClearing, setHistoryClearing] = useState(false);
+
+  const loadHistory = useCallback(async () => {
+    setHistoryLoading(true);
+    setHistoryError('');
+
+    try {
+      const result = await loadAppEntryHistories({ appId });
+      setHistory(result.list);
+      setHistoryTotal(result.total);
+    } catch {
+      setHistoryError('历史记录加载失败，请稍后重试');
+    } finally {
+      setHistoryLoading(false);
+    }
+  }, [appId]);
 
   useEffect(() => {
     const timer = window.setInterval(() => setClock(nowTime()), 30_000);
@@ -99,11 +118,43 @@ const AppEntryWorkbench = ({ appKey }: { appKey: string }) => {
     return () => window.clearTimeout(timer);
   }, [toast]);
 
+  useEffect(() => {
+    let active = true;
+
+    void loadAppEntryHistories({ appId })
+      .then((result) => {
+        if (!active) return;
+        setHistory(result.list);
+        setHistoryTotal(result.total);
+        setHistoryError('');
+      })
+      .catch(() => {
+        if (active) {
+          setHistoryError('历史记录加载失败，请稍后重试');
+        }
+      })
+      .finally(() => {
+        if (active) {
+          setHistoryLoading(false);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [appId]);
+
   const activeAgents = useMemo(() => AGENTS.filter((agent) => agent.real).length, []);
   const displayName = brand.name || '智能体平台';
   const displayDescription = brand.description || '专属智能体，随时为您服务';
 
-  const goToChat = () => {
+  const goToChat = (chatId?: string) => {
+    const chatStore = useChatStore.getState();
+    chatStore.setSource(ChatSourceEnum.online);
+    chatStore.setAppId(appId);
+    if (chatId) {
+      chatStore.setChatId(chatId);
+    }
     void router.push(getAppEntryPath(appKey, 'chat'));
   };
 
@@ -120,13 +171,25 @@ const AppEntryWorkbench = ({ appKey }: { appKey: string }) => {
     await router.replace(getAppEntryLoginPath({ appKey, returnTo: getAppEntryPath(appKey) }));
   };
 
-  const clearHistory = () => {
+  const clearHistory = async () => {
     if (history.length === 0) {
       setToast('暂无历史记录');
       return;
     }
-    setHistory([]);
-    setToast('历史已清空');
+
+    if (!window.confirm('确定清空全部历史对话吗？清空后无法恢复。')) return;
+
+    setHistoryClearing(true);
+    try {
+      await clearAppEntryHistories(appId);
+      setHistory([]);
+      setHistoryTotal(0);
+      setToast('历史已清空');
+    } catch {
+      setToast('清空失败，请稍后重试');
+    } finally {
+      setHistoryClearing(false);
+    }
   };
 
   return (
@@ -167,8 +230,8 @@ const AppEntryWorkbench = ({ appKey }: { appKey: string }) => {
                   <div className={styles.statLabel}>智能体</div>
                 </div>
                 <div className={styles.stat}>
-                  <div className={styles.statNumber}>{history.length}</div>
-                  <div className={styles.statLabel}>今日对话</div>
+                  <div className={styles.statNumber}>{historyTotal}</div>
+                  <div className={styles.statLabel}>历史对话</div>
                 </div>
                 <div className={`${styles.stat} ${styles.statBrass}`}>
                   <div className={styles.statNumber}>3</div>
@@ -212,7 +275,18 @@ const AppEntryWorkbench = ({ appKey }: { appKey: string }) => {
                 </button>
               </div>
               <section className={styles.recentList} aria-label="最近对话">
-                {history.length === 0 ? (
+                {historyLoading ? (
+                  <div className={styles.emptyState}>
+                    <div className={styles.emptyTitle}>正在加载对话…</div>
+                  </div>
+                ) : historyError ? (
+                  <div className={styles.emptyState}>
+                    <div className={styles.emptyTitle}>{historyError}</div>
+                    <button type="button" className={styles.moreButton} onClick={loadHistory}>
+                      重新加载
+                    </button>
+                  </div>
+                ) : history.length === 0 ? (
                   <div className={styles.emptyState}>
                     <div className={styles.emptyIcon}>
                       <Icon name="chat" />
@@ -225,8 +299,8 @@ const AppEntryWorkbench = ({ appKey }: { appKey: string }) => {
                     <button
                       type="button"
                       className={styles.historyItem}
-                      key={item.id}
-                      onClick={goToChat}
+                      key={item.chatId}
+                      onClick={() => goToChat(item.chatId)}
                     >
                       <span className={styles.historyHead}>
                         <span className={styles.historyAgent}>
@@ -235,8 +309,8 @@ const AppEntryWorkbench = ({ appKey }: { appKey: string }) => {
                         </span>
                         <span className={styles.historyTime}>{item.time}</span>
                       </span>
-                      <span className={styles.historyQuestion}>{item.question}</span>
-                      <span className={styles.historyAnswer}>{item.answer}</span>
+                      <span className={styles.historyQuestion}>{item.title}</span>
+                      <span className={styles.historyAnswer}>点击继续对话</span>
                     </button>
                   ))
                 )}
@@ -296,12 +370,28 @@ const AppEntryWorkbench = ({ appKey }: { appKey: string }) => {
           <>
             <header className={styles.topbar}>
               <h1 className={styles.topbarTitle}>历史记录</h1>
-              <button type="button" className={styles.actionButton} onClick={clearHistory}>
-                清空
+              <button
+                type="button"
+                className={styles.actionButton}
+                disabled={historyClearing}
+                onClick={() => void clearHistory()}
+              >
+                {historyClearing ? '清空中…' : '清空'}
               </button>
             </header>
             <main className={styles.content}>
-              {history.length === 0 ? (
+              {historyLoading ? (
+                <div className={styles.emptyState}>
+                  <div className={styles.emptyTitle}>正在加载历史记录…</div>
+                </div>
+              ) : historyError ? (
+                <div className={styles.emptyState}>
+                  <div className={styles.emptyTitle}>{historyError}</div>
+                  <button type="button" className={styles.moreButton} onClick={loadHistory}>
+                    重新加载
+                  </button>
+                </div>
+              ) : history.length === 0 ? (
                 <div className={styles.emptyState}>
                   <div className={styles.emptyIcon}>
                     <Icon name="history" />
@@ -315,8 +405,8 @@ const AppEntryWorkbench = ({ appKey }: { appKey: string }) => {
                     <button
                       type="button"
                       className={styles.historyItem}
-                      key={item.id}
-                      onClick={goToChat}
+                      key={item.chatId}
+                      onClick={() => goToChat(item.chatId)}
                     >
                       <span className={styles.historyHead}>
                         <span className={styles.historyAgent}>
@@ -325,8 +415,8 @@ const AppEntryWorkbench = ({ appKey }: { appKey: string }) => {
                         </span>
                         <span className={styles.historyTime}>{item.time}</span>
                       </span>
-                      <span className={styles.historyQuestion}>{item.question}</span>
-                      <span className={styles.historyAnswer}>{item.answer}</span>
+                      <span className={styles.historyQuestion}>{item.title}</span>
+                      <span className={styles.historyAnswer}>点击继续对话</span>
                     </button>
                   ))}
                 </section>
@@ -352,7 +442,7 @@ const AppEntryWorkbench = ({ appKey }: { appKey: string }) => {
             <Icon name="agents" />
             <span>智能体</span>
           </button>
-          <button type="button" className={styles.navItem} onClick={goToChat}>
+          <button type="button" className={styles.navItem} onClick={() => goToChat()}>
             <Icon name="chat" />
             <span>灵</span>
           </button>

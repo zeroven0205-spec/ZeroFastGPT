@@ -3,10 +3,13 @@ import AppEntryWorkbench from './AppEntryWorkbench';
 
 type HomeProps = {
   appKey: string;
+  appId: string;
 };
 
 /** AppEntry 登录后的业务工作台；现有独立 Chat 页面继续由 /chat 路由承载。 */
-export const AppEntryHome = ({ appKey }: HomeProps) => <AppEntryWorkbench appKey={appKey} />;
+export const AppEntryHome = ({ appKey, appId }: HomeProps) => (
+  <AppEntryWorkbench appKey={appKey} appId={appId} />
+);
 
 export const AppEntryPlaceholder = ({
   title,
