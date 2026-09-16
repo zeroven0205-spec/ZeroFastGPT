@@ -115,6 +115,31 @@ docker build \
   -t fastgpt:low-resource .
 ```
 
+### 4.1 GitHub Actions 发布约定
+
+仓库工作流为：
+
+```text
+/Users/sinan/Documents/github/FastGPT/.github/workflows/build-fastgpt.yml
+```
+
+低资源镜像发布时使用 `workflow_dispatch`，建议参数如下：
+
+```text
+version: v4.17.0-low-resource.20260916
+push_aliyun: false
+push_dockerhub: false
+publish_latest: false
+```
+
+这样只发布不可变的 GHCR 版本 tag，不依赖未配置的阿里云/Docker Hub 凭证，也不会覆盖 `latest`。如果后续补齐外部仓库凭证，可按需打开对应选项。
+
+本次构建使用提交 `0c030aab2cf313d2b002b2aa2497613ece54ff6d`，GitHub Actions run 3 已成功完成，镜像 tag 为：
+
+```text
+ghcr.io/zeroven0205-spec/fastgpt:v4.17.0-low-resource.20260916
+```
+
 ## 5. 推荐部署链路
 
 ### 5.1 构建和发布
