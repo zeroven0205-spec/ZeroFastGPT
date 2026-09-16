@@ -7,6 +7,21 @@ on:
         description: 'Image version tag (e.g. v1.0.0)'
         required: true
         type: string
+      push_aliyun:
+        description: 'Push images to Aliyun Container Registry'
+        required: false
+        default: false
+        type: boolean
+      push_dockerhub:
+        description: 'Push images to Docker Hub'
+        required: false
+        default: false
+        type: boolean
+      publish_latest:
+        description: 'Also update the latest tag'
+        required: false
+        default: false
+        type: boolean
   push:
     paths:
       - 'projects/app/**'
@@ -62,6 +77,8 @@ jobs:
             runs-on: ubuntu-24.04-arm
     runs-on: ${{ matrix.archs.runs-on || 'ubuntu-24.04' }}
     timeout-minutes: 120
+    env:
+      PUSH_ALIYUN: ${{ github.event_name == 'push' || inputs.push_aliyun == true }}
     steps:
       # install env
       - name: Checkout
@@ -92,6 +109,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Login to Ali Hub
+        if: env.PUSH_ALIYUN == 'true'
         uses: docker/login-action@v3
         with:
           registry: registry.cn-hangzhou.aliyuncs.com
@@ -115,6 +133,7 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache
 
       - name: Build for Ali Hub ${{ matrix.archs.arch }}
+        if: env.PUSH_ALIYUN == 'true'
         id: build-aliyun
         uses: docker/build-push-action@v6
         with:
@@ -134,11 +153,13 @@ jobs:
       - name: Export digest
         run: |
           mkdir -p ${{ runner.temp }}/digests/${{ matrix.sub_routes.repo }}/ghcr
-          mkdir -p ${{ runner.temp }}/digests/${{ matrix.sub_routes.repo }}/aliyun
           ghcr_digest="${{ steps.build-ghcr.outputs.digest }}"
-          aliyun_digest="${{ steps.build-aliyun.outputs.digest }}"
           touch "${{ runner.temp }}/digests/${{ matrix.sub_routes.repo }}/ghcr/${ghcr_digest#sha256:}"
-          touch "${{ runner.temp }}/digests/${{ matrix.sub_routes.repo }}/aliyun/${aliyun_digest#sha256:}"
+          if [[ "$PUSH_ALIYUN" == "true" ]]; then
+            mkdir -p ${{ runner.temp }}/digests/${{ matrix.sub_routes.repo }}/aliyun
+            aliyun_digest="${{ steps.build-aliyun.outputs.digest }}"
+            touch "${{ runner.temp }}/digests/${{ matrix.sub_routes.repo }}/aliyun/${aliyun_digest#sha256:}"
+          fi
 
       - name: Upload GHCR digest
         uses: actions/upload-artifact@v4
@@ -149,6 +170,7 @@ jobs:
           retention-days: 1
 
       - name: Upload Ali Hub digest
+        if: env.PUSH_ALIYUN == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: aliyun-digests-${{ matrix.sub_routes.repo }}-${{ github.sha }}-${{ matrix.archs.arch }}
@@ -170,6 +192,10 @@ jobs:
           - repo: fastgpt-sub-route
     runs-on: ubuntu-24.04
     timeout-minutes: 120
+    env:
+      PUSH_ALIYUN: ${{ github.event_name == 'push' || inputs.push_aliyun == true }}
+      PUSH_DOCKERHUB: ${{ github.event_name == 'push' || inputs.push_dockerhub == true }}
+      PUBLISH_LATEST: ${{ github.event_name == 'push' || inputs.publish_latest == true }}
     steps:
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -178,12 +204,14 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Login to Ali Hub
+        if: env.PUSH_ALIYUN == 'true'
         uses: docker/login-action@v3
         with:
           registry: registry.cn-hangzhou.aliyuncs.com
           username: ${{ secrets.FASTGPT_ALI_IMAGE_USER }}
           password: ${{ secrets.FASTGPT_ALI_IMAGE_PSW }}
       - name: Login to Docker Hub
+        if: env.PUSH_DOCKERHUB == 'true'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_NAME }}
@@ -197,6 +225,7 @@ jobs:
           merge-multiple: true
 
       - name: Download Ali Hub digests
+        if: env.PUSH_ALIYUN == 'true'
         uses: actions/download-artifact@v4
         with:
           path: ${{ runner.temp }}/digests/aliyun
@@ -210,11 +239,21 @@ jobs:
         run: |
           VERSION="${{ needs.validate-version.outputs.version }}"
           echo "Git_Tag=ghcr.io/${{ github.repository_owner }}/${{ matrix.sub_routes.repo }}:${VERSION}" >> $GITHUB_ENV
-          echo "Git_Latest=ghcr.io/${{ github.repository_owner }}/${{ matrix.sub_routes.repo }}:latest" >> $GITHUB_ENV
-          echo "Ali_Tag=${{ secrets.FASTGPT_ALI_IMAGE_PREFIX }}/${{ matrix.sub_routes.repo }}:${VERSION}" >> $GITHUB_ENV
-          echo "Ali_Latest=${{ secrets.FASTGPT_ALI_IMAGE_PREFIX }}/${{ matrix.sub_routes.repo }}:latest" >> $GITHUB_ENV
-          echo "Docker_Hub_Tag=${{ secrets.DOCKER_IMAGE_NAME }}/${{ matrix.sub_routes.repo }}:${VERSION}" >> $GITHUB_ENV
-          echo "Docker_Hub_Latest=${{ secrets.DOCKER_IMAGE_NAME }}/${{ matrix.sub_routes.repo }}:latest" >> $GITHUB_ENV
+          if [[ "$PUBLISH_LATEST" == "true" ]]; then
+            echo "Git_Latest=ghcr.io/${{ github.repository_owner }}/${{ matrix.sub_routes.repo }}:latest" >> $GITHUB_ENV
+          fi
+          if [[ "$PUSH_ALIYUN" == "true" ]]; then
+            echo "Ali_Tag=${{ secrets.FASTGPT_ALI_IMAGE_PREFIX }}/${{ matrix.sub_routes.repo }}:${VERSION}" >> $GITHUB_ENV
+            if [[ "$PUBLISH_LATEST" == "true" ]]; then
+              echo "Ali_Latest=${{ secrets.FASTGPT_ALI_IMAGE_PREFIX }}/${{ matrix.sub_routes.repo }}:latest" >> $GITHUB_ENV
+            fi
+          fi
+          if [[ "$PUSH_DOCKERHUB" == "true" ]]; then
+            echo "Docker_Hub_Tag=${{ secrets.DOCKER_IMAGE_NAME }}/${{ matrix.sub_routes.repo }}:${VERSION}" >> $GITHUB_ENV
+            if [[ "$PUBLISH_LATEST" == "true" ]]; then
+              echo "Docker_Hub_Latest=${{ secrets.DOCKER_IMAGE_NAME }}/${{ matrix.sub_routes.repo }}:latest" >> $GITHUB_ENV
+            fi
+          fi
 
       - name: Create manifest list and push
         working-directory: ${{ runner.temp }}/digests
@@ -230,11 +269,16 @@ jobs:
           done
           ALI_SOURCES=()
           for digest_file in aliyun/*; do
-            [[ -f "$digest_file" ]] || continue
-            ALI_SOURCES+=("${ALI_IMAGE}@sha256:$(basename "$digest_file")")
+            if [[ "$PUSH_ALIYUN" == "true" && -f "$digest_file" ]]; then
+              ALI_SOURCES+=("${ALI_IMAGE}@sha256:$(basename "$digest_file")")
+            fi
           done
-          if [[ "${#GHCR_SOURCES[@]}" -ne 2 || "${#ALI_SOURCES[@]}" -ne 2 ]]; then
-            echo "Expected two GHCR and two Ali Hub digests"
+          if [[ "${#GHCR_SOURCES[@]}" -ne 2 ]]; then
+            echo "Expected two GHCR digests"
+            exit 1
+          fi
+          if [[ "$PUSH_ALIYUN" == "true" && "${#ALI_SOURCES[@]}" -ne 2 ]]; then
+            echo "Expected two Ali Hub digests"
             exit 1
           fi
 
@@ -257,16 +301,36 @@ jobs:
             done
           }
 
-          for TAG in "${Git_Tag}" "${Git_Latest}" "${Docker_Hub_Tag}" "${Docker_Hub_Latest}"; do
+          GHCR_TAGS=("${Git_Tag}")
+          if [[ "$PUBLISH_LATEST" == "true" ]]; then
+            GHCR_TAGS+=("${Git_Latest}")
+          fi
+          for TAG in "${GHCR_TAGS[@]}"; do
             retry_imagetools_create "$TAG" "${GHCR_SOURCES[@]}"
             sleep 5
           done
-          for TAG in "${Ali_Tag}" "${Ali_Latest}"; do
-            retry_imagetools_create "$TAG" "${ALI_SOURCES[@]}"
-            sleep 5
-          done
+          if [[ "$PUSH_DOCKERHUB" == "true" ]]; then
+            DOCKER_HUB_TAGS=("${Docker_Hub_Tag}")
+            if [[ "$PUBLISH_LATEST" == "true" ]]; then
+              DOCKER_HUB_TAGS+=("${Docker_Hub_Latest}")
+            fi
+            for TAG in "${DOCKER_HUB_TAGS[@]}"; do
+              retry_imagetools_create "$TAG" "${GHCR_SOURCES[@]}"
+              sleep 5
+            done
+          fi
+          if [[ "$PUSH_ALIYUN" == "true" ]]; then
+            ALI_TAGS=("${Ali_Tag}")
+            if [[ "$PUBLISH_LATEST" == "true" ]]; then
+              ALI_TAGS+=("${Ali_Latest}")
+            fi
+            for TAG in "${ALI_TAGS[@]}"; do
+              retry_imagetools_create "$TAG" "${ALI_SOURCES[@]}"
+              sleep 5
+            done
+          fi
 
-          manifest="$(docker buildx imagetools inspect --raw "${Ali_Tag}")"
+          manifest="$(docker buildx imagetools inspect --raw "${Git_Tag}")"
           jq -e '
             ([.manifests[]?.platform | select(.os == "linux" and .architecture == "amd64")] | length == 1) and
             ([.manifests[]?.platform | select(.os == "linux" and .architecture == "arm64")] | length == 1) and
