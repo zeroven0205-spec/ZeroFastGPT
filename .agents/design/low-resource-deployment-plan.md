@@ -102,7 +102,8 @@ FastGPT App 的 `AGENT_SANDBOX_PROVIDER` 默认为空。启用 Agent Sandbox 必
 1. 构建阶段的 Node.js 堆上限通过 `BUILD_NODE_MAX_OLD_SPACE_SIZE` 控制，默认仍为 4096M，避免降低镜像构建成功率。
 2. 运行阶段通过 `NODE_MAX_OLD_SPACE_SIZE` 设置默认堆上限，默认 2048M。
 3. 移除运行时入口中硬编码的 `--max-old-space-size=4096`，改为 `NODE_OPTIONS`，使 Compose `.env` 可以覆盖。
-4. 在 standalone 文件复制到 runner 前删除 `.env*` 文件，防止构建期 `NEXT_PHASE` 或敏感配置进入生产镜像。
+4. 构建阶段提供 `FILE_TOKEN_KEY` 和 `STORAGE_DOWNLOAD_URL_MODE` 的非敏感占位值，保证 Next.js 收集页面数据时不会因为运行时配置缺失而失败。
+5. 在 standalone 文件复制到 runner 前删除 `.env*` 文件，防止构建期 `NEXT_PHASE` 或敏感配置进入生产镜像。
 
 构建时如确需使用不同堆上限：
 

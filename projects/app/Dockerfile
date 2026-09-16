@@ -44,6 +44,11 @@ RUN apk add --no-cache libc6-compat && npm install -g pnpm@10.33.2
 
 ENV NODE_OPTIONS="--max-old-space-size=${BUILD_NODE_MAX_OLD_SPACE_SIZE}"
 ENV NEXT_PUBLIC_BASE_URL=$base_url
+# Next.js evaluates a few server modules while collecting page data. These are
+# build-only placeholders; runtime credentials are injected by Compose and the
+# standalone output is scrubbed of .env files below.
+ENV FILE_TOKEN_KEY=build-only-file-token-key
+ENV STORAGE_DOWNLOAD_URL_MODE=short-proxy
 # Build SDK workspace packages first so subpath exports like
 # @fastgpt-sdk/otel/logger have generated dist type files.
 RUN pnpm build:sdks
