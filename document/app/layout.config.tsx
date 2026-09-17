@@ -18,8 +18,8 @@ export const baseOptions = (locale: string): BaseLayoutProps => {
     nav: {
       title: (
         <div className="flex flex-row items-center gap-2">
-          <Image src="/logo.svg" alt="FastGPT" width={30} height={30} />
-          <span className="font-semibold text-lg">FastGPT</span>
+          <Image src="/logo.svg" alt="gptGO" width={30} height={30} />
+          <span className="font-semibold text-lg">gptGO</span>
         </div>
       )
     },

@@ -1,6 +1,6 @@
 {
   "title": "插件系统",
-  "description": "FastGPT 插件系统文档",
+  "description": "gptGO 插件系统文档",
   "root": true,
   "pages": [
     "intro",

@@ -1,6 +1,6 @@
 ---
 title: V4.8.5
-description: FastGPT V4.8.5 更新说明
+description: gptGO V4.8.5 更新说明
 releaseTime: '2024-06-27'
 upgradeTags:
   - 升级脚本
@@ -12,12 +12,12 @@ upgradeTags:
 
 ### 2. 修改镜像
 
-- fastgpt 镜像 tag 修改成 v4.8.5
+- gptGO 镜像 tag 修改成 v4.8.5
 - 商业版镜像 tag 修改成 v4.8.5
 
 ### 3. 执行初始化
 
-从任意终端，发起 1 个 HTTP 请求。其中 `{{rootkey}}` 替换成环境变量里的 `rootkey`；`{{host}}` 替换成 **FastGPT 域名**。
+从任意终端，发起 1 个 HTTP 请求。其中 `{{rootkey}}` 替换成环境变量里的 `rootkey`；`{{host}}` 替换成 **gptGO 域名**。
 
 ```bash
 curl --location --request POST 'https://{{host}}/api/admin/initv485' \
@@ -31,7 +31,7 @@ curl --location --request POST 'https://{{host}}/api/admin/initv485' \
 
 **商业版用户执行额外的初始化**
 
-从任意终端，发起 1 个 HTTP 请求。其中 `{{rootkey}}` 替换成环境变量里的 `rootkey`；`{{host}}` 替换成 **FastGPT 域名**：
+从任意终端，发起 1 个 HTTP 请求。其中 `{{rootkey}}` 替换成环境变量里的 `rootkey`；`{{host}}` 替换成 **gptGO 域名**：
 
 ```bash
 curl --location --request POST 'https://{{host}}/api/admin/init/485' \

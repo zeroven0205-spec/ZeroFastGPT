@@ -7,7 +7,7 @@ description: ' 采用 Ollama 部署自己的模型'
 
 ## 安装 Ollama
 
-Ollama 本身支持多种安装方式，但是推荐使用 Docker 拉取镜像部署。如果是个人设备上安装了 Ollama 后续需要解决如何让 Docker 中 FastGPT 容器访问宿主机 Ollama 的问题，较为麻烦。
+Ollama 本身支持多种安装方式，但是推荐使用 Docker 拉取镜像部署。如果是个人设备上安装了 Ollama 后续需要解决如何让 Docker 中 gptGO 容器访问宿主机 Ollama 的问题，较为麻烦。
 
 ### Docker 安装（推荐）
 
@@ -18,7 +18,7 @@ docker pull ollama/ollama
 docker run --rm -d --name ollama -p 11434:11434 ollama/ollama
 ```
 
-如果你的 FastGPT 是在 Docker 中进行部署的，建议在拉取 Ollama 镜像时保证和 FastGPT 镜像处于同一网络，否则可能出现 FastGPT 无法访问的问题，命令如下：
+如果你的 gptGO 是在 Docker 中进行部署的，建议在拉取 Ollama 镜像时保证和 gptGO 镜像处于同一网络，否则可能出现 gptGO 无法访问的问题，命令如下：
 
 ```bash
 docker run --rm -d --name ollama --network （你的 Fastgpt 容器所在网络） -p 11434:11434 ollama/ollama
@@ -83,7 +83,7 @@ ollama pull [模型名]
 
 ### 测试通信
 
-在安装完成后，需要进行检测测试，首先进入 FastGPT 所在的容器，尝试访问自己的 Ollama，命令如下：
+在安装完成后，需要进行检测测试，首先进入 gptGO 所在的容器，尝试访问自己的 Ollama，命令如下：
 
 ```bash
 docker exec -it [ FastGPT 所在的容器名 ] /bin/sh
@@ -92,7 +92,7 @@ curl http://XXX.XXX.XXX.XXX:11434  #容器部署地址为“http://[容器名]:[
 
 看到访问显示自己的 Ollama 服务以及启动，说明可以正常通信。
 
-## 将 Ollama 接入 FastGPT
+## 将 Ollama 接入 gptGO
 
 ### 1. 查看 Ollama 所拥有的模型
 
@@ -107,21 +107,21 @@ ollama ls
 
 ### 2. AI Proxy 接入
 
-如果你采用的是 FastGPT 中的默认配置文件部署[这里](../deploy/docker.mdx)，即默认采用 AI Proxy 进行启动。
+如果你采用的是 gptGO 中的默认配置文件部署[这里](../deploy/docker.mdx)，即默认采用 AI Proxy 进行启动。
 
 ![](../../../public/imgs/Ollama-aiproxy1.png)
 
-以及在确保你的 FastGPT 可以直接访问 Ollama 容器的情况下，无法访问，参考上文[点此跳转](#安装-ollama)的安装过程，检测是不是主机不能监测 0.0.0.0，或者容器不在同一个网络。
+以及在确保你的 gptGO 可以直接访问 Ollama 容器的情况下，无法访问，参考上文[点此跳转](#安装-ollama)的安装过程，检测是不是主机不能监测 0.0.0.0，或者容器不在同一个网络。
 
 ![](../../../public/imgs/Ollama-aiproxy2.png)
 
-在 FastGPT 中点击管理员 ->模型提供商 ->模型配置 ->新增模型，添加自己的模型即可，添加模型时需要保证模型 ID 和 OneAPI 中的模型名称一致。详细参考[这里](../config/model/intro.mdx)
+在 gptGO 中点击管理员 ->模型提供商 ->模型配置 ->新增模型，添加自己的模型即可，添加模型时需要保证模型 ID 和 OneAPI 中的模型名称一致。详细参考[这里](../config/model/intro.mdx)
 
 ![](../../../public/imgs/Ollama-models2.png)
 
 ![](../../../public/imgs/Ollama-models3.png)
 
-运行 FastGPT，在页面中选择管理员 ->模型提供商 ->模型渠道 ->新增渠道。之后，在渠道选择中选择 Ollama，然后加入自己拉取的模型，填入代理地址，如果是容器中安装 Ollama，代理地址为 http://地址:端口，补充：容器部署地址为“http://[容器名]:[端口]”,主机安装地址为"http://[主机 IP]:[端口]"，主机 IP 不可为 localhost
+运行 gptGO，在页面中选择管理员 ->模型提供商 ->模型渠道 ->新增渠道。之后，在渠道选择中选择 Ollama，然后加入自己拉取的模型，填入代理地址，如果是容器中安装 Ollama，代理地址为 http://地址:端口，补充：容器部署地址为“http://[容器名]:[端口]”,主机安装地址为"http://[主机 IP]:[端口]"，主机 IP 不可为 localhost
 
 ![](../../../public/imgs/Ollama-aiproxy3.png)
 
@@ -131,7 +131,7 @@ ollama ls
 
 ### 3. OneAPI 接入
 
-如果你想使用 OneAPI，首先需要拉取 OneAPI 镜像，然后将其在 FastGPT 容器的网络中运行。具体命令如下：
+如果你想使用 OneAPI，首先需要拉取 OneAPI 镜像，然后将其在 gptGO 容器的网络中运行。具体命令如下：
 
 ```bash
 # 拉取 oneAPI 镜像
@@ -149,7 +149,7 @@ docker run -it --network [ FastGPT 网络 ] --name 容器名 intel/oneapi-hpckit
 
 ![](../../../public/imgs/Ollama-oneapi2.png)
 
-FastGPT 统一通过 AI Proxy 调用模型。保留 `AIPROXY_API_ENDPOINT` 和 `AIPROXY_API_TOKEN` 配置，在管理员的模型渠道中新增 OpenAI 协议渠道，将地址设为 OneAPI 开放地址（`http://地址:端口/v1`），密钥填写 OneAPI 令牌，再关联对应模型。
+gptGO 统一通过 AI Proxy 调用模型。保留 `AIPROXY_API_ENDPOINT` 和 `AIPROXY_API_TOKEN` 配置，在管理员的模型渠道中新增 OpenAI 协议渠道，将地址设为 OneAPI 开放地址（`http://地址:端口/v1`），密钥填写 OneAPI 令牌，再关联对应模型。
 
 ![](../../../public/imgs/Ollama-oneapi3.png)
 
@@ -157,7 +157,7 @@ FastGPT 统一通过 AI Proxy 调用模型。保留 `AIPROXY_API_ENDPOINT` 和 `
 
 ### 4. 直接接入
 
-无需 OneAPI 时，可在管理员的模型渠道中配置 Ollama 的 OpenAI 兼容接口，地址为 `http://地址:端口/v1`。Ollama 默认不需要鉴权；如果已开启鉴权，请填写对应密钥。FastGPT 仍通过 AI Proxy 调用该渠道，保留 `AIPROXY_API_ENDPOINT` 和 `AIPROXY_API_TOKEN` 配置。主机部署使用主机 IP，容器部署使用 AI Proxy 可访问的容器地址。
+无需 OneAPI 时，可在管理员的模型渠道中配置 Ollama 的 OpenAI 兼容接口，地址为 `http://地址:端口/v1`。Ollama 默认不需要鉴权；如果已开启鉴权，请填写对应密钥。gptGO 仍通过 AI Proxy 调用该渠道，保留 `AIPROXY_API_ENDPOINT` 和 `AIPROXY_API_TOKEN` 配置。主机部署使用主机 IP，容器部署使用 AI Proxy 可访问的容器地址。
 
 ![](../../../public/imgs/Ollama-direct1.png)
 
@@ -165,7 +165,7 @@ FastGPT 统一通过 AI Proxy 调用模型。保留 `AIPROXY_API_ENDPOINT` 和 `
 
 ### 5. 模型添加和使用
 
-在 FastGPT 中点击管理员 ->模型提供商 ->模型配置 ->新增模型，添加自己的模型即可，添加模型时需要保证模型 ID 和 OneAPI 中的模型名称一致。
+在 gptGO 中点击管理员 ->模型提供商 ->模型配置 ->新增模型，添加自己的模型即可，添加模型时需要保证模型 ID 和 OneAPI 中的模型名称一致。
 
 ![](../../../public/imgs/Ollama-models2.png)
 

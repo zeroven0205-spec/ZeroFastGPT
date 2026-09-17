@@ -1,6 +1,6 @@
 ---
 title: AI Settings
-description: FastGPT AI settings explained
+description: gptGO AI settings explained
 ---
 
 import { Alert } from '@/components/docs/Alert';
@@ -127,15 +127,15 @@ Reasoning effort follows OpenAI's `reasoning_effort` convention, with ai-proxy a
 <details>
 <summary>OpenAI-Compatible Enum and Default Budget Mapping</summary>
 
-| FastGPT option | OpenAI-compatible value                   | Default budget        |
-| -------------- | ----------------------------------------- | --------------------- |
-| Default        | Do not explicitly send `reasoning_effort` | Use the model default |
-| None           | `none`                                    | `0`                   |
-| Minimal        | `minimal`                                 | `1024`                |
-| Low            | `low`                                     | `2048`                |
-| Medium         | `medium`                                  | `8192`                |
-| High           | `high`                                    | `16384`               |
-| Extra high     | `xhigh`                                   | `32768`               |
+| gptGO option | OpenAI-compatible value                   | Default budget        |
+| ------------ | ----------------------------------------- | --------------------- |
+| Default      | Do not explicitly send `reasoning_effort` | Use the model default |
+| None         | `none`                                    | `0`                   |
+| Minimal      | `minimal`                                 | `1024`                |
+| Low          | `low`                                     | `2048`                |
+| Medium       | `medium`                                  | `8192`                |
+| High         | `high`                                    | `16384`               |
+| Extra high   | `xhigh`                                   | `32768`               |
 
 If an upstream provider only supports a token budget instead of discrete effort levels, ai-proxy uses the table above to convert effort to budget. When normalizing budget back to effort, `<=0` maps to `none`, `1-1024` maps to `minimal`, `1025-4096` maps to `low`, `4097-12288` maps to `medium`, `12289-24576` maps to `high`, and anything higher maps to `xhigh`.
 

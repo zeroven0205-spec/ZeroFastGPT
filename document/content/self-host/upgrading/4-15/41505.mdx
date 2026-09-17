@@ -1,6 +1,6 @@
 ---
 title: 'V4.15.0-beta5'
-description: 'FastGPT V4.15.0-beta5 更新说明'
+description: 'gptGO V4.15.0-beta5 更新说明'
 releaseTime: '2026-06-24'
 upgradeTags:
   - 配置变更
@@ -29,15 +29,15 @@ AGENT_SANDBOX_PROXY_URL=ws://{{host}}:3006
 
 ### 2. 镜像变更
 
-- 更新 fastgpt-app(fastgpt 主服务) 镜像 tag: v4.15.0-beta5
-- 更新 fastgpt-pro(fastgpt 商业版) 镜像 tag: v4.15.0-beta5
-- 更新 fastgpt-plugin 镜像 tag: v1.0.0-beta5
+- 更新 gptGO-app(gptGO 主服务) 镜像 tag: v4.15.0-beta5
+- 更新 gptGO-pro(gptGO 商业版) 镜像 tag: v4.15.0-beta5
+- 更新 gptGO-plugin 镜像 tag: v1.0.0-beta5
 - 更新 aiproxy 镜像 tag: v0.6.2
 
 如果启用 Agent Sandbox，需同步更新下面镜像：
 
-- 新增 fastgpt-agent-sandbox-proxy 镜像 tag: v0.2.0-beta2
-- 更新 fastgpt-agent-sandbox 镜像 tag: v0.2.0-beta2
+- 新增 gptGO-agent-sandbox-proxy 镜像 tag: v0.2.0-beta2
+- 更新 gptGO-agent-sandbox 镜像 tag: v0.2.0-beta2
 
 同时在 `docker-compose.yml` 中新增 `fastgpt-agent-sandbox-proxy` 服务。下面示例使用国内镜像源，海外部署可将镜像改为 `ghcr.io/labring/fastgpt-agent-sandbox-proxy:v0.2.0-beta2`：
 
@@ -75,7 +75,7 @@ curl --location --request POST 'https://{{host}}/api/admin/initSandboxArchive' \
 
 ## 功能重大变化
 
-1. ApiKey 功能调整，不再区分应用 key 和系统 key，只保留系统 key，如需兼容 openai sdk 用法，可使用 `apikey-appId` 的方式传递 Token。已有的 apikey 保持兼容，不影响使用。具体和查阅 [FastGPT API 文档说明](../../../openapi/intro)
+1. ApiKey 功能调整，不再区分应用 key 和系统 key，只保留系统 key，如需兼容 openai sdk 用法，可使用 `apikey-appId` 的方式传递 Token。已有的 apikey 保持兼容，不影响使用。具体和查阅 [gptGO API 文档说明](../../../openapi/intro)
 
 ## 🚀 新增内容
 

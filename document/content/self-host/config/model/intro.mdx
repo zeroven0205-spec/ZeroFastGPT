@@ -1,6 +1,6 @@
 ---
 title: 模型配置说明
-description: FastGPT 模型配置说明
+description: gptGO 模型配置说明
 ---
 
 import { Alert } from '@/components/docs/Alert';
@@ -8,7 +8,7 @@ import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
 
 ## 介绍
 
-FastGPT 借助 `AI Proxy` 服务，可以连接到不同的模型提供商。同时 `AI Proxy` 还提供了负载均衡、模型日志、数据看板等能力，方便检测模型调用情况。
+gptGO 借助 `AI Proxy` 服务，可以连接到不同的模型提供商。同时 `AI Proxy` 还提供了负载均衡、模型日志、数据看板等能力，方便检测模型调用情况。
 
 <Alert icon="🤖" context="success">
   <p>注意事项：</p>
@@ -39,7 +39,7 @@ FastGPT 借助 `AI Proxy` 服务，可以连接到不同的模型提供商。同
 
 ## 添加渠道/模型
 
-可以在 FastGPT 的 `管理员-模型提供商` 页面中进行模型配置。
+可以在 gptGO 的 `管理员-模型提供商` 页面中进行模型配置。
 
 ### 1. 创建渠道
 
@@ -58,7 +58,7 @@ FastGPT 借助 `AI Proxy` 服务，可以连接到不同的模型提供商。同
 1. 渠道名：展示在外部的渠道名称，仅作标识;
 2. 协议类型：模型对应的协议类型，一般哪家提供的模型就选对于服务商即可。大多数都提供了 OpenAI 的协议，也可以选择 OpenAI 协议类型。
 3. 模型：当前渠道具体可以使用的模型，系统内置了主流的一些模型，如果下拉框中没有想要的选项，可以点击“新增模型”，[增加自定义模型](./intro.mdx#新增自定义模型);
-4. 模型映射：将 FastGPT 请求的模型，映射到具体提供的模型上。例如：
+4. 模型映射：将 gptGO 请求的模型，映射到具体提供的模型上。例如：
 
 ```json
 {
@@ -101,7 +101,7 @@ FatGPT 中的模型为 `gpt-4o-test`，向 AI Proxy 发起请求时也是 `gpt-4
 
 ### 4. 测试模型
 
-FastGPT 页面上提供了每类模型的简单测试，可以初步检查模型是否正常工作，会实际按模板发送一个请求。
+gptGO 页面上提供了每类模型的简单测试，可以初步检查模型是否正常工作，会实际按模板发送一个请求。
 
 ![alt text](../../../../public/imgs/image-105.png)
 
@@ -141,7 +141,7 @@ FastGPT 页面上提供了每类模型的简单测试，可以初步检查模型
   "metadata": {
     "isCustom": true, // 是否为自定义模型
     "isActive": true, // 是否启用
-    "provider": "OpenAI", // 模型提供商，主要用于分类展示，目前已经内置提供商包括：https://github.com/labring/FastGPT/blob/main/packages/global/core/ai/provider.ts, 可 pr 提供新的提供商，或直接填写 Other
+    "provider": "OpenAI", // 模型提供商，主要用于分类展示，目前已经内置提供商包括：https://github.com/zeroven0205-spec/ 可 pr 提供新的提供商，或直接填写 Other
     "model": "gpt-5", // 模型ID(对应OneAPI中渠道的模型名)
     "name": "gpt-5", // 模型别名
     "maxContext": 125000, // 最大上下文

@@ -237,7 +237,7 @@ export class MCPClient {
     this.url = config.url;
     this.headers = config.headers;
     this.client = new Client({
-      name: 'FastGPT-MCP-client',
+      name: 'gptGO-MCP-client',
       version: '1.0.0'
     });
   }

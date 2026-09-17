@@ -1,6 +1,6 @@
 # volume-manager
 
-FastGPT Agent 沙箱存储卷管理服务。负责按 FastGPT 分配的精确 `claimName` 创建和销毁持久化存储卷，支持 Kubernetes PVC 和 Docker Volume 两种运行时。
+gptGO Agent 沙箱存储卷管理服务。负责按 gptGO 分配的精确 `claimName` 创建和销毁持久化存储卷，支持 Kubernetes PVC 和 Docker Volume 两种运行时。
 
 ## 技术栈
 
@@ -46,7 +46,7 @@ Content-Type: application/json
 { "claimName": "fastgpt-session-<sandboxId>-<generation>", "storageSize": "1Gi" }
 ```
 
-`claimName` 由 FastGPT 生成并先持久化；volume-manager 不再根据会话 ID 推导名称。
+`claimName` 由 gptGO 生成并先持久化；volume-manager 不再根据会话 ID 推导名称。
 `storageSize` 可选，仅 k8s 模式下创建新 PVC 时有效，未传入时使用 `1Gi`。
 
 - 卷已存在：返回 `200`，`{ "claimName": "...", "created": false }`

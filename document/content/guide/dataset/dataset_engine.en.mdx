@@ -1,12 +1,12 @@
 ---
 title: Dataset Search Methods and Parameters
-description: This section covers FastGPT's Dataset architecture, including its QA
+description: This section covers gptGO's Dataset architecture, including its QA
   storage format and multi-vector mapping, to help you build better datasets. It also explains each search parameter. This guide focuses on practical usage rather than in-depth theory.
 ---
 
 ## Understanding Vectors
 
-FastGPT uses an embedding-based RAG approach to build Datasets. To use FastGPT effectively, you need a basic understanding of how embedding vectors work and their characteristics.
+gptGO uses an embedding-based RAG approach to build Datasets. To use gptGO effectively, you need a basic understanding of how embedding vectors work and their characteristics.
 
 Human text, images, and other media cannot be directly understood by computers. To determine whether two pieces of text are similar or related, they typically need to be converted into a computer-readable format — vectors are one such method.
 
@@ -26,17 +26,17 @@ Retriever precision is relatively straightforward to address, and training vecto
 4. Optimize search queries: In practice, user questions are often vague or incomplete. Refining the query (search term) can significantly improve accuracy.
 5. Fine-tune vector models: Off-the-shelf vector models are general-purpose and may underperform in specific domains. Fine-tuning can greatly improve domain-specific search results.
 
-## FastGPT Dataset Architecture
+## gptGO Dataset Architecture
 
 ### Data Storage Structure
 
-In FastGPT, a Dataset contains Collections, and each Collection contains data entries. A Collection can be thought of as a file. Dataset search runs across the entire Dataset; Collections organize and manage data but do not currently limit the search scope.
+In gptGO, a Dataset contains Collections, and each Collection contains data entries. A Collection can be thought of as a file. Dataset search runs across the entire Dataset; Collections organize and manage data but do not currently limit the search scope.
 
 ![](/imgs/dataset_tree.png)
 
 ### Vector Storage Structure
 
-FastGPT uses `PostgreSQL`'s `PG Vector` extension as the vector retriever, with `HNSW` indexing. `PostgreSQL` is used solely for vector search (this engine can be swapped for other databases), while `MongoDB` handles all other data storage.
+gptGO uses `PostgreSQL`'s `PG Vector` extension as the vector retriever, with `HNSW` indexing. `PostgreSQL` is used solely for vector search (this engine can be swapped for other databases), while `MongoDB` handles all other data storage.
 
 In `MongoDB`'s `dataset.datas` collection, vector source data is stored along with an `indexes` field that records corresponding vector IDs. This is an array, meaning a single data entry can map to multiple vectors. In addition to default text indexes, image content can also generate image description indexes or image vector indexes when the configured models support it.
 
@@ -46,7 +46,7 @@ In `PostgreSQL`, a `vector` field stores the vectors. During search, vectors are
 
 ### Purpose and Usage of Multi-Vector Mapping
 
-In a single vector, content length and semantic richness are often at odds. FastGPT uses multi-vector mapping to map a single data entry to multiple vectors, preserving both data completeness and semantic richness.
+In a single vector, content length and semantic richness are often at odds. gptGO uses multi-vector mapping to map a single data entry to multiple vectors, preserving both data completeness and semantic richness.
 
 You can add multiple vectors to a longer text so that if any one vector is matched during search, the entire data entry is recalled.
 
@@ -54,7 +54,7 @@ This means you can continuously improve data chunk accuracy through annotation.
 
 ### Overall Search Strategy
 
-A Dataset search is not simply "user question -> vector database -> result." Depending on the input and search parameters, FastGPT combines text, images, semantic recall, full-text recall, query rewriting, and reranking, then fuses multiple result paths into the final cited content.
+A Dataset search is not simply "user question -> vector database -> result." Depending on the input and search parameters, gptGO combines text, images, semantic recall, full-text recall, query rewriting, and reranking, then fuses multiple result paths into the final cited content.
 
 1. Use `Query rewriting` for coreference resolution and query expansion, improving multi-turn conversation search capability and semantic richness.
 2. Use `Semantic Search`, `Full-Text Search`, or `Hybrid Search` to recall candidate content.
@@ -67,7 +67,7 @@ A Dataset search is not simply "user question -> vector database -> result." Dep
 
 ### Image Search Method
 
-In Dataset search, images can participate in retrieval in addition to text questions. FastGPT handles images differently depending on the configured model capabilities.
+In Dataset search, images can participate in retrieval in addition to text questions. gptGO handles images differently depending on the configured model capabilities.
 
 Image search mainly works in two ways:
 
@@ -97,7 +97,7 @@ So when image-to-image search performs poorly, do not only adjust search paramet
 
 ### Result Ranking and Fusion
 
-FastGPT fuses results from different recall paths instead of using only one path. Common paths include text vector recall, full-text recall, image description recall, image vector recall, and reranked results.
+gptGO fuses results from different recall paths instead of using only one path. Common paths include text vector recall, full-text recall, image description recall, image vector recall, and reranked results.
 
 Keep these points in mind:
 
@@ -150,7 +150,7 @@ Since hybrid search covers a large range and cannot directly filter by similarit
 
 Uses a `Rerank` model to re-sort search results. In most cases, this significantly improves accuracy. Rerank models work better with complete questions (with proper subjects and predicates), so query rewriting is usually applied before search and reranking. Reranking produces a score between `0-1` representing the relevance between the search content and the query — this score is typically more accurate than vector similarity scores and can be used for filtering.
 
-FastGPT uses `RRF` to merge rerank results, vector search results, and full-text search results into the final output.
+gptGO uses `RRF` to merge rerank results, vector search results, and full-text search results into the final output.
 
 ### Search Filters
 

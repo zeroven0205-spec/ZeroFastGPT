@@ -55,7 +55,7 @@ export const GPT2Chat = {
 };
 
 /**
- * 将 OpenAI/GPT message role 映射为 FastGPT 内部聊天角色。
+ * 将 OpenAI/GPT message role 映射为 gptGO 内部聊天角色。
  * function/tool message 本质上属于 AI 轮次的工具上下文，因此统一归到 AI。
  */
 export function adaptRole_Message2Chat(role: `${ChatCompletionRequestMessageRoleEnum}`) {
@@ -122,7 +122,7 @@ const getCheckpointAwareMessages = (messages: ChatItemMiniType[]) => {
 /**
  * 规整 assistant 拆分字段消息。
  *
- * FastGPT 历史为了 UI 展示会把 reasoning、text、tools 拆成多个 value；转成 GPT message
+ * gptGO 历史为了 UI 展示会把 reasoning、text、tools 拆成多个 value；转成 GPT message
  * 时需要合并为 provider 能接受的 assistant message：
  * - 只合并相邻 assistant message，不跨 user/tool/system/function 等 role 处理。
  * - reasoning_content 和 content 直接字符串拼接；这些拆分通常来自历史兼容，不能额外插入换行。
@@ -250,7 +250,7 @@ export const normalizeAIChatValue = (values: AIChatItemValueItemType[]) => {
 };
 
 /**
- * 将 FastGPT 内部 ChatItem 历史转换为 GPT request messages。
+ * 将 gptGO 内部 ChatItem 历史转换为 GPT request messages。
  *
  * 关键约定：
  * - reserveTool=false 时只保留自然语言上下文，不把历史工具调用带入分类/普通对话。
@@ -577,7 +577,7 @@ export const chats2GPTMessages = ({
 };
 
 /**
- * 将 GPT messages 转回 FastGPT ChatItem。
+ * 将 GPT messages 转回 gptGO ChatItem。
  *
  * GPTMessages2Chats 会先清洗连续 assistant message，再做 message -> chat value 的结构转换。
  * 这样不同 provider 或历史兼容格式拆出的 reasoning/text/tool_calls，都会先归一成一轮

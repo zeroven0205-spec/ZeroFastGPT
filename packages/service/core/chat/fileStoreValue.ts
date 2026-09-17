@@ -102,7 +102,7 @@ export const assertChatFileRuntimeValue = (
  * 归一化单个文件存储值，确保 key/url 二选一且不会把 data URL 落库。
  *
  * 存储态只支持两类文件：
- * - `{ key, name, type }`：FastGPT 私有桶文件，运行时会重新签发临时预览 URL。
+ * - `{ key, name, type }`：gptGO 私有桶文件，运行时会重新签发临时预览 URL。
  * - `{ url, name, type }`：外部可访问 URL，运行时直接复用 URL。
  *
  * 如果同时存在 key 和 url，优先保存 key，因为 key 可以保持私有桶权限、TTL 和回收语义；

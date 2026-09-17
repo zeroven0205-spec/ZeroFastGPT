@@ -419,7 +419,7 @@ const ToolkitMarketplace = () => {
             <I18nLngSelector />
             <Button
               onClick={() => {
-                window.open('https://doc.fastgpt.cn/plugin/system-tool-development', '_blank');
+                window.open('https://github.com/zeroven0205-spec/', '_blank');
               }}
             >
               {t('marketplace:plugin_development')}
@@ -427,7 +427,7 @@ const ToolkitMarketplace = () => {
             <Button
               variant={'whiteBase'}
               onClick={() => {
-                window.open('https://github.com/labring/fastgpt-plugin/issues', '_blank');
+                window.open('https://github.com/zeroven0205-spec/', '_blank');
               }}
             >
               {t('marketplace:toolkit_marketplace_submit_request')}
@@ -580,7 +580,7 @@ const ToolkitMarketplace = () => {
                 WebkitTextFillColor: 'transparent'
               }}
             >
-              Assets for FastGPT
+              Assets for gptGO
             </Box>
             <Box fontSize={'45px'} fontWeight={'semibold'} color={'black'}>
               {t('marketplace:toolkit_marketplace_title')}

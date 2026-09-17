@@ -1,6 +1,6 @@
 ---
 title: HTTP Request
-description: FastGPT HTTP Request node overview
+description: gptGO HTTP Request node overview
 ---
 
 import { Alert } from '@/components/docs/Alert';
@@ -67,7 +67,7 @@ Write a custom JSON body and use `{{key}}` to reference variables. For example:
   "array": [1, 2, 3],
   "obj": {
     "name": "FastGPT",
-    "url": "https://fastgpt.io"
+    "url": "https://example.com"
   }
 }
 ```
@@ -102,7 +102,7 @@ When referencing a `string` in the Body, wrap it in quotes: `"{{string}}"`.
   "array2": [1, 2, 3],
   "object": {
     "name": "FastGPT",
-    "url": "https://fastgpt.io"
+    "url": "https://example.com"
   }
 }
 ```
@@ -112,7 +112,7 @@ When referencing a `string` in the Body, wrap it in quotes: `"{{string}}"`.
 
 ### Extracting Return Values
 
-As shown in the image, FastGPT lets you add multiple return values. These don't represent the raw API response -- they define `how to parse the API response`. You can use `JSON path` syntax to `extract` values from the response.
+As shown in the image, gptGO lets you add multiple return values. These don't represent the raw API response -- they define `how to parse the API response`. You can use `JSON path` syntax to `extract` values from the response.
 
 Syntax reference: https://github.com/JSONPath-Plus/JSONPath?tab=readme-ov-file
 
@@ -162,7 +162,7 @@ Syntax reference: https://github.com/JSONPath-Plus/JSONPath?tab=readme-ov-file
   </Tab>
 </Tabs>
 
-Configure the `key` to extract values from FastGPT's parsed format, following standard JavaScript object access rules. For example:
+Configure the `key` to extract values from gptGO's parsed format, following standard JavaScript object access rules. For example:
 
 1. To get the `message` content, set the `key` to `message`.
 2. To get the user's name, set the `key` to `data.user.name`.
@@ -170,7 +170,7 @@ Configure the `key` to extract values from FastGPT's parsed format, following st
 
 ### Auto-format Output
 
-Starting from FastGPT v4.6.8, output formatting was added, primarily converting `JSON` to `string`. If you select `string` as the output type, the HTTP node will convert the corresponding key's value to a JSON string. This lets you pipe HTTP output directly into a `Text Processing` node, append appropriate prompts, and feed the result into `AI Chat`.
+Starting from gptGO v4.6.8, output formatting was added, primarily converting `JSON` to `string`. If you select `string` as the output type, the HTTP node will convert the corresponding key's value to a JSON string. This lets you pipe HTTP output directly into a `Text Processing` node, append appropriate prompts, and feed the result into `AI Chat`.
 
 <Alert context="warning">
   The HTTP node is extremely versatile. You can integrate public APIs to extend your workflow

@@ -1,6 +1,6 @@
 ---
 title: Docker Compose 部署
-description: 使用 Docker Compose 快速部署 FastGPT
+description: 使用 Docker Compose 快速部署 gptGO
 ---
 
 import { Alert } from '@/components/docs/Alert';
@@ -12,8 +12,6 @@ import { CurrentOriginCodeBlockUpdater } from '@/components/docs/CurrentOriginCo
 2. Docker 和 Docker Compose 基础知识
 
 ## 部署架构图
-
-![](../../../public/imgs/sealos-fastgpt.webp)
 
 <Alert icon="🤖" context="success">
 
@@ -39,7 +37,7 @@ import { CurrentOriginCodeBlockUpdater } from '@/components/docs/CurrentOriginCo
 
 对于亿级以上向量性能更优秀。
 
-**Milvus 版本要求：≥ 2.5.16。** 使用 Milvus 作为向量库时，全文检索自动启用 Milvus BM25（`modeldata_v2` 单表）；低于 2.5.16 时 FastGPT 启动会直接报错退出。
+**Milvus 版本要求：≥ 2.5.16。** 使用 Milvus 作为向量库时，全文检索自动启用 Milvus BM25（`modeldata_v2` 单表）；低于 2.5.16 时 gptGO 启动会直接报错退出。
 
 [点击查看 Milvus 官方推荐配置](https://milvus.io/docs/prerequisite-docker.md)
 
@@ -139,9 +137,9 @@ FASTGPT_DEPLOY_BASE_URL=https://doc.fastgpt.cn bash <(curl -fsSL https://doc.fas
 
 <CurrentOriginCodeBlockUpdater />
 
-非交互模式还必须通过 `FASTGPT_FE_DOMAIN` 指定用户访问 FastGPT 的完整地址，例如 `https://fastgpt.example.com`。启用 Agent/Skill 沙盒的版本还需要通过 `FASTGPT_SANDBOX_PROXY_URL` 指定沙盒 WebSocket 地址，例如 `wss://sandbox-proxy.example.com`；4.16 还需要通过 `FASTGPT_SANDBOX_PREVIEW_PROXY_URL` 指定 HTTP 预览地址。v4.14 不包含该服务。交互模式下脚本会按版本询问这些地址；4.15 只询问 WebSocket 地址。
+非交互模式还必须通过 `FASTGPT_FE_DOMAIN` 指定用户访问 gptGO 的完整地址，例如 `https://fastgpt.example.com`。启用 Agent/Skill 沙盒的版本还需要通过 `FASTGPT_SANDBOX_PROXY_URL` 指定沙盒 WebSocket 地址，例如 `wss://sandbox-proxy.example.com`；4.16 还需要通过 `FASTGPT_SANDBOX_PREVIEW_PROXY_URL` 指定 HTTP 预览地址。v4.14 不包含该服务。交互模式下脚本会按版本询问这些地址；4.15 只询问 WebSocket 地址。
 
-访问地址和宿主机端口是独立配置。需要直连时，可通过 `FASTGPT_PORT` 设置 FastGPT 宿主机端口（默认 `3000`），通过 `FASTGPT_SANDBOX_PROXY_PORT` 设置 Sandbox Proxy 宿主机端口（默认 `3006`）；容器端口仍分别为 `3000` 和 `1006`。如果使用反向代理，`FASTGPT_FE_DOMAIN`、`FASTGPT_SANDBOX_PROXY_URL` 及预览地址中的公网端口（例如 `443`）不会被当作宿主机端口，脚本会保留 Compose 中的默认映射。
+访问地址和宿主机端口是独立配置。需要直连时，可通过 `FASTGPT_PORT` 设置 gptGO 宿主机端口（默认 `3000`），通过 `FASTGPT_SANDBOX_PROXY_PORT` 设置 Sandbox Proxy 宿主机端口（默认 `3006`）；容器端口仍分别为 `3000` 和 `1006`。如果使用反向代理，`FASTGPT_FE_DOMAIN`、`FASTGPT_SANDBOX_PROXY_URL` 及预览地址中的公网端口（例如 `443`）不会被当作宿主机端口，脚本会保留 Compose 中的默认映射。
 
 脚本会自动完成以下操作：
 
@@ -215,7 +213,7 @@ FASTGPT_LOCAL_COMPOSE_PATH=./docker-compose.yml bash install.sh
 
 ### 2. 修改环境变量
 
-必须填写 `fastgpt-app` 中的 `FE_DOMAIN`，设置为用户实际访问 FastGPT 的完整地址，例如 `https://fastgpt.example.com`。该地址由协议、主机和可选端口组成，不能留空，也不要填写容器内部地址。
+必须填写 `fastgpt-app` 中的 `FE_DOMAIN`，设置为用户实际访问 gptGO 的完整地址，例如 `https://fastgpt.example.com`。该地址由协议、主机和可选端口组成，不能留空，也不要填写容器内部地址。
 
 启用 Agent/Skill 沙盒时还必须配置：
 
@@ -230,10 +228,10 @@ FASTGPT_LOCAL_COMPOSE_PATH=./docker-compose.yml bash install.sh
 
 以下服务需要被访问到。直连时开放脚本最终输出的宿主机端口；使用反向代理时，公网端口由代理负责：
 
-1. 默认 `3000` 端口（FastGPT 主服务；可通过 `FASTGPT_PORT` 修改宿主机端口）
+1. 默认 `3000` 端口（gptGO 主服务；可通过 `FASTGPT_PORT` 修改宿主机端口）
 2. 9000 端口（S3 服务）
-3. 默认 `3006` 端口（FastGPT Agent Sandbox Proxy 服务；可通过 `FASTGPT_SANDBOX_PROXY_PORT` 修改宿主机端口）
-4. 3003 端口（FastGPT SSE MCP server 服务，不需要的话可以不开通。）
+3. 默认 `3006` 端口（gptGO Agent Sandbox Proxy 服务；可通过 `FASTGPT_SANDBOX_PROXY_PORT` 修改宿主机端口）
+4. 3003 端口（gptGO SSE MCP server 服务，不需要的话可以不开通。）
 
 ### 4. 启动容器
 
@@ -247,42 +245,42 @@ docker compose --profile prepull pull
 docker compose up -d
 ```
 
-### 5. 访问 FastGPT
+### 5. 访问 gptGO
 
-可通过第三步开放的端口/域名访问 FastGPT。登录用户名为 `root`，密码为 `docker-compose.yml` 环境变量里设置的 `DEFAULT_ROOT_PSW`。
+可通过第三步开放的端口/域名访问 gptGO。登录用户名为 `root`，密码为 `docker-compose.yml` 环境变量里设置的 `DEFAULT_ROOT_PSW`。
 
 如果使用交互式脚本部署，脚本会随机生成 `DEFAULT_ROOT_PSW`，并在执行完成后输出本次登录密码；如果手动下载部署，请自行修改 `docker-compose.yml` 中的默认密码后再启动服务。每次重启容器，都会按 `DEFAULT_ROOT_PSW` 自动更新 root 用户密码。
 
 ### 6. 配置模型
 
-- 首次登录 FastGPT 后，系统会提示未配置 `语言模型` 和 `索引模型`，并自动跳转模型配置页面。系统必须至少有这两类模型才能正常使用。
+- 首次登录 gptGO 后，系统会提示未配置 `语言模型` 和 `索引模型`，并自动跳转模型配置页面。系统必须至少有这两类模型才能正常使用。
 - 如果系统未正常跳转，可以在 `管理员-模型提供商` 页面进行模型配置。[点击查看相关教程](../config/model/intro.mdx)
 - 目前已知可能问题：首次进入系统后，整个浏览器 tab 无法响应。此时需要删除该 tab，重新打开一次即可。
 
 ### 7. 按需安装系统插件
 
-从 V4.14.0 版本开始，fastgpt-plugin 镜像仅提供运行环境，不再预装系统插件，所有 FastGPT 系统需手动安装系统插件。
+从 V4.14.0 版本开始，gptGO-plugin 镜像仅提供运行环境，不再预装系统插件，所有 gptGO 系统需手动安装系统插件。
 
-- 通过插件市场安装，默认会向公开的 FastGPT Marketplace 获取数据进行安装。
-- 如果你的 FastGPT 无法访问插件市场，则可以手动访问 [FastGPT 插件市场](https://marketplace.fastgpt.cn/)，先下载 .pkg 文件，再通过文件导入的方式安装到系统里。
+- 通过插件市场安装，默认会向公开的 gptGO Marketplace 获取数据进行安装。
+- 如果你的 gptGO 无法访问插件市场，则可以手动访问 [gptGO 插件市场](https://github.com/zeroven0205-spec/)，先下载 .pkg 文件，再通过文件导入的方式安装到系统里。
 - 除了安装外，还可对工具进行排序、默认安装、标签管理等。
 
 ![alt text](../../../public/imgs/image-121.png)
 
 ## FAQ
 
-### FastGPT 和 FastGPT-plugin 版本对应
+### gptGO 和 gptGO-plugin 版本对应
 
-| FastGPT-plugin 版本 | FastGPT 主服务       |
-| ------------------- | -------------------- |
-| 1.x                 | 4.15.x               |
-| 0.6.x               | >= 4.14.11, < 4.15.0 |
-| 0.5.x               | >= 4.14.6, < 4.14.11 |
-| < 0.5.0             | < 4.14.6             |
+| gptGO-plugin 版本 | gptGO 主服务         |
+| ----------------- | -------------------- |
+| 1.x               | 4.15.x               |
+| 0.6.x             | >= 4.14.11, < 4.15.0 |
+| 0.5.x             | >= 4.14.6, < 4.14.11 |
+| < 0.5.0           | < 4.14.6             |
 
 ### S3 无法正常连接
 
-检查 `STORAGE_EXTERNAL_ENDPOINT` 变量，需设置成客户端和 FastGPT 服务均可访问的地址。
+检查 `STORAGE_EXTERNAL_ENDPOINT` 变量，需设置成客户端和 gptGO 服务均可访问的地址。
 
 **重要：**
 
@@ -361,14 +359,14 @@ rs.status()
 
 ### 如何修改 API 地址和密钥
 
-从 V4.17.0 起，**必须部署或接入 AI Proxy**，并在 FastGPT 容器中配置以下环境变量：
+从 V4.17.0 起，**必须部署或接入 AI Proxy**，并在 gptGO 容器中配置以下环境变量：
 
-- `AIPROXY_API_ENDPOINT`：FastGPT 可访问的 AI Proxy 服务根地址，例如 `http://aiproxy:3000`，不要附加 `/v1`；FastGPT 会按接口补充路径。
+- `AIPROXY_API_ENDPOINT`：gptGO 可访问的 AI Proxy 服务根地址，例如 `http://aiproxy:3000`，不要附加 `/v1`；gptGO 会按接口补充路径。
 - `AIPROXY_API_TOKEN`：AI Proxy 管理员 Token，必须与 AI Proxy 服务端的管理员凭证一致，不能为空。
 
 缺少上述任一配置会导致启动校验失败。`OPENAI_BASE_URL` 和 `CHAT_API_KEY` 不能替代这两个必填项；即使模型配置了 `requestUrl/requestAuth`，也不能省略 AI Proxy。模型服务商的地址和密钥在管理员渠道配置中维护。
 
-可以通过修改 `docker-compose.yml` 中 FastGPT 容器的环境变量更新 AI Proxy 连接配置；商业版 Admin 服务若复用 App/Service 配置，也需要设置这两个变量。
+可以通过修改 `docker-compose.yml` 中 gptGO 容器的环境变量更新 AI Proxy 连接配置；商业版 Admin 服务若复用 App/Service 配置，也需要设置这两个变量。
 
 修改完后重启：
 
@@ -395,7 +393,7 @@ docker compose up -d
 
 ### 如何检查环境变量是否正常加载
 
-1. `docker exec -it fastgpt sh` 进入 FastGPT 容器。
+1. `docker exec -it fastgpt sh` 进入 gptGO 容器。
 2. 直接输入 `env` 命令查看所有环境变量。
 
 ### 为什么无法连接 `本地模型` 镜像
@@ -414,11 +412,11 @@ docker-compose 端口定义为：`映射端口:运行端口`。
 
 ### relation "modeldata" does not exist
 
-PG 数据库没有连接上/初始化失败，可以查看日志。FastGPT 会在每次连接上 PG 时进行表初始化，如果报错会有对应日志。
+PG 数据库没有连接上/初始化失败，可以查看日志。gptGO 会在每次连接上 PG 时进行表初始化，如果报错会有对应日志。
 
 1. 检查数据库容器是否正常启动
 2. 非 docker 部署的，需要手动安装 pg vector 插件
-3. 查看 fastgpt 日志，有没有相关报错
+3. 查看 gptGO 日志，有没有相关报错
 
 ### Illegal instruction
 

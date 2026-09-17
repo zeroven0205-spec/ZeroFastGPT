@@ -77,19 +77,19 @@ function responseError(err: any) {
 }
 
 /**
- * 校验 FastGPT app 服务端访问 pro/admin 的内部请求配置。
+ * 校验 gptGO app 服务端访问 pro/admin 的内部请求配置。
  *
  * 本文件同时保留 GET/POST 等快捷封装和原始 axios config 两种入口；集中处理
  * PRO_URL、PRO_TOKEN 和相对路径校验，避免两条入口出现鉴权语义分叉。
  */
 const assertInternalProRequestConfig = ({ url }: { url?: string }) => {
   if (!FastGPTProUrl) {
-    logger.warn('FastGPT Pro API is not configured', { url });
+    logger.warn('gptGO Pro API is not configured', { url });
     throw new UserError('The request was denied...');
   }
   if (!serviceEnv.PRO_TOKEN) {
-    logger.error('FastGPT Pro token is not configured', { url });
-    throw new UserError('FastGPT Pro token is not configured');
+    logger.error('gptGO Pro token is not configured', { url });
+    throw new UserError('gptGO Pro token is not configured');
   }
 
   // plusRequest 仅用于访问商业版 Pro 服务,会自动携带内部 Pro token,SSRF 拦截已被显式关闭。

@@ -1,13 +1,11 @@
 ---
 title: Loop
-description: FastGPT Loop node overview and usage (applicable to version 4.15.0 and above)
+description: gptGO Loop node overview and usage (applicable to version 4.15.0 and above)
 ---
 
 ## Node Overview
 
 The **Loop Node** allows you to repeatedly execute a sub-workflow. Whether you want to process a batch of data item by item (Array Loop), or iteratively optimize a task until it meets a specific standard (Conditional Loop), the Loop Node makes it easy.
-
-![Loop Node](/imgs/fastgpt-loop-run-node.png)
 
 Ideal for scenarios such as:
 
@@ -87,8 +85,6 @@ For self-hosted developers or operators, you can adjust the execution limits of 
 
 This example demonstrates how to use the **Conditional Loop** mode to allow the AI to optimize copy over multiple rounds, evaluating it through scoring logic at each iteration until the score passes a set threshold. This represents a key advantage of the Loop node—correcting drafts based on feedback from previous runs.
 
-![AI Copy Refinement Scenario Example](/imgs/fastgpt-loop-run-example.png)
-
 #### Implementation Steps
 
 1. **Set Loop Type**
@@ -108,8 +104,6 @@ This example demonstrates how to use the **Conditional Loop** mode to allow the 
 #### Execution Flow & Details
 
 After the execution completes, you can expand and inspect the detailed execution path of each iteration in the "Complete Response" panel:
-
-![Execution Flow Details](/imgs/fastgpt-loop-run-detail.png)
 
 1. **First Optimization Round**: Runs `Loop Start` ➡️ `AI Chat` ➡️ `AI Chat#2` ➡️ `Condition`. Since the score did not meet the requirements, the break node was not triggered, and the system automatically proceeded to the next iteration.
 2. **Second Optimization Round**: Continues running `AI Chat` ➡️ `AI Chat#2` ➡️ `Condition`. This time the score meets the requirements, routing to the `Assigned Reply` and triggering the `Loop Break` node. The entire loop exits safely.

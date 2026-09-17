@@ -27,7 +27,7 @@ import type { CreateLLMResponseProps, LLMResponse } from './types';
 const logger = getLogger(LogCategories.MODULE.AI.LLM);
 
 /**
- * 底层 LLM 请求入口，负责把 FastGPT 内部 body 转成模型请求、执行请求、解析响应并保存请求详情。
+ * 底层 LLM 请求入口，负责把 gptGO 内部 body 转成模型请求、执行请求、解析响应并保存请求详情。
  *
  * 这里刻意屏蔽了上层不需要关心的差异：
  * 1. stream 与非 stream 最终都会返回统一的 LLMResponse。
@@ -52,7 +52,7 @@ export const createLLMResponse = async <T extends ChatCompletionCreateParams>(
   const { messages, useVision, useAudio, useVideo, extractFiles, tools, toolCallMode } = body;
   const model = body.model;
 
-  // 先把 messages 中的文件/图片等 FastGPT 扩展结构加载成模型可直接消费的消息。
+  // 先把 messages 中的文件/图片等 gptGO 扩展结构加载成模型可直接消费的消息。
   const requestMessages = await loadRequestMessages({
     messages,
     useVision: useVision && model.config.vision,
@@ -175,7 +175,7 @@ export const createLLMResponse = async <T extends ChatCompletionCreateParams>(
       ...(toolCalls?.length && { tool_calls: toolCalls })
     };
 
-    // requestBody 运行时是经 LLMRequestBodyType narrow 进来的 FastGPT 数据，
+    // requestBody 运行时是经 LLMRequestBodyType narrow 进来的 gptGO 数据，
     // 但类型层 InferCompletionsBody 落到了 SDK 形态（messages/tools 是 v6 后的 union）
     const inputTokens =
       usage?.prompt_tokens ||

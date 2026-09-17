@@ -1,5 +1,5 @@
 {
   "title": "Deployment",
-  "description": "FastGPT self-hosting deployment",
+  "description": "gptGO self-hosting deployment",
   "pages": ["docker", "sealos"]
 }

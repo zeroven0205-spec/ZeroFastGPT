@@ -1,6 +1,6 @@
 ---
 title: 'V4.10.0'
-description: 'FastGPT V4.10.0 更新说明'
+description: 'gptGO V4.10.0 更新说明'
 releaseTime: '2025-07-02'
 upgradeTags:
   - 配置变更
@@ -10,9 +10,9 @@ upgradeTags:
 
 ### Docker 版本
 
-- 参考最新的 [docker-compose.yml](https://github.com/labring/FastGPT/blob/main/document/public/deploy/docker/main/global/docker-compose.pg.yml) 文件，加入 `fastgpt-plugin` 和 `minio` 服务。
+- 参考最新的 [docker-compose.yml](https://github.com/zeroven0205-spec/) 文件，加入 `fastgpt-plugin` 和 `minio` 服务。
 - 修改 `fastgpt-plugin` 环境变量 `AUTH_TOKEN` 为较复杂的值。
-- 修改 `fastgpt-plugin` 环境变量 `MINIO_CUSTOM_ENDPOINT` 为 `http://ip:port` 或相关域名，要求 fastgpt 用户可访问。
+- 修改 `fastgpt-plugin` 环境变量 `MINIO_CUSTOM_ENDPOINT` 为 `http://ip:port` 或相关域名，要求 gptGO 用户可访问。
 - 更新 `fastgpt` 和 `fastgpt-pro` (商业版)容器的环境变量:
 
 ```

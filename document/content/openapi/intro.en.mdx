@@ -1,18 +1,18 @@
 ---
 title: API Documentation Introduction
-description: Introduction to FastGPT API Documentation
+description: Introduction to gptGO API Documentation
 ---
 
-Starting with `4.15.0`, FastGPT API documentation is generated automatically with `zod-openapi`. You can view the latest endpoint status by opening the API documentation URL. The manually edited endpoint descriptions in the left sidebar of this documentation are no longer updated.
+Starting with `4.15.0`, gptGO API documentation is generated automatically with `zod-openapi`. You can view the latest endpoint status by opening the API documentation URL. The manually edited endpoint descriptions in the left sidebar of this documentation are no longer updated.
 
-FastGPT API documentation is split into two sets:
+gptGO API documentation is split into two sets:
 
 - Dev API: all development APIs. Not every endpoint can be called with an API Key.
 - System OpenAPI: all system public endpoints, callable with a system API Key.
 
 ## API Documentation URL
 
-`endpoint` is your FastGPT access URL. Append the corresponding path to open the documentation.
+`endpoint` is your gptGO access URL. Append the corresponding path to open the documentation.
 
 - Dev API: `{{endpoint}}/apidoc/devapi`
 - System OpenAPI: `{{endpoint}}/apidoc/systemopenapi`
@@ -21,17 +21,17 @@ FastGPT API documentation is split into two sets:
 
 **Dev API:**
 
-- [China Mainland documentation](https://cloud.fastgpt.cn/apidoc/devapi)
-- [International documentation](https://cloud.fastgpt.io/apidoc/devapi)
+- [China Mainland documentation](https://github.com/zeroven0205-spec/)
+- [International documentation](https://github.com/zeroven0205-spec/)
 
 **System OpenAPI**
 
-- [China Mainland documentation](https://cloud.fastgpt.cn/apidoc/systemopenapi)
-- [International documentation](https://cloud.fastgpt.io/apidoc/systemopenapi)
+- [China Mainland documentation](https://github.com/zeroven0205-spec/)
+- [International documentation](https://github.com/zeroven0205-spec/)
 
 ## Usage Notes
 
-FastGPT OpenAPI endpoints let you authenticate with an API Key to operate related FastGPT services and resources, such as calling app chat endpoints, uploading Dataset data, and running search tests. For compatibility and security reasons, not all endpoints can be accessed with an API Key.
+gptGO OpenAPI endpoints let you authenticate with an API Key to operate related gptGO services and resources, such as calling app chat endpoints, uploading Dataset data, and running search tests. For compatibility and security reasons, not all endpoints can be accessed with an API Key.
 
 ### How to Get an API Key
 
@@ -50,7 +50,7 @@ An API Key acts as the current account's access credential within the current te
 - For OpenAI SDK compatibility, you can also use `Authorization: Bearer <apiKey>-<appId>`. In this case, you can omit `body.appId`.
 - The `appId` precedence is: `body.appId` > the `appId` in `<apiKey>-<appId>` > the `appId` associated with the API Key (legacy compatibility).
 - Some SDKs require adding `v1` to the `BaseURL`. If you get a 404 error, try adding `v1` and retry.
-- To proxy a team member's identity through `authProxy`, the team owner must enable `authProxy` when creating or editing the key. The proxied member must still have permission to access the target app and session. (FastGPT >= v4.15.0)
+- To proxy a team member's identity through `authProxy`, the team owner must enable `authProxy` when creating or editing the key. The proxied member must still have permission to access the target app and session. (gptGO >= v4.15.0)
 
 ### How to find the app ID (appId)
 

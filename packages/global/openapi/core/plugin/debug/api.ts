@@ -70,7 +70,7 @@ export const EnablePluginDebugChannelResponseSchema = PluginDebugChannelBaseSche
   connectionUrl: z.string().url().optional().meta({
     example:
       'https://fastgpt.example.com/api/plugin/debug-channel/connection-key/exchange?connectionKey=fgdbg_xxx',
-    description: '本地 CLI 可直接访问的 FastGPT HTTP 调试连接链接'
+    description: '本地 CLI 可直接访问的 gptGO HTTP 调试连接链接'
   })
 }).required({
   source: true

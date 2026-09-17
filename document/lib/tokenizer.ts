@@ -4,8 +4,7 @@ export const enhancedTokenizer = () => {
   // 整词配置 - 需要保持完整的词汇
   const wholeWords = [
     // 产品相关
-    'fastgpt',
-    'FastGPT',
+    'gptGO',
     '快速GPT',
     'Saas',
     'SaaS',

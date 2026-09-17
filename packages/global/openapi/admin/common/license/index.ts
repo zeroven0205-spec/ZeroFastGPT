@@ -6,7 +6,7 @@ export const AdminLicensePath: OpenAPIPath = {
   '/admin/common/license/active': {
     post: {
       summary: '激活许可证',
-      description: '使用许可证密钥激活 FastGPT 商业版',
+      description: '使用许可证密钥激活 gptGO 商业版',
       tags: [DevApiTagsMap.adminLicense],
       requestBody: {
         content: {

@@ -1,17 +1,15 @@
 ---
 title: Deploy with Sealos
-description: One-click FastGPT deployment using Sealos
+description: One-click gptGO deployment using Sealos
 ---
 
 import { Alert } from '@/components/docs/Alert';
 
 ## Deployment Architecture
 
-![](../../../public/imgs/sealos-fastgpt.webp)
-
 ## Multi-Model Support
 
-FastGPT uses the one-api project to manage model pools, supporting OpenAI, Azure, mainstream domestic models, and local models.
+gptGO uses the one-api project to manage model pools, supporting OpenAI, Azure, mainstream domestic models, and local models.
 
 See: [Quick OneAPI Deployment on Sealos](../config/model/intro.en.mdx)
 
@@ -23,11 +21,7 @@ With Sealos, you don't need to purchase servers or domains. It supports high con
 
 Singapore servers are overseas with direct access to OpenAI, but users in mainland China need a VPN. International pricing is slightly higher. Click below to deploy 👇
 
-<a
-  href="https://template.cloud.sealos.io/deploy?templateName=fastgpt&uid=fnWRt09fZP"
-  rel="external"
-  target="_blank"
->
+<a href="https://github.com/zeroven0205-spec/" rel="external" target="_blank">
   <img
     src="https://cdn.jsdelivr.net/gh/labring-actions/templates@main/Deploy-on-Sealos.svg"
     alt="Deploy on Sealos"
@@ -38,11 +32,7 @@ Singapore servers are overseas with direct access to OpenAI, but users in mainla
 
 The Beijing region is hosted by Volcano Engine. Users in mainland China get stable access, but it can't reach OpenAI or other overseas services. Pricing is about 1/4 of the Singapore region. Click below to deploy 👇
 
-<a
-  href="https://bja.sealos.run/?openapp=system-template%3FtemplateName%3Dfastgpt&uid=fnWRt09fZP"
-  rel="external"
-  target="_blank"
->
+<a href="https://github.com/zeroven0205-spec/" rel="external" target="_blank">
   <img
     src="https://raw.githubusercontent.com/labring-actions/templates/main/Deploy-on-Sealos.svg"
     alt="Deploy on Sealos"
@@ -61,7 +51,7 @@ After clicking deploy, you'll be redirected to the app management page. Click th
 
 ![](../../../public/imgs/sealos-deploy1.jpg)
 
-After clicking details, you'll see the FastGPT deployment management page. Click the link in the external access address to open the FastGPT service.
+After clicking details, you'll see the gptGO deployment management page. Click the link in the external access address to open the gptGO service.
 
 To bind a custom domain or modify deployment parameters, click **Change** in the top right and follow Sealos' instructions.
 
@@ -89,7 +79,7 @@ Sealos uses pay-as-you-go billing based on allocated CPU, memory, and disk. For 
 
 ### Overview
 
-FastGPT Commercial Edition includes 2 apps (fastgpt, fastgpt-plus) and 2 databases. When using multiple API keys, install OneAPI (1 app and 1 database), totaling 3 apps and 3 databases.
+gptGO Commercial Edition includes 2 apps (gptGO, gptGO-plus) and 2 databases. When using multiple API keys, install OneAPI (1 app and 1 database), totaling 3 apps and 3 databases.
 
 ![](../../../public/imgs/onSealos1.png)
 
@@ -97,18 +87,16 @@ Click details on the right to view each app's information.
 
 ### Modifying Config Files and Environment Variables
 
-In Sealos, open **App Launchpad** to see deployed FastGPT apps, and open **Database** to see corresponding databases.
+In Sealos, open **App Launchpad** to see deployed gptGO apps, and open **Database** to see corresponding databases.
 
-In **App Launchpad**, select FastGPT, click **Change**, and you'll see environment variables and config files.
-
-![](../../../public/imgs/fastgptonsealos1.png)
+In **App Launchpad**, select gptGO, click **Change**, and you'll see environment variables and config files.
 
 <Alert icon="🤖" context="success">
-  On Sealos, FastGPT runs 1 service and 2 databases. When pausing or deleting, handle the databases
+  On Sealos, gptGO runs 1 service and 2 databases. When pausing or deleting, handle the databases
   together. (You can start them during the day and pause at night to save costs.)
 </Alert>
 
-### How to Update/Upgrade FastGPT
+### How to Update/Upgrade gptGO
 
 [Upgrade script documentation](../upgrading/upgrade-instruction.en.mdx) — read the docs first to determine which version to upgrade to. Do not skip versions.
 
@@ -118,7 +106,7 @@ Upgrade steps:
 
 1. Check the [update documentation](../upgrading/upgrade-instruction.en.mdx) to confirm the target version — avoid skipping versions.
 2. Open Sealos app management
-3. There are 2 apps: fastgpt, fastgpt-pro
+3. There are 2 apps: gptGO, fastgpt-pro
 4. Click the 3 dots on the right side of the app, then **Change**. Or click details, then **Change** in the top right.
 5. Modify the image version number
 
@@ -127,7 +115,7 @@ Upgrade steps:
 6. Click **Change/Restart** to automatically pull the latest image and update
 7. Run the initialization script for the corresponding version (if applicable)
 
-### How to Get the FastGPT Access Link
+### How to Get the gptGO Access Link
 
 Open the corresponding app and click the external access address.
 

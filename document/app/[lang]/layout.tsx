@@ -53,19 +53,19 @@ export async function generateMetadata({
 
   const domain = getFastGPTDocsOrigin();
 
-  const title = lang === 'zh-CN' ? 'FastGPT 文档 - 快速开始' : 'FastGPT Documentation - Getting Started';
+  const title = lang === 'zh-CN' ? 'gptGO 文档 - 快速开始' : 'gptGO Documentation - Getting Started';
   const description =
     lang === 'zh-CN'
-      ? '学习如何使用 FastGPT 构建 AI 智能体。完整文档涵盖知识库、可视化工作流、RAG 系统和 API 集成。'
-      : 'Learn how to build AI agents with FastGPT. Complete documentation covering knowledge base, visual workflow, RAG system, and API integration.';
+      ? '学习如何使用 gptGO 构建 AI 智能体。完整文档涵盖知识库、可视化工作流、RAG 系统和 API 集成。'
+      : 'Learn how to build AI agents with gptGO. Complete documentation covering knowledge base, visual workflow, RAG system, and API integration.';
 
   return {
     title: {
       default: title,
-      template: `%s | FastGPT`
+      template: `%s | gptGO`
     },
     description,
-    keywords: ['FastGPT', 'AI', 'Agent', 'LLM', 'RAG', 'Workflow', 'Documentation'],
+    keywords: ['gptGO', 'AI', 'Agent', 'LLM', 'RAG', 'Workflow', 'Documentation'],
     authors: [{ name: 'Labring', url: 'https://github.com/labring' }],
     creator: 'Labring',
     publisher: 'Labring',
@@ -81,26 +81,26 @@ export async function generateMetadata({
       type: 'website',
       locale: lang === 'zh-CN' ? 'zh_CN' : 'en_US',
       url: domain,
-      title: lang === 'zh-CN' ? 'FastGPT 快速开始' : 'Getting Started with FastGPT',
+      title: lang === 'zh-CN' ? 'gptGO 快速开始' : 'Getting Started with gptGO',
       description: lang === 'zh-CN' 
-        ? 'FastGPT 是基于大语言模型的知识库问答系统，结合智能对话与可视化编排，让 AI 应用开发变得简单自然。'
-        : 'FastGPT is a knowledge base Q&A system built on LLMs, combining intelligent conversation with visual orchestration to make AI application development simple and natural.',
-      siteName: 'FastGPT Documentation',
+        ? 'gptGO 是基于大语言模型的知识库问答系统，结合智能对话与可视化编排，让 AI 应用开发变得简单自然。'
+        : 'gptGO is a knowledge base Q&A system built on LLMs, combining intelligent conversation with visual orchestration to make AI application development simple and natural.',
+      siteName: 'gptGO Documentation',
       images: [
         {
           url: '/og-image.png',
           width: 1200,
           height: 630,
-          alt: lang === 'zh-CN' ? 'FastGPT 文档' : 'FastGPT Documentation'
+          alt: lang === 'zh-CN' ? 'gptGO 文档' : 'gptGO Documentation'
         }
       ]
     },
     twitter: {
       card: 'summary_large_image',
-      title: lang === 'zh-CN' ? 'FastGPT 快速开始' : 'Getting Started with FastGPT',
+      title: lang === 'zh-CN' ? 'gptGO 快速开始' : 'Getting Started with gptGO',
       description: lang === 'zh-CN'
-        ? '学习如何使用 FastGPT 构建 AI 智能体。完整文档涵盖知识库、可视化工作流、RAG 系统和 API 集成。'
-        : 'Learn how to build AI agents with FastGPT. Complete documentation covering knowledge base, visual workflow, RAG system, and API integration.',
+        ? '学习如何使用 gptGO 构建 AI 智能体。完整文档涵盖知识库、可视化工作流、RAG 系统和 API 集成。'
+        : 'Learn how to build AI agents with gptGO. Complete documentation covering knowledge base, visual workflow, RAG system, and API integration.',
       images: ['/og-image.png']
     },
     robots: {

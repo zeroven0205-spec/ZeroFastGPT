@@ -1,11 +1,11 @@
 ---
 title: Collection Design
-description: How FastGPT stores files and data in Collections
+description: How gptGO stores files and data in Collections
 ---
 
 ## Relationship Between Files and Data
 
-In FastGPT, files are stored using MongoDB's GridFS, while the actual data is stored in PostgreSQL. Each row in PG has a `file_id` column that references the corresponding file. For backward compatibility and to support manual input and annotated data, `file_id` has some special values:
+In gptGO, files are stored using MongoDB's GridFS, while the actual data is stored in PostgreSQL. Each row in PG has a `file_id` column that references the corresponding file. For backward compatibility and to support manual input and annotated data, `file_id` has some special values:
 
 - manual: Manually entered data
 - mark: Manually annotated data

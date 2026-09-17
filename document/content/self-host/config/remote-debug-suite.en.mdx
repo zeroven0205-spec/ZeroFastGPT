@@ -1,23 +1,23 @@
 ---
 title: System Plugin Remote Debugging Suite Configuration
-description: Configure the system plugin remote debugging suite for self-hosted FastGPT deployments
+description: Configure the system plugin remote debugging suite for self-hosted gptGO deployments
 ---
 
 import { Alert } from '@/components/docs/Alert';
 
 ## When to Use It
 
-The system plugin remote debugging suite temporarily connects FastGPT system plugins running on a developer's local machine to a FastGPT test environment. It is intended for system plugin development, integration testing, and acceptance checks, not as a production plugin runtime.
+The system plugin remote debugging suite temporarily connects gptGO system plugins running on a developer's local machine to a gptGO test environment. It is intended for system plugin development, integration testing, and acceptance checks, not as a production plugin runtime.
 
 <Alert icon="🤖" context="warning">
 
 The system plugin remote debugging suite is available only in the commercial edition.
 
-We recommend using remote debugging in the FastGPT Cloud version first. Self-hosted deployments require you to operate Plugin Server, Connection Gateway, Redis, reverse proxy, TLS, and secret rotation yourself.
+We recommend using remote debugging in the gptGO Cloud version first. Self-hosted deployments require you to operate Plugin Server, Connection Gateway, Redis, reverse proxy, TLS, and secret rotation yourself.
 
 </Alert>
 
-The default Docker Compose deployment only includes the FastGPT main service and the regular `fastgpt-plugin` runtime. It does not include the public WebSocket setup required by Connection Gateway. For self-hosted deployments, deploy the system plugin remote debugging suite separately.
+The default Docker Compose deployment only includes the gptGO main service and the regular `fastgpt-plugin` runtime. It does not include the public WebSocket setup required by Connection Gateway. For self-hosted deployments, deploy the system plugin remote debugging suite separately.
 
 ## Components
 
@@ -25,7 +25,7 @@ The remote debug flow includes these components:
 
 | Component            | Purpose                                                                                 |
 | -------------------- | --------------------------------------------------------------------------------------- |
-| FastGPT main service | Provides the UI and APIs for enabling, refreshing, and revoking a debug channel.        |
+| gptGO main service   | Provides the UI and APIs for enabling, refreshing, and revoking a debug channel.        |
 | Plugin Server        | Manages `connectionKey`, debug source, and forwards debug invocations to Gateway.       |
 | Connection Gateway   | Maintains CLI WebSocket connections, sessions, mailboxes, and debug invocation streams. |
 | Redis                | Stores Gateway sessions, source owner leases, and mailbox data.                         |
@@ -58,8 +58,8 @@ sequenceDiagram
 
 ## Prerequisites
 
-1. The FastGPT main service can access `fastgpt-plugin`, and `PLUGIN_TOKEN` / `AUTH_TOKEN` are the same on both sides.
-2. Your `fastgpt-plugin` version includes remote debugging. Use the plugin version required by your current FastGPT release.
+1. The gptGO main service can access `fastgpt-plugin`, and `PLUGIN_TOKEN` / `AUTH_TOKEN` are the same on both sides.
+2. Your `fastgpt-plugin` version includes remote debugging. Use the plugin version required by your current gptGO release.
 3. The Gateway WebSocket URL must be reachable from the developer's local machine. In production, expose it through HTTPS reverse proxy as `wss://`.
 4. The Gateway internal HTTP API should only be reachable from the Plugin Server's private network.
 5. The Redis used by Gateway must support Stream.
@@ -126,17 +126,17 @@ JWT_SECRET=replace-with-a-random-jwt-secret-at-least-32-chars
 
 Restart `fastgpt-plugin` after updating the configuration. When `CONNECTION_GATEWAY_BASE_URL` is unset, Plugin Server disables remote debugging.
 
-## Configure FastGPT Main Service
+## Configure gptGO Main Service
 
-The FastGPT main service keeps using the regular plugin configuration:
+The gptGO main service keeps using the regular plugin configuration:
 
 ```dotenv
 PLUGIN_BASE_URL=http://fastgpt-plugin:3000
 PLUGIN_TOKEN=replace-with-the-same-value-as-plugin-auth-token
-NEXT_PUBLIC_BASE_URL=https://fastgpt.example.com
+NEXT_PUBLIC_BASE_URL=https://gptgo.example.com
 ```
 
-`NEXT_PUBLIC_BASE_URL` affects the generated debug connection link. For public access, set it to the FastGPT URL reachable by the browser.
+`NEXT_PUBLIC_BASE_URL` affects the generated debug connection link. For public access, set it to the gptGO URL reachable by the browser.
 
 ## Configure Reverse Proxy
 
@@ -159,14 +159,14 @@ Do not expose `/internal/*`, `/metrics`, or the Gateway HTTP port directly to th
 
 ## Developer Connection
 
-1. Enable the debug channel from the FastGPT plugin debug entry and copy the generated connection link.
+1. Enable the debug channel from the gptGO plugin debug entry and copy the generated connection link.
 2. Run this command in the local plugin directory:
 
 ```bash
 fastgpt-plugin dev --connect '<connectionUrl>'
 ```
 
-After the connection succeeds, the local CLI reports plugin metadata through Gateway. The local plugins appear in FastGPT under the current debug source. The debug source format is:
+After the connection succeeds, the local CLI reports plugin metadata through Gateway. The local plugins appear in gptGO under the current debug source. The debug source format is:
 
 ```text
 debug:tmbId:{tmbId}
@@ -180,9 +180,9 @@ debug:tmbId:{tmbId}
 curl http://connection-gateway:3000/health
 ```
 
-2. Enable the debug channel in FastGPT and confirm the status changes from `enabled` to `connected`.
+2. Enable the debug channel in gptGO and confirm the status changes from `enabled` to `connected`.
 3. Run `fastgpt-plugin dev` locally and confirm the CLI reports an active WebSocket connection.
-4. Select a tool under the debug source in FastGPT and invoke it once. The result should come from the local plugin.
+4. Select a tool under the debug source in gptGO and invoke it once. The result should come from the local plugin.
 
 ## Security Notes
 
@@ -198,7 +198,7 @@ curl http://connection-gateway:3000/health
 
 Check whether `CONNECTION_GATEWAY_PUBLIC_URL` is reachable from the developer's local machine. The browser and CLI run on the developer's computer, so Docker private hostnames will not work.
 
-### The CLI is connected, but FastGPT shows disconnected
+### The CLI is connected, but gptGO shows disconnected
 
 Check whether Plugin Server can access `CONNECTION_GATEWAY_BASE_URL`, and confirm that `CONNECTION_GATEWAY_AUTH_TOKEN` matches the Gateway configuration.
 

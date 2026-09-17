@@ -1,6 +1,6 @@
 ---
 title: 'V4.15.1'
-description: 'FastGPT V4.15.1 Release Notes'
+description: 'gptGO V4.15.1 Release Notes'
 releaseTime: '2026-07-03'
 upgradeTags:
   - CONFIG
@@ -9,9 +9,9 @@ upgradeTags:
 
 ## 📦 Upgrade Guide
 
-### 1. fastgpt-pro Environment Variable Updates
+### 1. gptGO-pro Environment Variable Updates
 
-Starting from v4.15.1, the FastGPT main app no longer uses `rootkey` when calling Pro/Admin internal APIs. These internal service-to-service calls now use a dedicated `PRO_TOKEN`. `FE_DOMAIN` is also required. If you deploy the Pro edition, configure the same `PRO_TOKEN` in both the FastGPT main app and the Pro/Admin service:
+Starting from v4.15.1, the gptGO main app no longer uses `rootkey` when calling Pro/Admin internal APIs. These internal service-to-service calls now use a dedicated `PRO_TOKEN`. `FE_DOMAIN` is also required. If you deploy the Pro edition, configure the same `PRO_TOKEN` in both the gptGO main app and the Pro/Admin service:
 
 ```bash
 PRO_TOKEN=your_pro_token_at_least_32_chars
@@ -20,33 +20,33 @@ FE_DOMAIN=fastgpt_domain
 
 Notes:
 
-1. `PRO_TOKEN` must be at least 32 characters long, and the value must be identical in the FastGPT main app and Pro/Admin.
-2. If the FastGPT main app is configured with `PRO_URL`, `PRO_TOKEN` is also required. Otherwise, the service fails to start.
+1. `PRO_TOKEN` must be at least 32 characters long, and the value must be identical in the gptGO main app and Pro/Admin.
+2. If the gptGO main app is configured with `PRO_URL`, `PRO_TOKEN` is also required. Otherwise, the service fails to start.
 3. The Pro/Admin service must configure `PRO_TOKEN`; otherwise, internal API authentication fails.
-4. `rootkey` is no longer used as the credential for FastGPT main app calls to Pro/Admin internal APIs. It is only the admin secret for the current system and is used to call `/api/admin/**` APIs, such as the initialization script below.
+4. `rootkey` is no longer used as the credential for gptGO main app calls to Pro/Admin internal APIs. It is only the admin secret for the current system and is used to call `/api/admin/**` APIs, such as the initialization script below.
 5. Open-source deployment files do not include `PRO_TOKEN`. For Pro deployments, add it manually in your private deployment environment variables.
 
 ### 2. WECOM_LOGIN_AUTO_REDIRECT Environment Variable
 
-Older versions always redirected WeCom terminals to the login page, equivalent to `WECOM_LOGIN_AUTO_REDIRECT=true`. Starting from v4.15.1, this behavior is disabled by default. To keep the previous automatic redirect behavior, add the following environment variable to the FastGPT main app:
+Older versions always redirected WeCom terminals to the login page, equivalent to `WECOM_LOGIN_AUTO_REDIRECT=true`. Starting from v4.15.1, this behavior is disabled by default. To keep the previous automatic redirect behavior, add the following environment variable to the gptGO main app:
 
 ```bash
 WECOM_LOGIN_AUTO_REDIRECT=true
 ```
 
-If automatic redirects are not needed, leave this variable unset or set it to `false`. Restart the FastGPT main app after changing the environment variable for the configuration to take effect.
+If automatic redirects are not needed, leave this variable unset or set it to `false`. Restart the gptGO main app after changing the environment variable for the configuration to take effect.
 
 ### 3. Docker Image Changes
 
-- Update the fastgpt-app (FastGPT main service) image tag to v4.15.1.
-- Update the fastgpt-pro (FastGPT commercial edition) image tag to v4.15.1.
-- Update the fastgpt-plugin image tag to v1.0.1.
+- Update the gptGO-app (gptGO main service) image tag to v4.15.1.
+- Update the gptGO-pro (gptGO commercial edition) image tag to v4.15.1.
+- Update the gptGO-plugin image tag to v1.0.1.
 
 ### 4. API Key App Name Initialization
 
 To keep older API keys compatible and make it easier to find keys previously associated with apps, v4.15.1 adds global API Key tag management and an `appName` display snapshot for historical app-level API Keys. After upgrading, run the initialization script once to backfill app names for existing API Keys whose `appId` field is still present.
 
-From any terminal, send an HTTP request. Replace `{{rootkey}}` with the `rootkey` from your environment variables, and `{{host}}` with your FastGPT domain.
+From any terminal, send an HTTP request. Replace `{{rootkey}}` with the `rootkey` from your environment variables, and `{{host}}` with your gptGO domain.
 
 ```bash
 curl -X POST "{{host}}/api/admin/initv4151" \
@@ -74,7 +74,7 @@ The script only fills missing `appName` values. It does not overwrite existing v
 3. Fixed an issue where workflow tools did not initialize variables from the tool app's global variable configuration when running a sub-workflow, causing runtime variables such as default variables and system variables to be read incorrectly.
 4. Fixed an issue where updates to global variables or outputs from nodes outside the container through **Variable Update** inside loop nodes and parallel execution nodes were not synchronized back to the main workflow by round or task completion. Successful rounds or tasks now write back their changes, while failed rounds or tasks do not commit their changes.
 5. The component did not refresh immediately when retrying all Dataset collections.
-6. Fixed repeated shallow route updates in the embedded FastGPT Marketplace when filters did not change, which could keep the top progress bar loading.
+6. Fixed repeated shallow route updates in the embedded gptGO Marketplace when filters did not change, which could keep the top progress bar loading.
 
 ## 🛠️ Code Improvements
 

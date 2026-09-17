@@ -1,15 +1,15 @@
 ---
 title: Integrate SigNoz Service Monitoring
-description: FastGPT integration with SigNoz service monitoring
+description: gptGO integration with SigNoz service monitoring
 ---
 
 ## Introduction
 
-[SigNoz](https://signoz.io/) is an open-source Application Performance Monitoring (APM) and observability platform that provides comprehensive service monitoring for FastGPT. Built on the OpenTelemetry standard, it collects, processes, and visualizes telemetry data from distributed systems, including tracing, metrics, and logging.
+[SigNoz](https://signoz.io/) is an open-source Application Performance Monitoring (APM) and observability platform that provides comprehensive service monitoring for gptGO. Built on the OpenTelemetry standard, it collects, processes, and visualizes telemetry data from distributed systems, including tracing, metrics, and logging.
 
 **Key Features:**
 
-- **Distributed Tracing**: Track the complete call chain of user requests across FastGPT services
+- **Distributed Tracing**: Track the complete call chain of user requests across gptGO services
 - **Performance Monitoring**: Monitor key metrics like API response times and throughput
 - **Error Tracking**: Automatically capture and record system exceptions for troubleshooting
 - **Log Aggregation**: Centrally collect and manage application logs with structured query support
@@ -27,19 +27,19 @@ You can use [SigNoz](https://signoz.io/) cloud service or self-host it. Here's h
 
 After deployment, click **Details** in P1 to open the app details page, then click **Change** in the top right and enable the external address for port 4318 (skip this step if using internal network).
 
-| P1 | P2 | P3 |
-| --- | --- | --- |
+| P1                                              | P2                                              | P3                                              |
+| ----------------------------------------------- | ----------------------------------------------- | ----------------------------------------------- |
 | ![alt text](../../../public/imgs/image-112.png) | ![alt text](../../../public/imgs/image-110.png) | ![alt text](../../../public/imgs/image-111.png) |
 
 3. Get the SigNoz access address
 
-After the change completes, wait for the public address to be ready, copy it, and enter it in FastGPT. If using internal network, copy the internal address for port 4318 directly.
+After the change completes, wait for the public address to be ready, copy it, and enter it in gptGO. If using internal network, copy the internal address for port 4318 directly.
 
 ![alt text](../../../public/imgs/image-113.png)
 
-## Configure FastGPT
+## Configure gptGO
 
-1. Update FastGPT environment variables
+1. Update gptGO environment variables
 
 **Log level options**: `trace` | `debug` | `info` | `warning` | `error` | `fatal`
 
@@ -52,14 +52,14 @@ LOG_OTEL_SERVICE_NAME=fastgpt-client # Service name passed to the OTLP collector
 LOG_OTEL_URL=http://localhost:4318/v1/logs # Your OTLP collector address — don't omit /v1/logs
 ```
 
-2. Restart FastGPT
+2. Restart gptGO
 
 ## Verify the Setup
 
 Go back to the Sealos app management list, open the SigNoz frontend project, and access its public address to open the dashboard.
 
-| | |
-| --- | --- |
+|                                                 |                                                 |
+| ----------------------------------------------- | ----------------------------------------------- |
 | ![alt text](../../../public/imgs/image-114.png) | ![alt text](../../../public/imgs/image-115.png) |
 
 First-time access requires creating an account (data is stored in the local database) — fill in anything.
@@ -76,6 +76,6 @@ After logging in, if `logs` and `traces` are lit up in the COMPLETED steps on th
 
 1. Adjust log retention period
 
-SigNoz monitoring is very disk-intensive. First, avoid storing FastGPT debug logs in SigNoz. Also consider setting the log retention period to 7 days. If SigNoz data stops growing while memory keeps increasing, the disk is full — expand capacity.
+SigNoz monitoring is very disk-intensive. First, avoid storing gptGO debug logs in SigNoz. Also consider setting the log retention period to 7 days. If SigNoz data stops growing while memory keeps increasing, the disk is full — expand capacity.
 
 ![alt text](../../../public/imgs/image-119.png)

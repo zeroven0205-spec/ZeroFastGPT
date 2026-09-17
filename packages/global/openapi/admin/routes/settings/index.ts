@@ -6,7 +6,7 @@ export const AdminSettingsPath: OpenAPIPath = {
   '/admin/routes/settings/getConfig': {
     get: {
       summary: '获取系统配置',
-      description: '获取 FastGPT 和 FastGPT Pro 的当前系统配置',
+      description: '获取 gptGO 和 gptGO Pro 的当前系统配置',
       tags: [DevApiTagsMap.adminSettings],
       responses: {
         200: {
@@ -23,7 +23,7 @@ export const AdminSettingsPath: OpenAPIPath = {
   '/admin/routes/settings/updateConfig': {
     post: {
       summary: '更新系统配置',
-      description: '更新 FastGPT 和 FastGPT Pro 的系统配置',
+      description: '更新 gptGO 和 gptGO Pro 的系统配置',
       tags: [DevApiTagsMap.adminSettings],
       requestBody: {
         content: {

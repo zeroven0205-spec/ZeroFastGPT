@@ -93,7 +93,7 @@ export const resolveCRMVisitorId = ({
 };
 
 /**
- * 将官网匿名 visitor_id 与 FastGPT 用户绑定。
+ * 将官网匿名 visitor_id 与 gptGO 用户绑定。
  * 上报失败只记日志，不能影响注册或登录结果。
  */
 export const reportCRMVisitorIdentity = async ({

@@ -1,6 +1,6 @@
 ---
 title: Sealos Devbox 沙盒配置
-description: FastGPT 使用 Sealos Devbox 沙盒
+description: gptGO 使用 Sealos Devbox 沙盒
 ---
 
 import { Alert } from '@/components/docs/Alert';
@@ -11,11 +11,11 @@ import { Alert } from '@/components/docs/Alert';
 
 ## 前置准备
 
-1. 已部署 FastGPT 商业版，并确认团队拥有 Agent Sandbox 使用权限。
+1. 已部署 gptGO 商业版，并确认团队拥有 Agent Sandbox 使用权限。
 2. 向客服申请 Sealos Devbox 接入信息：Devbox 服务地址、访问 Token、运行态镜像。
 3. 参考 [OpenSandbox 配置](./opensandbox) 部署 `fastgpt-agent-sandbox-proxy` 服务。
 
-## 配置 FastGPT 环境变量
+## 配置 gptGO 环境变量
 
 在 `fastgpt-app` 和 `fastgpt-pro` 中增加下面环境变量。
 
@@ -47,7 +47,7 @@ AGENT_SANDBOX_PYPI_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
 AGENT_SANDBOX_APT_MIRROR=https://mirrors.tuna.tsinghua.edu.cn/debian
 ```
 
-对于 root 权限的 Agent 沙箱，FastGPT 会根据发行版生成并覆盖标准的 Ubuntu 或 Debian `.sources` 文件，并在覆盖已有文件前创建 `.copy` 备份。删除该环境变量后，有 `.copy` 备份的文件会恢复，没有备份的文件会跳过。初始化阶段不会执行 `apt-get update`。arm64 运行镜像应配置提供对应架构软件包的镜像地址。
+对于 root 权限的 Agent 沙箱，gptGO 会根据发行版生成并覆盖标准的 Ubuntu 或 Debian `.sources` 文件，并在覆盖已有文件前创建 `.copy` 备份。删除该环境变量后，有 `.copy` 备份的文件会恢复，没有备份的文件会跳过。初始化阶段不会执行 `apt-get update`。arm64 运行镜像应配置提供对应架构软件包的镜像地址。
 
 ## 常见问题
 
@@ -57,12 +57,12 @@ AGENT_SANDBOX_APT_MIRROR=https://mirrors.tuna.tsinghua.edu.cn/debian
 
 ### 提示 AGENT_SANDBOX_SEALOS_IMAGE is required
 
-`sealosdevbox` provider 启用后必须配置 `AGENT_SANDBOX_SEALOS_IMAGE`。请使用客服提供或与当前 FastGPT 版本匹配的 Agent Sandbox 运行态镜像。
+`sealosdevbox` provider 启用后必须配置 `AGENT_SANDBOX_SEALOS_IMAGE`。请使用客服提供或与当前 gptGO 版本匹配的 Agent Sandbox 运行态镜像。
 
 ### 浏览器 WebSocket 连接失败
 
-检查代理服务是否能被浏览器访问，并确认反向代理已支持 WebSocket Upgrade。如果 FastGPT 通过 HTTPS 访问，`AGENT_SANDBOX_PROXY_URL` 也应使用 `wss://`，避免浏览器拦截混合内容。
+检查代理服务是否能被浏览器访问，并确认反向代理已支持 WebSocket Upgrade。如果 gptGO 通过 HTTPS 访问，`AGENT_SANDBOX_PROXY_URL` 也应使用 `wss://`，避免浏览器拦截混合内容。
 
 ### proxy 校验失败或返回 401
 
-确认 FastGPT 主服务和 `fastgpt-agent-sandbox-proxy` 中的 `AGENT_SANDBOX_PROXY_SECRET` 完全一致，并且长度不少于 32 位。
+确认 gptGO 主服务和 `fastgpt-agent-sandbox-proxy` 中的 `AGENT_SANDBOX_PROXY_SECRET` 完全一致，并且长度不少于 32 位。

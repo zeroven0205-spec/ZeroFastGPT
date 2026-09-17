@@ -10,7 +10,7 @@ import { parseImageSpec } from '@fastgpt-sdk/sandbox-adapter';
 import { getAgentSandboxDiskBytes } from '../../../config';
 
 /**
- * 构建 Sealos Devbox 的 FastGPT 运行态 profile。
+ * 构建 Sealos Devbox 的 gptGO 运行态 profile。
  *
  * Devbox 的工作目录通过 CODEX_GATEWAY_CWD 间接生效，adapter 会把 workingDir 映射过去。
  */

@@ -22,14 +22,14 @@ export function generateArticleSchema(params: {
     author: {
       '@type': 'Organization',
       name: 'Labring',
-      url: 'https://github.com/labring'
+      url: 'https://github.com/zeroven0205-spec/'
     },
     publisher: {
       '@type': 'Organization',
-      name: 'FastGPT',
+      name: 'gptGO',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://doc.fastgpt.io/logo.svg'
+        url: '/logo.svg'
       }
     }
   };

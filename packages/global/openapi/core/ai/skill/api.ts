@@ -25,7 +25,7 @@ import { AppListSortEnum } from '../../../../core/app/constants';
 import { IntSchema } from '../../../../common/zod';
 
 const IdSchema = z.string().min(1).meta({ description: '资源 ID' });
-const SandboxInstanceKeySchema = z.string().min(1).describe('FastGPT sandbox instance key');
+const SandboxInstanceKeySchema = z.string().min(1).describe('gptGO sandbox instance key');
 const NullableParentIdSchema = z.string().nullable().optional().meta({
   description: '父级目录 ID'
 });
@@ -313,7 +313,7 @@ export type SkillRuntimeBody = z.infer<typeof SkillRuntimeBodySchema>;
 
 export const SkillRuntimeInitEventSchema = z
   .object({
-    sandboxId: z.string().describe('FastGPT sandbox instance key'),
+    sandboxId: z.string().describe('gptGO sandbox instance key'),
     phase: z.string().describe('Sandbox 初始化阶段'),
     message: z.string().optional().describe('阶段消息或错误信息')
   })

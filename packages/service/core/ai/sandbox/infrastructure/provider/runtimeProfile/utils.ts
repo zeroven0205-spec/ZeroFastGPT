@@ -5,7 +5,7 @@
  */
 import { joinSandboxPath } from '../../../utils';
 
-/** FastGPT 约定所有 skill 包都写入运行态工作目录下的 skills 子目录。 */
+/** gptGO 约定所有 skill 包都写入运行态工作目录下的 skills 子目录。 */
 export const getSandboxSkillsRootPath = (workDirectory: string) =>
   joinSandboxPath(workDirectory, 'skills');
 
@@ -16,7 +16,7 @@ export const getSandboxBuiltinSkillsRootPath = (homeDirectory: string) =>
 /**
  * 合并环境变量时让业务场景入参覆盖已有 createConfig。
  *
- * createConfig 可能来自调用方的 provider 扩展配置；场景入参代表 FastGPT 当前运行约定。
+ * createConfig 可能来自调用方的 provider 扩展配置；场景入参代表 gptGO 当前运行约定。
  */
 export const mergeStringRecord = (
   base?: Record<string, string>,
@@ -29,7 +29,7 @@ export const mergeStringRecord = (
   return Object.keys(merged).length > 0 ? merged : undefined;
 };
 
-/** 把 FastGPT 内部的字符串入口脚本规整为 SDK create spec 使用的 argv 数组。 */
+/** 把 gptGO 内部的字符串入口脚本规整为 SDK create spec 使用的 argv 数组。 */
 export const normalizeEntrypoint = (entrypoint?: string | string[]) => {
   if (!entrypoint) return undefined;
   const normalized = Array.isArray(entrypoint) ? entrypoint : [entrypoint];
@@ -37,9 +37,9 @@ export const normalizeEntrypoint = (entrypoint?: string | string[]) => {
 };
 
 /**
- * 构建 FastGPT 运行态在 sandbox 内约定的基础环境变量。
+ * 构建 gptGO 运行态在 sandbox 内约定的基础环境变量。
  *
- * 这些变量表达 FastGPT 自身的运行契约，provider 只负责把它们映射到实际 createConfig。
+ * 这些变量表达 gptGO 自身的运行契约，provider 只负责把它们映射到实际 createConfig。
  */
 export function buildBaseSandboxRuntimeEnv({
   sessionId,

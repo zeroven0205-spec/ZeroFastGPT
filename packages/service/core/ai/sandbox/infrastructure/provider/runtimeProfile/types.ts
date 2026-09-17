@@ -10,7 +10,7 @@ import type { VolumeManagerResult } from '../../volume/service';
 export type SandboxRuntimeScenario = 'runtime' | 'session-runtime' | 'edit-debug';
 
 /**
- * FastGPT 运行态构造 sandbox 的统一入参。
+ * gptGO 运行态构造 sandbox 的统一入参。
  *
  * 上层只表达业务意图和通用 create spec；provider profile 负责把这些字段映射成
  * 当前 provider 真正支持的 createConfig。
@@ -29,7 +29,7 @@ export type SandboxRuntimeCreateConfigInput = {
 };
 
 /**
- * FastGPT 对某个 sandbox provider 的运行态契约。
+ * gptGO 对某个 sandbox provider 的运行态契约。
  *
  * provider 连接认证仍由 provider/config.ts 负责；这里只维护工作目录、技能根目录、
  * 可选默认镜像、入口脚本，以及统一 createConfig 到 provider create spec 的转换。

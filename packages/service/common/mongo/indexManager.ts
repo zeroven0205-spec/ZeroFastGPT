@@ -130,7 +130,7 @@ export class MongoIndexManager {
     const inspection = await MongoIndexManager.inspectModelIndexes(model);
 
     if (inspection.toDrop.length > 0) {
-      logger.warn('Detected MongoDB indexes not declared by FastGPT schema', {
+      logger.warn('Detected MongoDB indexes not declared by gptGO schema', {
         collectionName: inspection.collectionName,
         indexNames: inspection.toDrop
       });
@@ -374,7 +374,7 @@ export class MongoIndexManager {
 
   /**
    * 从废弃声明中提取 text 字段列表，保持声明顺序。
-   * 非 text 前缀/后缀字段暂不参与匹配，当前 FastGPT 未使用混合 text 复合索引。
+   * 非 text 前缀/后缀字段暂不参与匹配，当前 gptGO 未使用混合 text 复合索引。
    */
   private static getDeclaredTextFields(key: DeprecatedMongoIndexDefinition['key']) {
     return Object.entries(key as Record<string, unknown>)

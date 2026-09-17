@@ -1,6 +1,6 @@
 # @fastgpt-sdk/otel
 
-FastGPT 的统一 OpenTelemetry / observability SDK。
+gptGO 的统一 OpenTelemetry / observability SDK。
 
 这个包的目标是作为未来的迁移目标，把现有的：
 

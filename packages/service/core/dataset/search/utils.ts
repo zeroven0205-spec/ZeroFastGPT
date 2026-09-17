@@ -168,7 +168,7 @@ export const isValidImageEmbeddingSource = (imageUrl?: string) => {
  * 按环境开关规范化图片输入。
  * data URL 已经是模型可读内容，始终原样返回；普通图片 URL 只有
  * serviceEnv.MULTIPLE_DATA_TO_BASE64 为 true 时才转成 base64。
- * FastGPT 内部对象 key 的鉴权和临时 URL 生成应在入口层完成，避免通用规范化函数
+ * gptGO 内部对象 key 的鉴权和临时 URL 生成应在入口层完成，避免通用规范化函数
  * 混入业务权限和存储来源判断。
  * 这里不吞异常，由上层按图片粒度降级，避免一张坏图中断整次检索。
  */

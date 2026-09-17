@@ -1,6 +1,6 @@
 # @fastgpt-sdk/storage
 
-FastGPT 的对象存储 SDK，提供 **统一的、与厂商无关的**存储接口（S3/MinIO/OSS/COS 等），用于上传、下载、删除、列举对象以及获取元数据。
+gptGO 的对象存储 SDK，提供 **统一的、与厂商无关的**存储接口（S3/MinIO/OSS/COS 等），用于上传、下载、删除、列举对象以及获取元数据。
 
 > 本包为 ESM（`"type": "module"`），并要求 Node.js **>= 20**。
 

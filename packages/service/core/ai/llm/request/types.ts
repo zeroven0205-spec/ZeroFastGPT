@@ -30,7 +30,7 @@ export type InferCompletionsBody<T> = T extends { stream: true }
     ? ChatCompletionCreateParamsNonStreaming
     : ChatCompletionCreateParams;
 
-// tools 同步用 FastGPT narrow 后的 ChatCompletionTool（function-only），
+// tools 同步用 gptGO narrow 后的 ChatCompletionTool（function-only），
 // 避免 SDK 联合类型透过 T['tools'] 漏到下游。
 export type LLMRequestBodyType<T> = Omit<
   T,

@@ -1,7 +1,7 @@
 ---
 title: 知识库接口
 sidebarTag: 不再维护
-description: FastGPT OpenAPI 知识库接口
+description: gptGO OpenAPI 知识库接口
 ---
 
 | 如何获取知识库 ID（datasetId）          | 如何获取文件集合 ID（collection_id）       |
@@ -352,7 +352,7 @@ curl --location --request POST 'http://localhost:3000/api/core/dataset/collectio
 --header 'Authorization: Bearer {{authorization}}' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "link":"https://doc.fastgpt.io/guide/getting-started/quick-start",
+    "link":"https://github.com/zeroven0205-spec/",
     "datasetId":"6593e137231a2be9c5603ba7",
     "parentId": null,
 
@@ -519,7 +519,7 @@ curl --location --request POST 'http://localhost:3000/api/proApi/core/dataset/co
 --header 'User-Agent: Apifox/1.0.0 (https://apifox.com)' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "externalFileUrl":"https://image.xxxxx.com/fastgpt-dev/%E6%91%82.pdf",
+    "externalFileUrl":"https://image.xxxxx.com/gptgo-dev/%E6%91%82.pdf",
     "externalFileId":"1111",
     "createTime": "2024-05-01T00:00:00.000Z",
     "filename":"自定义文件名.pdf",
@@ -634,7 +634,7 @@ curl --location --request POST 'http://localhost:3000/api/core/dataset/collectio
         "tmbId": "65422be6aa44b7da77729ec9",
         "type": "link",
         "name": "快速上手 | FastGPT",
-        "rawLink": "https://doc.fastgpt.io/guide/getting-started/quick-start",
+        "rawLink": "https://github.com/zeroven0205-spec/",
         "updateTime": "2024-01-20T13:54:53.031Z",
         "dataAmount": 3,
         "trainingAmount": 0,

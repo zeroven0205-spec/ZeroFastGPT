@@ -7,7 +7,7 @@ import { ObjectIdSchema } from '../../../../../common/type/mongo';
  * ============================================================================ */
 export const AdminLlmParagraphBodySchema = z.object({
   rawText: z.string().meta({
-    example: 'FastGPT 是一个 AI Agent 构建平台。它支持可视化工作流编排。',
+    example: 'gptGO 是一个 AI Agent 构建平台。它支持可视化工作流编排。',
     description: '需要补充段落标题的原始长文本'
   }),
   modelId: z.string().meta({

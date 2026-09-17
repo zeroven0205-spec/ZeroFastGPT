@@ -1,6 +1,6 @@
 {
   "title": "Nodes",
-  "description": "FastGPT workflow node settings and usage guides.",
+  "description": "gptGO workflow node settings and usage guides.",
   "pages": [
     "ai_chat",
     "dataset_search",

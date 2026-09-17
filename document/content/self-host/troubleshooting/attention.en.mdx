@@ -1,17 +1,17 @@
 ---
 title: Troubleshooting Notes
-description: FastGPT usage notes
+description: gptGO usage notes
 ---
 
 # Troubleshooting Notes
 
-If you encounter issues while using FastGPT, follow the steps below to troubleshoot and resolve them.
+If you encounter issues while using gptGO, follow the steps below to troubleshoot and resolve them.
 
 ## 1. Check Version and Upgrade
 
 Many known issues are fixed in newer releases. Before reporting a problem, verify your version first:
 
-- **Check version:** View the current running version on the FastGPT homepage or in the admin panel.
+- **Check version:** View the current running version on the gptGO homepage or in the admin panel.
 - **Upgrade recommendation:** If you are not on the latest version, follow the [Upgrade Guide](../upgrading/upgrade-instruction) to update to the latest stable release.
 
 ## 2. Troubleshooting Steps
@@ -24,22 +24,22 @@ If the issue still exists after upgrading, check in this order:
 
 ## 3. Prevent Spoofed Client IPs Behind a Reverse Proxy
 
-FastGPT reads the client IP for IP rate limiting, share-link IP allowlists, chat log IP records, and IP geolocation. If your self-hosted FastGPT is behind Nginx, a load balancer, an Ingress controller, or a CDN, make sure clients cannot spoof `X-Forwarded-For` or `X-Real-IP` headers.
+gptGO reads the client IP for IP rate limiting, share-link IP allowlists, chat log IP records, and IP geolocation. If your self-hosted gptGO is behind Nginx, a load balancer, an Ingress controller, or a CDN, make sure clients cannot spoof `X-Forwarded-For` or `X-Real-IP` headers.
 
 Recommended setup:
 
 - **Overwrite incoming IP headers in Nginx:** the last reverse proxy should not pass through a user-supplied `X-Forwarded-For` header. It should overwrite the header with the real connection source.
-- **Enable trusted proxy validation in FastGPT:** trust forwarded IP headers only when they come from Nginx, the load balancer, or the Ingress controller.
-- **Restrict direct access to FastGPT:** firewall or security group rules should allow only the reverse proxy to access the FastGPT service port.
+- **Enable trusted proxy validation in gptGO:** trust forwarded IP headers only when they come from Nginx, the load balancer, or the Ingress controller.
+- **Restrict direct access to gptGO:** firewall or security group rules should allow only the reverse proxy to access the gptGO service port.
 
-FastGPT environment variable example:
+gptGO environment variable example:
 
 ```dotenv
 TRUSTED_PROXY_ENABLE=true
 TRUSTED_PROXY_IPS=172.18.0.0/16
 ```
 
-`TRUSTED_PROXY_IPS` should contain the previous-hop proxy IP or CIDR that FastGPT sees directly, such as the Docker subnet for the Nginx container, the Ingress Controller private address, or the load balancer origin address. Do not use a trust-all CIDR such as `0.0.0.0/0` because it would trust every source, and do not add normal client networks to the trusted list.
+`TRUSTED_PROXY_IPS` should contain the previous-hop proxy IP or CIDR that gptGO sees directly, such as the Docker subnet for the Nginx container, the Ingress Controller private address, or the load balancer origin address. Do not use a trust-all CIDR such as `0.0.0.0/0` because it would trust every source, and do not add normal client networks to the trusted list.
 
 For a single Nginx layer exposed directly to users, use:
 
@@ -63,7 +63,7 @@ server {
 }
 ```
 
-If a CDN or load balancer is in front of Nginx, configure Nginx to trust only those upstream egress IPs first. Then forward the restored client IP to FastGPT:
+If a CDN or load balancer is in front of Nginx, configure Nginx to trust only those upstream egress IPs first. Then forward the restored client IP to gptGO:
 
 ```nginx
 server {
@@ -102,10 +102,10 @@ nginx -t && nginx -s reload
 You can verify the setup with spoofed headers:
 
 ```bash
-curl -H 'X-Forwarded-For: 6.6.6.6' -H 'X-Real-IP: 6.6.6.6' https://fastgpt.example.com
+curl -H 'X-Forwarded-For: 6.6.6.6' -H 'X-Real-IP: 6.6.6.6' https://gptgo.example.com
 ```
 
-If the configuration is correct, FastGPT should still record and validate the real client IP, not the spoofed value `6.6.6.6` from the request.
+If the configuration is correct, gptGO should still record and validate the real client IP, not the spoofed value `6.6.6.6` from the request.
 
 ## 4. Contact Technical Support
 

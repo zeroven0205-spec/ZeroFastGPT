@@ -1,9 +1,9 @@
 ---
 title: 接入钉钉机器人教程
-description: FastGPT 接入钉钉机器人教程
+description: gptGO 接入钉钉机器人教程
 ---
 
-从 4.8.16 版本起，FastGPT 商业版支持直接接入钉钉机器人，无需额外的 API。
+从 4.8.16 版本起，gptGO 商业版支持直接接入钉钉机器人，无需额外的 API。
 
 ## 1. 创建钉钉企业内部应用
 
@@ -11,13 +11,13 @@ description: FastGPT 接入钉钉机器人教程
 
 ![图片1](/imgs/dingtalk-bot-1.png)
 
-2. 获取**Client ID**和**Client Secret**。
+2. 获取 **Client ID** 和 **Client Secret**。
 
 ![图片2](/imgs/dingtalk-bot-2.png)
 
-## 2. 为 FastGPT 添加发布渠道
+## 2. 为 gptGO 添加发布渠道
 
-在 FastGPT 中选择要接入的应用，在**发布渠道**页面，新建一个接入钉钉机器人的发布渠道。
+在 gptGO 中选择要接入的应用，在**发布渠道**页面，新建一个接入钉钉机器人的发布渠道。
 
 将前面拿到的 **Client ID** 和 **Client Secret** 填入配置弹窗中。
 
@@ -33,13 +33,14 @@ description: FastGPT 接入钉钉机器人教程
 
 ## 4. 配置机器人回调地址
 
-点击左侧**机器人** 应用能力，然后将底部**消息接受模式**设置为**HTTP模式**，消息接收地址填入前面复制的 FastGPT 的回调地址。
+点击左侧**机器人** 应用能力，然后将底部**消息接受模式**设置为 **HTTP 模式**，消息接收地址填入前面复制的 gptGO 的回调地址。
 
 ![图片5](/imgs/dingtalk-bot-5.png)
 
 调试完成后，点击**发布**。
 
 ## 5. 发布应用
+
 机器人发布后，还需要在**版本管理与发布**页面发布应用版本。
 
 ![图片6](/imgs/dingtalk-bot-6.png)
@@ -48,10 +49,9 @@ description: FastGPT 接入钉钉机器人教程
 
 ![图片7](/imgs/dingtalk-bot-7.png)
 
-应用发布后，即可在钉钉企业中使用机器人功能，可对机器人私聊。或者在群组添加机器人后`@机器人`，触发对话。
+应用发布后，即可在钉钉企业中使用机器人功能，可对机器人私聊。或者在群组添加机器人后 `@机器人`，触发对话。
 
 ![图片8](/imgs/dingtalk-bot-8.png)
-
 
 ## FAQ
 

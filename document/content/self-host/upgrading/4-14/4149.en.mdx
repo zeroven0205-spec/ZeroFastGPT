@@ -1,6 +1,6 @@
 ---
 title: 'V4.14.9'
-description: 'FastGPT V4.14.9 Release Notes'
+description: 'gptGO V4.14.9 Release Notes'
 releaseTime: '2026-03-22'
 upgradeTags:
   - CONFIG
@@ -10,7 +10,7 @@ upgradeTags:
 
 ### 1. Environment Variable Updates
 
-1. Rename the following FastGPT environment variables — `SANDBOX_URL` and `SANDBOX_TOKEN` are now `CODE_SANDBOX_URL` and `CODE_SANDBOX_TOKEN`:
+1. Rename the following gptGO environment variables — `SANDBOX_URL` and `SANDBOX_TOKEN` are now `CODE_SANDBOX_URL` and `CODE_SANDBOX_TOKEN`:
 
 ```bash
 # Old
@@ -21,13 +21,13 @@ CODE_SANDBOX_URL=<code sandbox address>
 CODE_SANDBOX_TOKEN=<code sandbox credential>
 ```
 
-2. Internal-network security checks are now disabled by default. To re-enable them, set the environment variable `CHECK_INTERNAL_IP=true` (applies to fastgpt, fastgpt-pro, and fastgpt-sandbox).
+2. Internal-network security checks are now disabled by default. To re-enable them, set the environment variable `CHECK_INTERNAL_IP=true` (applies to gptGO, fastgpt-pro, and fastgpt-sandbox).
 
 ### 2. Update Images
 
-- FastGPT image tag: v4.14.9.1
-- FastGPT Commercial Edition image tag: v4.14.9.1
-- fastgpt-plugin image tag: v0.5.5
+- gptGO image tag: v4.14.9.1
+- gptGO Commercial Edition image tag: v4.14.9.1
+- gptGO-plugin image tag: v0.5.5
 - mcp_server — no update required
 - sandbox image tag: v4.14.9.1
 - AIProxy — no update required

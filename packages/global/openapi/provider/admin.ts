@@ -4,9 +4,9 @@ import { adminOpenAPIPaths, adminOpenAPITagGroups } from '../path';
 export const adminOpenAPIDocument = createDocument({
   openapi: '3.1.0',
   info: {
-    title: 'FastGPT Admin API',
+    title: 'gptGO Admin API',
     version: '0.1.0',
-    description: 'FastGPT Admin API 文档'
+    description: 'gptGO Admin API 文档'
   },
   paths: adminOpenAPIPaths,
   servers: [{ url: '/api' }],

@@ -10,7 +10,7 @@ import { shellQuote } from '@fastgpt/global/common/string/utils';
 /**
  * 解析 SKILL.md 的 YAML frontmatter，并返回 frontmatter 与正文内容。
  *
- * FastGPT 当前只依赖简单的 frontmatter 字段，因此这里使用轻量解析器处理常见
+ * gptGO 当前只依赖简单的 frontmatter 字段，因此这里使用轻量解析器处理常见
  * key/value、数组和一层对象。复杂 YAML 语法如果解析失败，会通过 error 返回给调用方。
  */
 export function parseSkillMarkdown(markdown: string): {

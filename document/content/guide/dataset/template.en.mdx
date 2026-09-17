@@ -3,7 +3,7 @@ title: Template Import
 description: Batch-import Dataset data from a CSV or Excel template
 ---
 
-Template import lets you add prepared content or question-answer pairs to a Dataset in batches. FastGPT accepts `.csv` and `.xlsx` files and creates Dataset entries from the questions, answers, indexes, and metadata in the template.
+Template import lets you add prepared content or question-answer pairs to a Dataset in batches. gptGO accepts `.csv` and `.xlsx` files and creates Dataset entries from the questions, answers, indexes, and metadata in the template.
 
 ## File Structure
 
@@ -22,7 +22,7 @@ Each row represents one Dataset entry. `q` and `a` should not both be empty. Hea
 
 ```csv
 q,a,index,index,metadata
-"What is FastGPT?","FastGPT is an AI agent development platform.","FastGPT overview","AI agent platform","{""source"":""product-doc"",""category"":""overview""}"
+"What is gptGO?","gptGO is an AI agent development platform.","gptGO overview","AI agent platform","{""source"":""product-doc"",""category"":""overview""}"
 "How do I import Dataset data?","Use a CSV or Excel template.","Dataset import","template import","{""source"":""help-center""}"
 ```
 
@@ -32,10 +32,10 @@ Use UTF-8 encoding for CSV files. Cells that contain commas, line breaks, or dou
 
 Excel files use the same headers and data structure as CSV files:
 
-| q                             | a                                            | index            | index             | metadata                                         |
-| ----------------------------- | -------------------------------------------- | ---------------- | ----------------- | ------------------------------------------------ |
-| What is FastGPT?              | FastGPT is an AI agent development platform. | FastGPT overview | AI agent platform | `{"source":"product-doc","category":"overview"}` |
-| How do I import Dataset data? | Use a CSV or Excel template.                 | Dataset import   | template import   | `{"source":"help-center"}`                       |
+| q                             | a                                          | index          | index             | metadata                                         |
+| ----------------------------- | ------------------------------------------ | -------------- | ----------------- | ------------------------------------------------ |
+| What is gptGO?                | gptGO is an AI agent development platform. | gptGO overview | AI agent platform | `{"source":"product-doc","category":"overview"}` |
+| How do I import Dataset data? | Use a CSV or Excel template.               | Dataset import | template import   | `{"source":"help-center"}`                       |
 
 Excel files must meet these requirements:
 
@@ -69,7 +69,7 @@ Do not use an array, plain text, or invalid JSON. In CSV files, escape the JSON 
 
 ## Invalid File Format
 
-If FastGPT reports an invalid file format, check the following:
+If gptGO reports an invalid file format, check the following:
 
 - The file uses the `.csv` or `.xlsx` extension.
 - The header row contains only supported columns.

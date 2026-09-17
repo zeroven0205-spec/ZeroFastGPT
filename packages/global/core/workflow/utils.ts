@@ -584,7 +584,7 @@ const systemLLMNodeTypes = new Set<FlowNodeTypeEnum>([
 ]);
 
 /**
- * 判断模型字段是否属于 FastGPT 系统模型引用。
+ * 判断模型字段是否属于 gptGO 系统模型引用。
  * 外部工具可以自由声明 model/rerankModel 等同名参数，因此不能只根据 key 判断。
  */
 export const isWorkflowSystemModelInput = ({
@@ -921,7 +921,7 @@ export const formatModels = ({
 /**
  * 为 JSON 导出补充可跨环境解析的 legacy model 名称，同时保留当前环境的 modelId。
  *
- * 只处理 FastGPT 系统模型引用；插件自定义的同名参数不会被改写。动态引用没有可反查的
+ * 只处理 gptGO 系统模型引用；插件自定义的同名参数不会被改写。动态引用没有可反查的
  * 静态模型，因此不生成 legacy 字段。无法从当前模型目录解析的 ID 保持原样。
  */
 export const addModelNamesToWorkflow = ({

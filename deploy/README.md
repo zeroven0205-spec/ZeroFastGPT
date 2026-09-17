@@ -4,7 +4,7 @@
 
 当前 `version/main` 的生产 Compose 默认按低资源单机运行：
 
-- 默认只启动 FastGPT 核心服务和低配 Code Sandbox；
+- 默认只启动 gptGO 核心服务和低配 Code Sandbox；
 - Agent Sandbox Server、Proxy、Volume Manager 使用 `agent-sandbox` profile，不会被普通 `docker compose up -d` 启动；
 - 不要在该规格主机上选择本机 Milvus、OceanBase、SeekDB 或 OpenGauss，优先使用 PostgreSQL + pgvector；
 - App、Redis、Code Sandbox、知识库处理并发和 HNSW 参数均可使用部署目录 `.env` 覆盖；

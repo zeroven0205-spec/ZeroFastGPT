@@ -1,6 +1,6 @@
 ---
 title: 'V4.10.1'
-description: 'FastGPT V4.10.1 更新说明'
+description: 'gptGO V4.10.1 更新说明'
 releaseTime: '2025-07-14'
 upgradeTags:
   - 升级脚本
@@ -10,9 +10,9 @@ upgradeTags:
 
 ### 1. 更新镜像：
 
-- 更新 FastGPT 镜像 tag: v4.10.1-fix3
-- 更新 FastGPT 商业版镜像 tag: v4.10.1
-- 更新 fastgpt-plugin 镜像 tag: v0.1.3
+- 更新 gptGO 镜像 tag: v4.10.1-fix3
+- 更新 gptGO 商业版镜像 tag: v4.10.1
+- 更新 gptGO-plugin 镜像 tag: v0.1.3
 - mcp_server 无需更新
 - Sandbox 无需更新
 - AIProxy 无需更新
@@ -21,7 +21,7 @@ upgradeTags:
 
 该脚本仅需商业版用户执行。
 
-从任意终端，发起 1 个 HTTP 请求。其中 `{{rootkey}}` 替换成环境变量里的 `rootkey`；`{{host}}` 替换成 **FastGPT 域名**。
+从任意终端，发起 1 个 HTTP 请求。其中 `{{rootkey}}` 替换成环境变量里的 `rootkey`；`{{host}}` 替换成 **gptGO 域名**。
 
 ```bash
 curl --location --request POST 'https://{{host}}/api/admin/initv4101' \

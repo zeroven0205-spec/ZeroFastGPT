@@ -1,7 +1,7 @@
 /**
  * 沙盒原子层：封装 provider 连接、断开和运行态探测。
  *
- * 这里只操作远端 sandbox adapter，不维护 FastGPT 本地实例状态。
+ * 这里只操作远端 sandbox adapter，不维护 gptGO 本地实例状态。
  */
 import { getLogger, LogCategories } from '../../../../../common/logger';
 import {

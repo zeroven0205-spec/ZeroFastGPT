@@ -13,7 +13,7 @@ import {
 } from '@fastgpt-sdk/storage';
 
 /**
- * FastGPT 边界保留 raw key，但仍拒绝会改变路径结构的非法值。
+ * gptGO 边界保留 raw key，但仍拒绝会改变路径结构的非法值。
  * provider 的字节长度限制延迟到实际存储操作，兼容历史 access-link 数据的读取。
  */
 export const StorageObjectKeySchema = z.string().superRefine((key, context) => {

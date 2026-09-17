@@ -15,10 +15,10 @@ export const isAnydocDocumentExtension = (extension: string) =>
   supportedExtensionSet.has(`.${extension.trim().toLowerCase().replace(/^\./, '')}`);
 
 /**
- * 使用 anydoc 将 FastGPT 原解析器未覆盖的文档转换为 Markdown。
+ * 使用 anydoc 将 gptGO 原解析器未覆盖的文档转换为 Markdown。
  *
  * 扩展名先交给 anydoc 自身做格式族归一化，例如 `.xls` 会映射为 `xlsx`。调用方仍需通过
- * `isAnydocDocumentExtension` 限制路由，避免依赖升级后静默改变 FastGPT 的上传与解析边界。
+ * `isAnydocDocumentExtension` 限制路由，避免依赖升级后静默改变 gptGO 的上传与解析边界。
  */
 export const readAnydocRawText = async (
   { buffer, extension }: ReadRawTextByBuffer,

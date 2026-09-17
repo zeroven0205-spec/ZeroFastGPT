@@ -20,7 +20,7 @@ function assertNever(value: never): never {
 /**
  * 根据明确的 provider 配置构造底层 sandbox adapter。
  *
- * 这个函数只负责把 FastGPT 的 provider 配置转换成 SDK adapter，不访问数据库，
+ * 这个函数只负责把 gptGO 的 provider 配置转换成 SDK adapter，不访问数据库，
  * 也不执行 ensure/create/resume 等生命周期动作。
  */
 export function buildSandboxAdapter(

@@ -18,7 +18,7 @@ type I18nStringLikeType = {
 export const i18nT = <T extends string>(key: T): T => key;
 
 /**
- * 将浏览器、Cookie 或请求头中的语言标签归一化为 FastGPT 支持的 locale。
+ * 将浏览器、Cookie 或请求头中的语言标签归一化为 gptGO 支持的 locale。
  * 语言标签不区分大小写，并兼容下划线、纯语言码及同语言的地区变体。
  */
 export const parseLocale = (value?: string): localeType | undefined => {

@@ -1,16 +1,16 @@
 ---
 title: 本地开发
-description: 对 FastGPT 进行开发调试
+description: 对 gptGO 进行开发调试
 ---
 
 import { Alert } from '@/components/docs/Alert';
 import FastGPTLink from '@/components/docs/linkFastGPT';
 
-本文档介绍了如何设置开发环境以构建和测试 <FastGPTLink campaign="docs_self_host_dev" content="intro_product_link">FastGPT</FastGPTLink>。
+本文档介绍了如何设置开发环境以构建和测试 <FastGPTLink campaign="docs_self_host_dev" content="intro_product_link">gptGO</FastGPTLink>。
 
 ## 前置开发环境
 
-您需要在计算机上安装和配置以下依赖项才能构建 <FastGPTLink campaign="docs_self_host_dev" content="prerequisites_product_link">FastGPT</FastGPTLink>：
+您需要在计算机上安装和配置以下依赖项才能构建 <FastGPTLink campaign="docs_self_host_dev" content="prerequisites_product_link">gptGO</FastGPTLink>：
 
 - [Git](https://git-scm.com/)
 - [Docker](https://www.docker.com/)
@@ -21,9 +21,9 @@ import FastGPTLink from '@/components/docs/linkFastGPT';
 
 ## 开始本地开发
 
-### 1. Fork FastGPT 存储库
+### 1. Fork gptGO 存储库
 
-您需要 Fork [FastGPT 存储库](https://github.com/labring/FastGPT)。
+您需要 Fork [gptGO 存储库](https://github.com/zeroven0205-spec/)。
 
 ### 2. 克隆存储库
 
@@ -35,9 +35,9 @@ git clone git@github.com:<your_github_username>/FastGPT.git
 
 ### 3. 通过 docker 启动开发环境
 
-若您本地已经通过 docker 启动了 FastGPT，则需要先关闭，否则会有端口冲突。
+若您本地已经通过 docker 启动了 gptGO，则需要先关闭，否则会有端口冲突。
 
-切换到 `FastGPT/deploy/dev` 目录，执行 `docker compose up -d` 运行 FastGPT 的各种依赖。
+切换到 `FastGPT/deploy/dev` 目录，执行 `docker compose up -d` 运行 gptGO 的各种依赖。
 
 ```bash
 cd FastGPT/deploy/dev
@@ -114,11 +114,11 @@ docker build -f ./projects/app/Dockerfile -t fastgpt. --build-arg name=app --bui
 
 ## 提交代码至开源仓库
 
-1. 确保你的代码是 Fork [FastGPT](https://github.com/labring/FastGPT) 仓库
+1. 确保你的代码是 Fork [gptGO](https://github.com/zeroven0205-spec/) 仓库
 2. 尽可能少量的提交代码，每次提交仅解决一个问题。
-3. 向 FastGPT 的 main 分支提交一个 PR，提交请求后，FastGPT 团队/社区的其他人将与您一起审查它。
+3. 向 gptGO 的 main 分支提交一个 PR，提交请求后，gptGO 团队/社区的其他人将与您一起审查它。
 
-如果遇到问题，比如合并冲突或不知道如何打开拉取请求，请查看 GitHub 的[拉取请求教程](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests)，了解如何解决合并冲突和其他问题。一旦您的 PR 被合并，您将自豪地被列为[贡献者表](https://github.com/labring/FastGPT/graphs/contributors)中的一员。
+如果遇到问题，比如合并冲突或不知道如何打开拉取请求，请查看 GitHub 的[拉取请求教程](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests)，了解如何解决合并冲突和其他问题。一旦您的 PR 被合并，您将自豪地被列为[贡献者表](https://github.com/zeroven0205-spec/)中的一员。
 
 ## QA
 
@@ -136,7 +136,7 @@ docker build -f ./projects/app/Dockerfile -t fastgpt. --build-arg name=app --bui
 
 ### sh ./scripts/postinstall.sh 没权限
 
-FastGPT 在 `pnpm i` 后会执行 `postinstall` 脚本，用于自动生成 `ChakraUI` 的 `Type`。如果没有权限，可以先执行 `chmod -R +x ./scripts/`，再执行 `pnpm i`。
+gptGO 在 `pnpm i` 后会执行 `postinstall` 脚本，用于自动生成 `ChakraUI` 的 `Type`。如果没有权限，可以先执行 `chmod -R +x ./scripts/`，再执行 `pnpm i`。
 
 仍不可行的话，可以手动执行 `./scripts/postinstall.sh` 里的内容。_如果是 Windows 下的话，可以使用 git bash 给 `postinstall` 脚本添加执行权限并执行 sh 脚本_
 
@@ -158,23 +158,17 @@ FastGPT 在 `pnpm i` 后会执行 `postinstall` 脚本，用于自动生成 `Cha
 
 遇到困难了吗？有任何问题吗? 加入飞书群与开发者和用户保持沟通。
 
-<img
-  width="400px"
-  src="https://oss.laf.run/otnvvf-imgs/fastgpt-feishu1.png"
-  className="medium-zoom-image"
-/>
-
 ## 代码结构说明
 
 ### nextjs
 
-FastGPT 使用了 nextjs 的 page route 作为框架。为了区分好前后端代码，在目录分配上会分成 global, service, web 3 个自目录，分别对应着 `前后端共用`、`后端专用`、`前端专用` 的代码。
+gptGO 使用了 nextjs 的 page route 作为框架。为了区分好前后端代码，在目录分配上会分成 global, service, web 3 个自目录，分别对应着 `前后端共用`、`后端专用`、`前端专用` 的代码。
 
 ### monorepo
 
-FastGPT 采用 pnpm workspace 方式构建 monorepo 项目，主要分为两个部分：
+gptGO 采用 pnpm workspace 方式构建 monorepo 项目，主要分为两个部分：
 
-- projects/app - FastGPT 主项目
+- projects/app - gptGO 主项目
 - packages/ - 子模块
   - global - 共用代码，通常是放一些前后端都能执行的函数、类型声明、常量。
   - service - 服务端代码
@@ -183,7 +177,7 @@ FastGPT 采用 pnpm workspace 方式构建 monorepo 项目，主要分为两个�
 
 ### 领域驱动模式（DDD）
 
-FastGPT 在代码模块划分时，按 DDD 的思想进行划分，主要分为以下几个领域：
+gptGO 在代码模块划分时，按 DDD 的思想进行划分，主要分为以下几个领域：
 
 - core - 核心功能（知识库，工作流，应用，对话）
 - support - 支撑功能（用户体系，计费，鉴权等）

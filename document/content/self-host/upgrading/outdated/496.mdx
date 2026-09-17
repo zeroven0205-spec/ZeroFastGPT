@@ -1,6 +1,6 @@
 ---
 title: V4.9.6
-description: FastGPT V4.9.6 更新说明
+description: gptGO V4.9.6 更新说明
 releaseTime: '2025-04-18'
 upgradeTags:
   - 配置变更
@@ -58,7 +58,7 @@ fastgpt-mcp-server:
 
 直接在 `应用管理` 中，增加一个 `fastgpt-mcp-server` 应用，镜像为 `ghcr.io/labring/fastgpt-mcp_server:v4.9.6`，并设置环境变量 `FASTGPT_ENDPOINT=fastgpt 的访问地址`。
 
-### 3. 修改 FastGPT 容器环境变量
+### 3. 修改 gptGO 容器环境变量
 
 #### 社区版
 
@@ -68,7 +68,7 @@ fastgpt-mcp-server:
 {
   "feConfigs": {
     "lafEnv": "https://laf.dev",
-    "mcpServerProxyEndpoint": "https://mcp.fastgpt.cn"
+    "mcpServerProxyEndpoint": "https://mcp.example.com"
   }
 }
 ```
@@ -79,8 +79,8 @@ fastgpt-mcp-server:
 
 ### 4. 更新镜像 tag
 
-- 更新 FastGPT 镜像 tag: v4.9.6
-- 更新 FastGPT 商业版镜像 tag: v4.9.6
+- 更新 gptGO 镜像 tag: v4.9.6
+- 更新 gptGO 商业版镜像 tag: v4.9.6
 - 更新 Sandbox 镜像 tag: v4.9.6
-- 增加 FastGPT mcp server 镜像 tag: v4.9.6
+- 增加 gptGO mcp server 镜像 tag: v4.9.6
 - AIProxy 无需更新

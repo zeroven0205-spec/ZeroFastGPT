@@ -651,7 +651,7 @@ export const compressRequestMessages = async ({
       }
     });
 
-    // 只有携带有效 key 的外部账号才视为调用方自带渠道，不在 FastGPT 侧重复计费。
+    // 只有携带有效 key 的外部账号才视为调用方自带渠道，不在 gptGO 侧重复计费。
     const totalPoints = usage.usedUserOpenAIKey
       ? 0
       : formatModelChars2Points({

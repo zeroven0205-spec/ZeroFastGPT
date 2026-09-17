@@ -18,7 +18,7 @@ export const MarketplacePath: OpenAPIPath = {
   '/marketplace/api/tool/list': {
     post: {
       summary: '获取工具列表',
-      description: '分页查询 FastGPT 插件市场中的系统工具，支持关键词、标签和来源筛选',
+      description: '分页查询 gptGO 插件市场中的系统工具，支持关键词、标签和来源筛选',
       tags: [DevApiTagsMap.pluginMarketplace],
       requestBody: {
         required: true,

@@ -1,6 +1,6 @@
 # @fastgpt-sdk/sandbox-adapter
 
-FastGPT's ESM-only sandbox provider abstraction for OpenSandbox and Sealos Devbox. Node.js 20 or
+gptGO's ESM-only sandbox provider abstraction for OpenSandbox and Sealos Devbox. Node.js 20 or
 newer is required.
 
 ## Install

@@ -1,11 +1,11 @@
 ---
 title: Integrating M3E Embedding Model
-description: Integrating the private M3E embedding model with FastGPT
+description: Integrating the private M3E embedding model with gptGO
 ---
 
 ## Introduction
 
-FastGPT uses OpenAI's embedding model by default. For private deployment, you can replace it with the M3E embedding model. M3E is a lightweight model with low resource requirements -- it can even run on CPU. The following tutorial is based on an image provided by community contributor "睡大觉".
+gptGO uses OpenAI's embedding model by default. For private deployment, you can replace it with the M3E embedding model. M3E is a lightweight model with low resource requirements -- it can even run on CPU. The following tutorial is based on an image provided by community contributor "睡大觉".
 
 ## Deploy the Image
 
@@ -42,7 +42,7 @@ curl --location --request POST 'https://domain/v1/embeddings' \
 
 Set Authorization to your sk-key. The model field should match the custom model name you entered in One API.
 
-## Integrate with FastGPT
+## Integrate with gptGO
 
 Edit the config.json file and add the M3E model to `vectorModels`:
 

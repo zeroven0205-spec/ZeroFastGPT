@@ -1,6 +1,6 @@
 ---
 title: Sealos Devbox Sandbox Configuration
-description: Use Sealos Devbox as the FastGPT sandbox
+description: Use Sealos Devbox as the gptGO sandbox
 ---
 
 import { Alert } from '@/components/docs/Alert';
@@ -12,11 +12,11 @@ import { Alert } from '@/components/docs/Alert';
 
 ## Prerequisites
 
-1. FastGPT commercial edition is deployed, and the team has Agent Sandbox access.
+1. gptGO commercial edition is deployed, and the team has Agent Sandbox access.
 2. Request Sealos Devbox connection details from support: Devbox service URL, access token, and runtime image.
 3. Follow [OpenSandbox Configuration](./opensandbox) to deploy `fastgpt-agent-sandbox-proxy`.
 
-## Configure FastGPT Environment Variables
+## Configure gptGO Environment Variables
 
 Add the following environment variables to `fastgpt-app` and `fastgpt-pro` .
 
@@ -48,7 +48,7 @@ AGENT_SANDBOX_PYPI_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
 AGENT_SANDBOX_APT_MIRROR=https://mirrors.tuna.tsinghua.edu.cn/debian
 ```
 
-For root Agent sandboxes, FastGPT generates and overwrites the standard Ubuntu or Debian `.sources` file for the detected distribution, creating a `.copy` backup before overwriting an existing file. When the variable is removed, files with a `.copy` backup are restored and files without a backup are skipped. Initialization does not run `apt-get update`.
+For root Agent sandboxes, gptGO generates and overwrites the standard Ubuntu or Debian `.sources` file for the detected distribution, creating a `.copy` backup before overwriting an existing file. When the variable is removed, files with a `.copy` backup are restored and files without a backup are skipped. Initialization does not run `apt-get update`.
 For arm64 runtime images, configure a mirror URL that provides the corresponding architecture packages.
 
 ## FAQ
@@ -59,12 +59,12 @@ After `AGENT_SANDBOX_PROVIDER=sealosdevbox` is enabled, `fastgpt-app` requires `
 
 ### AGENT_SANDBOX_SEALOS_IMAGE is required
 
-The `sealosdevbox` provider requires `AGENT_SANDBOX_SEALOS_IMAGE` . Use the Agent Sandbox runtime image provided by support or the image that matches your current FastGPT version.
+The `sealosdevbox` provider requires `AGENT_SANDBOX_SEALOS_IMAGE` . Use the Agent Sandbox runtime image provided by support or the image that matches your current gptGO version.
 
 ### Browser WebSocket connection fails
 
-Check that the proxy service is reachable from the browser and that your reverse proxy supports WebSocket Upgrade. If FastGPT is accessed over HTTPS, `AGENT_SANDBOX_PROXY_URL` should use `wss://` to avoid mixed-content blocking.
+Check that the proxy service is reachable from the browser and that your reverse proxy supports WebSocket Upgrade. If gptGO is accessed over HTTPS, `AGENT_SANDBOX_PROXY_URL` should use `wss://` to avoid mixed-content blocking.
 
 ### proxy validation fails or returns 401
 
-Make sure `AGENT_SANDBOX_PROXY_SECRET` is exactly the same in the FastGPT main service and `fastgpt-agent-sandbox-proxy` , and that it is at least 32 characters long.
+Make sure `AGENT_SANDBOX_PROXY_SECRET` is exactly the same in the gptGO main service and `fastgpt-agent-sandbox-proxy` , and that it is at least 32 characters long.

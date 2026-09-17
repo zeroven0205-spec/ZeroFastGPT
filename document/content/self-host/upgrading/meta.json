@@ -1,6 +1,6 @@
 {
   "title": "版本列表",
-  "description": "FastGPT 版本列表",
+  "description": "gptGO 版本列表",
   "pages": [
     "version-timeline",
     "upgrade-instruction",

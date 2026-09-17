@@ -1,6 +1,6 @@
 ---
 title: V4.9.11
-description: FastGPT V4.9.11 Release Notes
+description: gptGO V4.9.11 Release Notes
 releaseTime: '2025-06-08'
 upgradeTags:
   - MIGRATION
@@ -10,8 +10,8 @@ upgradeTags:
 
 ### 1. Update Images:
 
-- Update FastGPT image tag: v4.9.11
-- Update FastGPT Pro image tag: v4.9.11
+- Update gptGO image tag: v4.9.11
+- Update gptGO Pro image tag: v4.9.11
 - mcp_server: no update required
 - Update Sandbox image tag: v4.9.11
 - AIProxy: no update required
@@ -20,7 +20,7 @@ upgradeTags:
 
 This script only needs to be run by Pro edition users.
 
-From any terminal, send an HTTP request. Replace `{{rootkey}}` with the `rootkey` from your environment variables, and `{{host}}` with your **FastGPT domain**.
+From any terminal, send an HTTP request. Replace `{{rootkey}}` with the `rootkey` from your environment variables, and `{{host}}` with your **gptGO domain**.
 
 ```bash
 curl --location --request POST 'https://{{host}}/api/admin/initv4911' \

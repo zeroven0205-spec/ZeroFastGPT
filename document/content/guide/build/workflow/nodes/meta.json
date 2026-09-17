@@ -1,6 +1,6 @@
 {
   "title": "节点",
-  "description": "FastGPT 工作流节点设置和使用指南。",
+  "description": "gptGO 工作流节点设置和使用指南。",
   "pages": [
     "ai_chat",
     "dataset_search",

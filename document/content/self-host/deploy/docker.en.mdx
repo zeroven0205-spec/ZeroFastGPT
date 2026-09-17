@@ -1,6 +1,6 @@
 ---
 title: Deploy with Docker Compose
-description: Quickly deploy FastGPT using Docker Compose
+description: Quickly deploy gptGO using Docker Compose
 ---
 
 import { Alert } from '@/components/docs/Alert';
@@ -12,8 +12,6 @@ import { CurrentOriginCodeBlockUpdater } from '@/components/docs/CurrentOriginCo
 2. Docker and Docker Compose basics
 
 ## Deployment Architecture
-
-![](../../../public/imgs/sealos-fastgpt.webp)
 
 <Alert icon="🤖" context="success">
 
@@ -145,9 +143,9 @@ FASTGPT_DEPLOY_BASE_URL=https://doc.fastgpt.cn bash <(curl -fsSL https://doc.fas
 
 <CurrentOriginCodeBlockUpdater />
 
-Non-interactive mode also requires `FASTGPT_FE_DOMAIN`, the full URL users use to access FastGPT, such as `https://fastgpt.example.com`. Versions with Agent/Skill Sandbox also require `FASTGPT_SANDBOX_PROXY_URL`, the Sandbox WebSocket URL, such as `wss://sandbox-proxy.example.com`; version 4.16 additionally requires `FASTGPT_SANDBOX_PREVIEW_PROXY_URL` for the HTTP preview URL. Version 4.14 does not include this service. In interactive mode, the script prompts for the addresses required by each version; 4.15 prompts only for the WebSocket URL.
+Non-interactive mode also requires `FASTGPT_FE_DOMAIN`, the full URL users use to access gptGO, such as `https://fastgpt.example.com`. Versions with Agent/Skill Sandbox also require `FASTGPT_SANDBOX_PROXY_URL`, the Sandbox WebSocket URL, such as `wss://sandbox-proxy.example.com`; version 4.16 additionally requires `FASTGPT_SANDBOX_PREVIEW_PROXY_URL` for the HTTP preview URL. Version 4.14 does not include this service. In interactive mode, the script prompts for the addresses required by each version; 4.15 prompts only for the WebSocket URL.
 
-Access URLs and host ports are configured independently. For direct access, set `FASTGPT_PORT` for the FastGPT host port (default `3000`) and `FASTGPT_SANDBOX_PROXY_PORT` for the Sandbox Proxy host port (default `3006`); the container ports remain `3000` and `1006`. With a reverse proxy, public ports in `FASTGPT_FE_DOMAIN`, `FASTGPT_SANDBOX_PROXY_URL`, and the preview URL (for example, `443`) are not treated as host ports, so the script keeps the default Compose mappings.
+Access URLs and host ports are configured independently. For direct access, set `FASTGPT_PORT` for the gptGO host port (default `3000`) and `FASTGPT_SANDBOX_PROXY_PORT` for the Sandbox Proxy host port (default `3006`); the container ports remain `3000` and `1006`. With a reverse proxy, public ports in `FASTGPT_FE_DOMAIN`, `FASTGPT_SANDBOX_PROXY_URL`, and the preview URL (for example, `443`) are not treated as host ports, so the script keeps the default Compose mappings.
 
 The script automatically:
 
@@ -229,7 +227,7 @@ If Agent/Skill Sandbox is enabled, also replace the sandbox-related images in th
 
 ### 2. Modify Environment Variables
 
-You must set `FE_DOMAIN` in `fastgpt-app` to the full URL users use to access FastGPT, such as `https://fastgpt.example.com`. It must include a scheme, host, and optional port; do not leave it empty or use an internal container address.
+You must set `FE_DOMAIN` in `fastgpt-app` to the full URL users use to access gptGO, such as `https://fastgpt.example.com`. It must include a scheme, host, and optional port; do not leave it empty or use an internal container address.
 
 When Agent/Skill Sandbox is enabled, also configure:
 
@@ -244,10 +242,10 @@ For `Zilliz version`, you also need credentials — see [Deploy Zilliz Version: 
 
 The following services must be reachable. For direct access, open the host ports printed by the script; with a reverse proxy, the proxy owns the public ports:
 
-1. Port 3000 by default (FastGPT main service; change the host port with `FASTGPT_PORT`)
+1. Port 3000 by default (gptGO main service; change the host port with `FASTGPT_PORT`)
 2. Port 9000 (S3 service)
-3. Port 3006 by default (FastGPT Agent Sandbox Proxy service; change the host port with `FASTGPT_SANDBOX_PROXY_PORT`)
-4. Port 3003 (FastGPT SSE MCP server service; you can leave this port closed if you don't need it.)
+3. Port 3006 by default (gptGO Agent Sandbox Proxy service; change the host port with `FASTGPT_SANDBOX_PROXY_PORT`)
+4. Port 3003 (gptGO SSE MCP server service; you can leave this port closed if you don't need it.)
 
 ### 4. Start Containers
 
@@ -261,9 +259,9 @@ docker compose --profile prepull pull
 docker compose up -d
 ```
 
-### 5. Access FastGPT
+### 5. Access gptGO
 
-Access FastGPT via the port/domain opened in step 3.
+Access gptGO via the port/domain opened in step 3.
 Login username is `root`, password is the `DEFAULT_ROOT_PSW` set in `docker-compose.yml` environment variables.
 
 If you deploy with the interactive script, it randomly generates `DEFAULT_ROOT_PSW` and prints the login password when it finishes. If you deploy manually, change the default password in `docker-compose.yml` before starting the service. Each container restart automatically updates the root user's password based on `DEFAULT_ROOT_PSW`.
@@ -276,28 +274,28 @@ If you deploy with the interactive script, it randomly generates `DEFAULT_ROOT_P
 
 ### 7. Install System Plugins as Needed
 
-Starting from V4.14.0, the fastgpt-plugin image only provides the runtime environment without pre-installed system plugins. All FastGPT systems must manually install system plugins.
+Starting from V4.14.0, the gptGO-plugin image only provides the runtime environment without pre-installed system plugins. All gptGO systems must manually install system plugins.
 
-- Install via the plugin marketplace — by default it fetches from the public FastGPT Marketplace.
-- If your FastGPT can't access the marketplace, visit [FastGPT Plugin Marketplace](https://marketplace.fastgpt.cn/), download .pkg files, and import them via file upload.
+- Install via the plugin marketplace — by default it fetches from the public gptGO Marketplace.
+- If your gptGO can't access the marketplace, visit [gptGO Plugin Marketplace](https://github.com/zeroven0205-spec/), download .pkg files, and import them via file upload.
 - You can also sort tools, set default installations, and manage tags.
 
 ![alt text](../../../public/imgs/image-121.png)
 
 ## FAQ
 
-### FastGPT and FastGPT-plugin Version Compatibility
+### gptGO and gptGO-plugin Version Compatibility
 
-| FastGPT-plugin Version | FastGPT Main Service |
-| ---------------------- | -------------------- |
-| 1.x                    | 4.15.x               |
-| 0.6.x                  | >= 4.14.11, < 4.15.0 |
-| 0.5.x                  | >= 4.14.6, < 4.14.11 |
-| < 0.5.0                | < 4.14.6             |
+| gptGO-plugin Version | gptGO Main Service   |
+| -------------------- | -------------------- |
+| 1.x                  | 4.15.x               |
+| 0.6.x                | >= 4.14.11, < 4.15.0 |
+| 0.5.x                | >= 4.14.6, < 4.14.11 |
+| < 0.5.0              | < 4.14.6             |
 
 ### S3 Connection Issues
 
-Check the `STORAGE_EXTERNAL_ENDPOINT` variable — it must be accessible by both the client and FastGPT service.
+Check the `STORAGE_EXTERNAL_ENDPOINT` variable — it must be accessible by both the client and gptGO service.
 
 **Important:**
 
@@ -376,14 +374,14 @@ rs.status()
 
 ### How to Change API Address and Key
 
-Starting with V4.17.0, **you must deploy or connect to AI Proxy** and set these environment variables in the FastGPT container:
+Starting with V4.17.0, **you must deploy or connect to AI Proxy** and set these environment variables in the gptGO container:
 
-- `AIPROXY_API_ENDPOINT`: The AI Proxy service root URL reachable from FastGPT, such as `http://aiproxy:3000`. Do not append `/v1`; FastGPT adds the path required by each API.
+- `AIPROXY_API_ENDPOINT`: The AI Proxy service root URL reachable from gptGO, such as `http://aiproxy:3000`. Do not append `/v1`; gptGO adds the path required by each API.
 - `AIPROXY_API_TOKEN`: A nonempty AI Proxy administrator token that matches the administrator credentials configured on the AI Proxy server.
 
 Startup validation fails if either setting is missing. `OPENAI_BASE_URL` and `CHAT_API_KEY` do not replace these required settings. AI Proxy is still required when a model uses `requestUrl/requestAuth`. Configure model service endpoints and keys in the Admin provider settings.
 
-To update the AI Proxy connection, edit the FastGPT container's environment variables in `docker-compose.yml`. Commercial Admin services that share App/Service configuration also need both variables.
+To update the AI Proxy connection, edit the gptGO container's environment variables in `docker-compose.yml`. Commercial Admin services that share App/Service configuration also need both variables.
 
 After modifying, restart:
 
@@ -429,11 +427,11 @@ If `container1` needs to connect to `container2`, use `container2:running_port`.
 
 ### relation "modeldata" does not exist
 
-PG database not connected or initialization failed — check logs. FastGPT initializes tables on each PG connection. Errors will appear in the logs.
+PG database not connected or initialization failed — check logs. gptGO initializes tables on each PG connection. Errors will appear in the logs.
 
 1. Check if the database container started normally
 2. For non-Docker deployments, manually install the pg vector extension
-3. Check fastgpt logs for related errors
+3. Check gptGO logs for related errors
 
 ### Illegal instruction
 

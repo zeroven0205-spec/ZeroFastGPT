@@ -1,6 +1,6 @@
 ---
 title: V4.8.4
-description: FastGPT V4.8.4 Release Notes
+description: gptGO V4.8.4 Release Notes
 releaseTime: '2024-06-13'
 upgradeTags:
   - MIGRATION
@@ -10,13 +10,13 @@ upgradeTags:
 
 ### 1. Update Images
 
-- Update the fastgpt image tag to v4.8.4
-- Update the fastgpt-sandbox image tag to v4.8.4 (optional, no changes)
+- Update the gptGO image tag to v4.8.4
+- Update the gptGO-sandbox image tag to v4.8.4 (optional, no changes)
 - Update the commercial edition image tag to v4.8.4
 
 ### 2. Commercial Edition Initialization
 
-From any terminal, send 1 HTTP request. Replace `{{rootkey}}` with the `rootkey` from your environment variables, and `{{host}}` with your **FastGPT commercial edition domain**.
+From any terminal, send 1 HTTP request. Replace `{{rootkey}}` with the `rootkey` from your environment variables, and `{{host}}` with your **gptGO commercial edition domain**.
 
 ```bash
 curl --location --request POST 'https://{{host}}/api/admin/init/484' \

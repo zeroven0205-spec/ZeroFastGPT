@@ -66,7 +66,7 @@ export default async function Page({
 
   // 生成面包屑导航
   const breadcrumbItems = [
-    { name: 'FastGPT', url: domain },
+    { name: 'gptGO', url: domain },
     { name: 'Docs', url: `${domain}/${lang}` }
   ];
   if (slug && slug.length > 0) {
@@ -107,8 +107,8 @@ export default async function Page({
           style: 'clerk'
         }}
         editOnGithub={{
-          owner: 'labring',
-          repo: 'FastGPT',
+          owner: 'zeroven0205-spec',
+          repo: 'ZeroFastGPT',
           sha: 'main',
           path: `document/content/${page.file.path}`
         }}
@@ -170,10 +170,10 @@ export async function generateMetadata(props: {
       languages
     },
     openGraph: {
-      title: `${page.data.title} | FastGPT`,
+      title: `${page.data.title} | gptGO`,
       description: page.data.description,
       url,
-      siteName: 'FastGPT',
+      siteName: 'gptGO',
       locale: lang,
       type: 'article',
       publishedTime: page.data.releaseTime

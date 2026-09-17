@@ -1,6 +1,6 @@
 ---
 title: SSO & 外部成员同步
-description: FastGPT 外部成员系统接入设计与配置
+description: gptGO 外部成员系统接入设计与配置
 ---
 
 import { Alert } from '@/components/docs/Alert';
@@ -9,18 +9,18 @@ import { Alert } from '@/components/docs/Alert';
 
 ## 介绍
 
-为了方便地接入**外部成员系统**，FastGPT 提供一套接入外部系统的**标准接口**，以及一个 FastGPT-SSO-Service 镜像作为**适配器**。
+为了方便地接入**外部成员系统**，gptGO 提供一套接入外部系统的**标准接口**，以及一个 gptGO-SSO-Service 镜像作为**适配器**。
 
 通过这套标准接口，你可以可以实现：
 
-1. SSO 登录。从外部系统回调后，在 FastGPT 中创建一个用户。
+1. SSO 登录。从外部系统回调后，在 gptGO 中创建一个用户。
 2. 成员和组织架构同步（下面都简称成员同步）。
 
 **原理**
 
-FastGPT-pro 中，有一套标准的 SSO 和成员同步接口，系统会根据这套接口进行 SSO 和成员同步操作。
+gptGO-pro 中，有一套标准的 SSO 和成员同步接口，系统会根据这套接口进行 SSO 和成员同步操作。
 
-FastGPT-SSO-Service 是为了聚合不同来源的 SSO 和成员同步接口，将他们转成 fastgpt-pro 可识别的接口。
+gptGO-SSO-Service 是为了聚合不同来源的 SSO 和成员同步接口，将他们转成 gptGO-pro 可识别的接口。
 
 ![](/imgs/sso2.png)
 
@@ -87,7 +87,7 @@ fastgpt-sso:
   </tbody>
 </table>
 
-### 2. 配置 fastgpt-pro
+### 2. 配置 gptGO-pro
 
 #### 1. 配置环境变量
 
@@ -128,7 +128,7 @@ env:
 
 1. 自动定时成员同步
 
-设置 fastgpt-pro 环境变量则可开启自动成员同步
+设置 gptGO-pro 环境变量则可开启自动成员同步
 
 ```yaml
 env:
@@ -177,7 +177,7 @@ App ID 和 App Secret
 
 #### 3. 重定向 URL
 
-进入开发者后台，点击企业自建应用，在开发配置的安全设置中设置重定向 URL，重定向 URL 形如 `https://www.fastgpt.cn/login/provider` 前面的域名修改为部署后公开可访问的 fastgpt 的域名
+进入开发者后台，点击企业自建应用，在开发配置的安全设置中设置重定向 URL，重定向 URL 形如 `https://your-domain.example/login/provider` 前面的域名修改为部署后公开可访问的 gptGO 的域名
 ![](/imgs/sso5.png)
 
 #### 4. yml 配置示例
@@ -199,7 +199,7 @@ fastgpt-sso:
     # 获取用户信息接口
     - FEISHU_GET_USER_INFO_URL=https://open.feishu.cn/open-apis/authen/v1/user_info
     # 重定向地址，设置为上面第三部中一模一样的地址
-    - FEISHU_REDIRECT_URI=https://fastgpt.cn/login/provider
+    - FEISHU_REDIRECT_URI=https://your-domain.example/login/provider
     # 飞书APP的应用ID，一般以cli开头
     - FEISHU_APP_ID=xxx
     # 飞书APP的应用密钥
@@ -271,7 +271,7 @@ fastgpt-sso:
 
     ![](/imgs/sso7.png)
 
-2.  创建一个供 FastGPT 使用的内部应用：
+2.  创建一个供 gptGO 使用的内部应用：
 
     a. 获取应用的 AgentID 和 Secret
 
@@ -313,7 +313,7 @@ fastgpt-sso:
 
     ![](/imgs/sso14.png)
 
-#### 2. 使用 latest 镜像部署 fastgpt-sso 中转服务
+#### 2. 使用 latest 镜像部署 gptGO-sso 中转服务
 
 企微 SSO 登录使用应用的 Secret，成员同步使用“通讯录同步助手”的 Secret。请拉取已发布的 `latest` 镜像并重新创建服务：
 
@@ -362,7 +362,7 @@ fastgpt-sso:
 
 - `/org/list` 返回企微应用可见范围内的部门。
 - `/user/list` 仍通过“通讯录同步助手”获取成员，但只保留至少属于一个应用可见部门的成员。
-- 成员所属部门会同步过滤为应用可见部门；只属于不可见部门的成员不会同步到 FastGPT。
+- 成员所属部门会同步过滤为应用可见部门；只属于不可见部门的成员不会同步到 gptGO。
 - 修改企微应用可见范围或镜像版本后，请重新执行一次成员同步；也可以先调用下方接口检查返回结果。
 
 ### 标准 OAuth2.0
@@ -385,7 +385,7 @@ fastgpt-sso:
    ```
    用户输入账号密码后，会跳转到 `redirect_uri` 中，并携带 `code` 参数，示例：
    ```text
-   https://fastgpt.cn/login/provider?code=4/P7qD2qAz4&state=xyz
+   https://your-domain.example/login/provider?code=4/P7qD2qAz4&state=xyz
    ```
 2. 获取 access_token 的地址，获取到 code 后，通过*服务器请求*该地址获取 access_token 例如：`http://example.com/oauth/access_token`
    ```bash
@@ -481,9 +481,9 @@ fastgpt-sso:
 
 SSO_PROVIDER 继续负责登录，SSO_SYNC_PROVIDER=ldap 让 /user/list 和 /org/list 使用 LDAP。LDAP 不提供登录接口；如果仍需要 SSO 登录，不要将 SSO_PROVIDER 设置为 ldap。
 
-#### FastGPT 侧配置
+#### gptGO 侧配置
 
-fastgpt-pro 需要访问 SSO-service，并使用与 SSO-service.AUTH_TOKEN 相同的 Token：
+gptGO-pro 需要访问 SSO-service，并使用与 SSO-service.AUTH_TOKEN 相同的 Token：
 
 ```yaml
 env:
@@ -631,11 +631,11 @@ curl -H 'Authorization: Bearer replace-with-a-sync-token' http://fastgpt-sso:300
 
 ## 标准接口文档
 
-以下是 FastGPT-pro 中，SSO 和成员同步的标准接口文档，如果需要对接非标准系统，可以参考该章节进行开发。
+以下是 gptGO-pro 中，SSO 和成员同步的标准接口文档，如果需要对接非标准系统，可以参考该章节进行开发。
 
 ![](/imgs/sso18.png)
 
-FastGPT 提供如下标准接口支持：
+gptGO 提供如下标准接口支持：
 
 1. https://example.com/login/oauth/getAuthURL 获取鉴权重定向地址
 2. https://example.com/login/oauth/getUserInfo?code=xxxxx 消费 code，换取用户信息
@@ -644,7 +644,7 @@ FastGPT 提供如下标准接口支持：
 
 ### 获取 SSO 登录重定向地址
 
-返回一个重定向登录地址，fastgpt 会自动重定向到该地址。redirect_uri 会自动拼接到该地址的 query 中。
+返回一个重定向登录地址，gptGO 会自动重定向到该地址。redirect_uri 会自动拼接到该地址的 query 中。
 
 <Tabs items={['请求示例','响应示例']}>
   <Tab value="请求示例" >
@@ -838,6 +838,6 @@ curl 示例
 
 ## 如何对接非标准系统
 
-1. 客户自己开发：按 fastgpt 提供的标准接口进行开发，并将部署后的服务地址填入 fastgpt-pro
-   可以参考该模版库：[fastgpt-sso-template](https://github.com/labring/fastgpt-sso-template) 进行开发
-2. 由 fastgpt 团队定制开发：a. 提供系统的 SSO 文档、获取成员和组织的文档、以及外网测试地址。b. 在 fastgpt-sso-service 中，增加对应的 provider 和环境变量，并编写代码来对接。
+1. 客户自己开发：按 gptGO 提供的标准接口进行开发，并将部署后的服务地址填入 fastgpt-pro
+   可以参考该模版库：[fastgpt-sso-template](https://github.com/zeroven0205-spec/) 进行开发
+2. 由 gptGO 团队定制开发：a. 提供系统的 SSO 文档、获取成员和组织的文档、以及外网测试地址。b. 在 fastgpt-sso-service 中，增加对应的 provider 和环境变量，并编写代码来对接。

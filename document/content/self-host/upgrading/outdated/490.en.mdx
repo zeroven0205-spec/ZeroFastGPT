@@ -1,6 +1,6 @@
 ---
 title: V4.9.0
-description: FastGPT V4.9.0 Release Notes
+description: gptGO V4.9.0 Release Notes
 releaseTime: '2025-03-06'
 upgradeTags:
   - CONFIG
@@ -13,10 +13,10 @@ upgradeTags:
 
 ### 2. Update Images and PG Container
 
-- Update FastGPT image tag: v4.9.0
-- Update FastGPT Pro image tag: v4.9.0
+- Update gptGO image tag: v4.9.0
+- Update gptGO Pro image tag: v4.9.0
 - Sandbox image: no update required
-- Update PG container to v0.8.0-pg15. See the [latest yml](https://raw.githubusercontent.com/labring/FastGPT/main/document/public/deploy/docker/main/global/docker-compose.pg.yml)
+- Update PG container to v0.8.0-pg15. See the [latest yml](https://github.com/zeroven0205-spec/)
 
 ### 3. Replace OneAPI (Optional)
 
@@ -24,7 +24,7 @@ Follow this step if you want to replace OneAPI with [AI Proxy](https://github.co
 
 #### 1. Modify the yml File
 
-Refer to the [latest yml](https://raw.githubusercontent.com/labring/FastGPT/main/document/public/deploy/docker/main/global/docker-compose.pg.yml) file. OneAPI has been removed and AI Proxy configuration has been added, including one service and one PgSQL database. Append the `aiproxy` configuration after the OneAPI configuration (don't remove OneAPI yet — the initialization process will automatically sync OneAPI's configuration).
+Refer to the [latest yml](https://github.com/zeroven0205-spec/) file. OneAPI has been removed and AI Proxy configuration has been added, including one service and one PgSQL database. Append the `aiproxy` configuration after the OneAPI configuration (don't remove OneAPI yet — the initialization process will automatically sync OneAPI's configuration).
 
 <details>
 <summary>AI Proxy Yml Configuration</summary>
@@ -81,9 +81,9 @@ Refer to the [latest yml](https://raw.githubusercontent.com/labring/FastGPT/main
 
 </details>
 
-#### 2. Add FastGPT Environment Variables:
+#### 2. Add gptGO Environment Variables:
 
-Modify the environment variables for the FastGPT container in the yml file:
+Modify the environment variables for the gptGO container in the yml file:
 
 ```
 # AI Proxy address — takes priority if configured
@@ -94,7 +94,7 @@ Modify the environment variables for the FastGPT container in the yml file:
 
 #### 3. Restart Services
 
-Run `docker-compose down` to stop services, then `docker-compose up -d` to start them. This will add the `aiproxy` service and update FastGPT's configuration.
+Run `docker-compose down` to stop services, then `docker-compose up -d` to start them. This will add the `aiproxy` service and update gptGO's configuration.
 
 #### 4. Run the OneAPI to AI Proxy Migration Script
 
@@ -132,7 +132,7 @@ curl --location --request POST 'http://localhost:3003/api/channels/import/oneapi
 
 - If you're not familiar with Docker operations, skip the migration script and manually re-add channels after removing all OneAPI content.
 
-#### 5. Verify AI Proxy is Running in FastGPT
+#### 5. Verify AI Proxy is Running in gptGO
 
 Log in with the root account. On the `Account - Model Providers` page, you should see two new options: `Model providers` and `Call Logs`. Open Model providers to verify that your previous OneAPI channels are listed, confirming the migration was successful. You can then manually check that each channel is working properly.
 
@@ -146,9 +146,9 @@ docker-compose down
 docker-compose up -d
 ```
 
-### 4. Run the FastGPT Upgrade Script
+### 4. Run the gptGO Upgrade Script
 
-From any terminal, send an HTTP request. Replace `{{rootkey}}` with the `rootkey` from your environment variables, and `{{host}}` with your **FastGPT domain**.
+From any terminal, send an HTTP request. Replace `{{rootkey}}` with the `rootkey` from your environment variables, and `{{host}}` with your **gptGO domain**.
 
 ```bash
 curl --location --request POST 'https://{{host}}/api/admin/initv490' \

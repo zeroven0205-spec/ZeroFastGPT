@@ -46,7 +46,7 @@ export const GetSystemInitDataResponseSchema = z.object({
   }),
   systemVersion: z.string().optional().meta({
     example: '4.16.0',
-    description: 'FastGPT 系统版本'
+    description: 'gptGO 系统版本'
   }),
   aiproxyChannels: z
     .array(

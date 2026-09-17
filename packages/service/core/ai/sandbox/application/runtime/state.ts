@@ -1,5 +1,5 @@
 /**
- * 沙盒业务层：读写 sandbox HOME 下的 FastGPT runtime 状态文件。
+ * 沙盒业务层：读写 sandbox HOME 下的 gptGO runtime 状态文件。
  *
  * 只记录轻量执行标记，不承担数据库状态或 provider 生命周期管理。
  */
@@ -28,7 +28,7 @@ export type SandboxRuntimeStateContext = {
 type RuntimeStateLocation = Pick<SandboxRuntimeStateContext, 'statePath'>;
 
 /**
- * 读取 sandbox HOME 下的 FastGPT runtime 状态文件。
+ * 读取 sandbox HOME 下的 gptGO runtime 状态文件。
  *
  * 该文件只记录“某段 runtime 逻辑是否已经针对当前 sandbox 成功执行过”的轻量状态，
  * 例如 entrypoint hash、内置文件 etag、skill version marker。读写失败时返回空状态，

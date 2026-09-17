@@ -103,8 +103,7 @@ export const SandboxPath: OpenAPIPath = {
   '/core/ai/sandbox/upload': {
     post: {
       summary: '上传文件到沙盒',
-      description:
-        '将原始二进制请求流直接写入当前 Chat Session 路径，不在 FastGPT 节点生成临时文件',
+      description: '将原始二进制请求流直接写入当前 Chat Session 路径，不在 gptGO 节点生成临时文件',
       tags: [DevApiTagsMap.sandbox],
       requestParams: {
         query: SandboxUploadQueryRawSchema

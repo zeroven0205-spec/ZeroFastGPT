@@ -12,7 +12,7 @@ import { IntSchema } from '../../../../common/zod';
 export const SandboxProxyHeaderSchema = z.object({
   'x-proxy-token': z.string().min(1).meta({
     example: 'configured-agent-sandbox-proxy-secret',
-    description: 'agent-sandbox-proxy 与 FastGPT 主站之间的共享密钥'
+    description: 'agent-sandbox-proxy 与 gptGO 主站之间的共享密钥'
   })
 });
 

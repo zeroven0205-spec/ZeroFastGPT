@@ -29,7 +29,7 @@ function getConfiguredProvider(): SandboxProviderType {
 }
 
 /**
- * 获取 provider 对应的 FastGPT sandbox 运行态契约。
+ * 获取 provider 对应的 gptGO sandbox 运行态契约。
  *
  * index 只保留 provider 路由，具体工作目录、默认镜像、入口脚本和 createConfig
  * 映射由各 provider profile 文件维护。

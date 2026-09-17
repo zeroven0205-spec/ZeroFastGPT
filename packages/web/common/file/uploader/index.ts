@@ -3,7 +3,7 @@ import { uploadSingleFile } from './single';
 import type { S3FileUploaderParams } from './types';
 
 /**
- * 统一执行浏览器到 FastGPT 对象存储代理的文件上传。
+ * 统一执行浏览器到 gptGO 对象存储代理的文件上传。
  *
  * 未声明 uploadMode 的旧响应按 single 处理；新的 presign 响应会携带完整的模式参数。
  */

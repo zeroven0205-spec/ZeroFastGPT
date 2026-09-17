@@ -15,7 +15,7 @@ export const InvokeUserInfoQuerySchema = z.object({});
 export const InvokeUserInfoResponseSchema = z.object({
   username: z.string().meta({ description: '账号', example: 'user@example.com' }),
   contact: z.string().nullish().meta({ description: '联系方式', example: '13800138000' }),
-  memberName: z.string().nullish().meta({ description: '成员名称', example: 'FastGPT 用户' }),
+  memberName: z.string().nullish().meta({ description: '成员名称', example: 'gptGO 用户' }),
   orgs: z.array(
     z.object({
       pathId: z.string().meta({ description: '组织路径 ID', example: 'root/team-a' }),

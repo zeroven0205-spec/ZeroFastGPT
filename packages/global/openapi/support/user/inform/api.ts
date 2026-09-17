@@ -96,7 +96,7 @@ export const UserInformItemSchema = z
       description: '关联团队 ID'
     }),
     teamName: z.string().optional().meta({
-      example: 'FastGPT',
+      example: 'gptGO',
       description: '关联团队名称'
     }),
     time: z.coerce.date().meta({

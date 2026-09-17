@@ -148,7 +148,7 @@ export const filterGPTMessageByMaxContext = async ({
 
 /**
  * 格式化发给模型供应商的消息。
- * 这里会按模型能力过滤用户多模态输入，剥离 FastGPT 内部字段，并把内部媒体协议转成供应商可消费的 content part。
+ * 这里会按模型能力过滤用户多模态输入，剥离 gptGO 内部字段，并把内部媒体协议转成供应商可消费的 content part。
  */
 export const loadRequestMessages = async ({
   messages,
@@ -174,7 +174,7 @@ export const loadRequestMessages = async ({
   const getFileExtension = (filename: string) => filename.split('.').pop()?.toLowerCase() || '';
 
   /**
-   * 判断扩展名是否命中 FastGPT 配置的文件类型白名单。
+   * 判断扩展名是否命中 gptGO 配置的文件类型白名单。
    * fileTypes 使用逗号分隔的 .ext 列表，这里保持与全局常量格式一致。
    */
   const matchFileType = (fileTypes: string, extension: string) =>
@@ -460,7 +460,7 @@ export const loadRequestMessages = async ({
   };
 
   /**
-   * 将 FastGPT 内部 file_url 转成模型可消费的音频/视频 content part。
+   * 将 gptGO 内部 file_url 转成模型可消费的音频/视频 content part。
    * 普通文档文件不会进入 LLM 多模态消息，文档内容由上游读取后以文本提供。
    */
   const normalizeFileUrlContentPart = async (
@@ -469,7 +469,7 @@ export const loadRequestMessages = async ({
     const { key: _key, ...fileItem } = item;
     const fileType = fileItem.fileType || getFileTypeFromUrl(fileItem.url);
 
-    // 上传文件会先以 FastGPT 内部的 file_url 存在，发给模型前需要转成供应商支持的
+    // 上传文件会先以 gptGO 内部的 file_url 存在，发给模型前需要转成供应商支持的
     // input_audio / video_url。普通 file 当前不直接透传给 LLM。
     if (fileType === 'audio' && useAudio) {
       const fileUrl = fileItem.url;
@@ -505,7 +505,7 @@ export const loadRequestMessages = async ({
   };
 
   /**
-   * 将 FastGPT 内部媒体 content part 归一化为供应商可消费的消息格式。
+   * 将 gptGO 内部媒体 content part 归一化为供应商可消费的消息格式。
    * 本地路径和强制 base64 开关会在这里统一转换；内部 key 只会被剥离，不参与处理。
    */
   const normalizeMediaContentParts = async (content: ChatCompletionContentPart[]) => {

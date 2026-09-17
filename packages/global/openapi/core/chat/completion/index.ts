@@ -331,7 +331,7 @@ export const ChatCompletionPath: OpenAPIPath = {
       tags: [DevApiTagsMap.chatController, SystemOpenApiTagMap.chatController],
       deprecated: true,
       summary: '发起会话v1',
-      description: `v1 对话接口兼容 GPT 的接口。如果你的项目使用的是标准的 GPT 官方接口，可以直接通过修改 BaseUrl 和 Authorization 来访问 FastGPT 应用。
+      description: `v1 对话接口兼容 GPT 的接口。如果你的项目使用的是标准的 GPT 官方接口，可以直接通过修改 BaseUrl 和 Authorization 来访问 gptGO 应用。
 
 **注意事项**
 
@@ -340,8 +340,8 @@ export const ChatCompletionPath: OpenAPIPath = {
 
 **chatId 行为**
 
-- 不传入（或为空）：不使用 FastGPT 提供的上下文功能，完全通过传入的 \`messages\` 构建上下文。
-- 非空字符串：使用 chatId 进行对话，自动从 FastGPT 数据库取会话中的对话，并使用 \`messages\` 数组最后一个内容作为用户问题，其余 message 会被忽略。请自行确保 chatId 唯一，长度小于 250。
+- 不传入（或为空）：不使用 gptGO 提供的上下文功能，完全通过传入的 \`messages\` 构建上下文。
+- 非空字符串：使用 chatId 进行对话，自动从 gptGO 数据库取会话中的对话，并使用 \`messages\` 数组最后一个内容作为用户问题，其余 message 会被忽略。请自行确保 chatId 唯一，长度小于 250。
 
 **stream / detail 组合**
 
@@ -493,14 +493,14 @@ ${interactiveStreamExample}
 
 **注意事项**
 
-- 如需通过 \`authProxy\` 代理团队成员身份，需要团队所有者在创建或编辑该 key 时开启 \`authProxy\`；代理身份仍需要具备目标应用和会话权限。（仅适用于 FastGPT >= v4.15.0）
+- 如需通过 \`authProxy\` 代理团队成员身份，需要团队所有者在创建或编辑该 key 时开启 \`authProxy\`；代理身份仍需要具备目标应用和会话权限。（仅适用于 gptGO >= v4.15.0）
 - 传入的 \`model\`，\`temperature\` 等参数字段均无效，这些字段由编排决定，不会根据 API 参数改变。
 - 不会返回实际消耗 \`Token\` 值，如果需要，可以设置 \`detail=true\`，并手动计算 \`responseData\` 里的 \`tokens\` 值。
 
 **chatId 行为**
 
-- 不传入（或为空）：不使用 FastGPT 提供的上下文功能，完全通过传入的 \`messages\` 构建上下文。
-- 非空字符串：使用 chatId 进行对话，自动从 FastGPT 数据库取会话中的对话，并使用 \`messages\` 数组最后一个内容作为用户问题，其余 message 会被忽略。请自行确保 chatId 唯一，长度小于 250。
+- 不传入（或为空）：不使用 gptGO 提供的上下文功能，完全通过传入的 \`messages\` 构建上下文。
+- 非空字符串：使用 chatId 进行对话，自动从 gptGO 数据库取会话中的对话，并使用 \`messages\` 数组最后一个内容作为用户问题，其余 message 会被忽略。请自行确保 chatId 唯一，长度小于 250。
 
 **stream / detail 组合**
 
@@ -646,7 +646,7 @@ ${interactiveStreamExample}
     post: {
       tags: [DevApiTagsMap.chatController],
       summary: '测试对话（调试）',
-      description: `调试运行 Agent / 工作流。接收完整的节点、边和聊天配置，按测试模式执行一次工作流，通过 SSE 流式返回运行结果与节点状态。仅用于 FastGPT 编排页面的调试预览，不建议作为对外接口使用。
+      description: `调试运行 Agent / 工作流。接收完整的节点、边和聊天配置，按测试模式执行一次工作流，通过 SSE 流式返回运行结果与节点状态。仅用于 gptGO 编排页面的调试预览，不建议作为对外接口使用。
 
 响应为 SSE 流，event 结构与 \`/v1/chat/completions\` \`detail=true, stream=true\` 一致，包括 \`answer\` / \`flowNodeStatus\` / \`flowResponses\` / \`interactive\` 等。`,
       requestBody: {

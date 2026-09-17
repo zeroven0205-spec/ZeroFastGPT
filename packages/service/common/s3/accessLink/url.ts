@@ -12,7 +12,7 @@ const getS3AccessLinkEndpointUrl = () => {
  * 构造对外暴露的 S3 下载短链。
  *
  * 当配置 `FILE_DOWNLOAD_PUBLIC_URL_PREFIX` 时，下载链接直接使用该公开前缀，
- * 由 nginx 将 `{signedAlias}` rewrite 到 app 的下载 API；未配置时保持旧的 FastGPT API 路径。
+ * 由 nginx 将 `{signedAlias}` rewrite 到 app 的下载 API；未配置时保持旧的 gptGO API 路径。
  */
 export const buildS3AccessLinkDownloadUrl = (signedAlias: string) => {
   if (serviceEnv.FILE_DOWNLOAD_PUBLIC_URL_PREFIX) {

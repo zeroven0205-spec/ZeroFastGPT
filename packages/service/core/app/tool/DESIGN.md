@@ -1,8 +1,8 @@
-# FastGPT 系统工具设计
+# gptGO 系统工具设计
 
 ## 工具分类
 
-1. 系统工具 (从 FastGPT-Plugin Service 获得的工具)
+1. 系统工具 (从 gptGO-Plugin Service 获得的工具)
 2. 系统工作流工具（商业版后台配置的工具，关联一个工作流）
 3. 用户自定义的工具
   1. mcp 工具

@@ -20,7 +20,7 @@ export type DefineMongoIndexOptions = {
 };
 
 /**
- * 统一声明当前索引和 FastGPT 明确废弃的历史索引。
+ * 统一声明当前索引和 gptGO 明确废弃的历史索引。
  *
  * `deprecated` 默认是 `false`，当前索引直接代理 `Schema.index()`；显式设置为
  * `true` 时只登记清理元数据，不能继续写入 Mongoose Schema，否则启动同步会先

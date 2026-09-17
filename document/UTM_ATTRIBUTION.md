@@ -1,11 +1,11 @@
 # UTM 归因规范
 
-`FASTGPT_HOME_DOMAIN` 只配置 origin，例如 `https://fastgpt.io` 或 `https://fastgpt.cn`，不能携带路径或查询参数。
+`FASTGPT_HOME_DOMAIN` 用于配置 gptGO 项目主页；默认使用 GitHub 项目地址。
 
 商机表单的业务来源使用独立的 `source` 参数，不使用 `utm_source` 作为提交来源。`source`
 会由官网 Cookie 保留并写入 CRM 商机；UTM 参数仍可保留，用于匿名渠道分析。
 
-文档内跳转 FastGPT 官网统一使用 `FastGPTLink`。组件会固定添加：
+文档内跳转 gptGO 项目主页统一使用 `FastGPTLink`。组件会固定添加：
 
 - `utm_source=docs`
 - `utm_medium=referral`
@@ -14,8 +14,8 @@
 
 | 页面 | `utm_campaign` | 链接位置 | `utm_content` |
 | --- | --- | --- | --- |
-| 快速了解 FastGPT | `docs_getting_started` | 国际版入口 | `cloud_entry_io` |
-| 快速了解 FastGPT | `docs_getting_started` | 中国大陆版入口 | `cloud_entry_cn` |
+| 快速了解 gptGO | `docs_getting_started` | 国际版入口 | `cloud_entry_io` |
+| 快速了解 gptGO | `docs_getting_started` | 中国大陆版入口 | `cloud_entry_cn` |
 | 云服务介绍 | `docs_cloud_intro` | 国际版入口 | `cloud_entry_io` |
 | 云服务介绍 | `docs_cloud_intro` | 中国大陆版入口 | `cloud_entry_cn` |
 | 云服务 FAQ | `docs_cloud_faq` | 国际版登录帮助 | `login_help_io` |

@@ -1,16 +1,16 @@
 ---
 title: Third-Party Dataset Development
-description: How to integrate a third-party Dataset with FastGPT
+description: How to integrate a third-party Dataset with gptGO
 sidebarTag: DEV
 ---
 
 import { Alert } from '@/components/docs/Alert';
 
-There are many document libraries available online, such as Lark, Yuque, and others. Different FastGPT users may use different document libraries. FastGPT has built-in support for Lark and Yuque, but if you need to integrate other document libraries, follow this guide.
+There are many document libraries available online, such as Lark, Yuque, and others. Different gptGO users may use different document libraries. gptGO has built-in support for Lark and Yuque, but if you need to integrate other document libraries, follow this guide.
 
 ## Unified API Specification
 
-To provide a unified interface for different document libraries, FastGPT defines a standard API specification with 4 endpoints. See the [API File Library endpoints](./api_dataset.en.mdx).
+To provide a unified interface for different document libraries, gptGO defines a standard API specification with 4 endpoints. See the [API File Library endpoints](./api_dataset.en.mdx).
 
 All built-in document libraries are extensions of the standard API File Library. Refer to the code in `FastGPT/packages/service/core/dataset/apiDataset/yuqueDataset/api.ts` to build extensions for other document libraries. You need to implement 4 endpoints:
 
@@ -25,7 +25,7 @@ For this walkthrough, we'll use adding a Lark Knowledge Dataset (FeishuKnowledge
 
 ### 1. Add Third-Party Document Library Parameters
 
-First, go to `FastGPT\packages\global\core\dataset\apiDataset.d.ts` in the FastGPT project and add the third-party document library server type. Design the fields based on your needs. For example, the Yuque Dataset requires `userId` and `token` for authentication.
+First, go to `FastGPT\packages\global\core\dataset\apiDataset.d.ts` in the gptGO project and add the third-party document library server type. Design the fields based on your needs. For example, the Yuque Dataset requires `userId` and `token` for authentication.
 
 ```ts
 export type YuqueServer = {

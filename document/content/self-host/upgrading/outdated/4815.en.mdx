@@ -1,6 +1,6 @@
 ---
 title: V4.8.15
-description: FastGPT V4.8.15 Release Notes
+description: gptGO V4.8.15 Release Notes
 releaseTime: '2024-12-10'
 upgradeTags:
   - MIGRATION
@@ -22,13 +22,13 @@ upgradeTags:
 
 ## Upgrade Guide
 
-- Update the fastgpt image tag to v4.8.15-fix3
-- Update the fastgpt-pro commercial edition image tag to v4.8.15
+- Update the gptGO image tag to v4.8.15-fix3
+- Update the gptGO-pro commercial edition image tag to v4.8.15
 - Sandbox image update is optional
 
 ## Run Migration Script
 
-From any terminal, send an HTTP request. Replace `{{rootkey}}` with the `rootkey` from your environment variables, and `{{host}}` with your **FastGPT domain**:
+From any terminal, send an HTTP request. Replace `{{rootkey}}` with the `rootkey` from your environment variables, and `{{host}}` with your **gptGO domain**:
 
 ```bash
 curl --location --request POST 'https://{{host}}/api/admin/initv4815' \
@@ -40,7 +40,7 @@ This resets the scheduled execution fields for apps, removing null values to red
 
 ---
 
-From any terminal, send an HTTP request. Replace `{{rootkey}}` with the `rootkey` from your environment variables, and `{{host}}` with your **FastGPT domain**:
+From any terminal, send an HTTP request. Replace `{{rootkey}}` with the `rootkey` from your environment variables, and `{{host}}` with your **gptGO domain**:
 
 ```bash
 curl --location --request POST 'https://{{host}}/api/admin/init/refreshFreeUser' \

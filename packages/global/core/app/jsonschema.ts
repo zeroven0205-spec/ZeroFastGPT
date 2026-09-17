@@ -155,7 +155,7 @@ export const JsonSchemaPropertiesItemSchema = z
     default: z.any().optional(), // 默认值
     examples: z.array(z.any()).optional(), // 示例
 
-    // 自定义扩展（FastGPT 专用）
+    // 自定义扩展（gptGO 专用）
     'x-tool-description': z.string().optional(), // 工具描述
     toolDescription: z.string().optional(), // 工具描述 for System Tool
     isToolParam: z.boolean().optional(), // 工具输入默认是否由 Agent 生成

@@ -1,4 +1,5 @@
-const DEFAULT_FASTGPT_HOME_ORIGIN = 'https://fastgpt.io';
+const GPTGO_GITHUB_URL = 'https://github.com/zeroven0205-spec/';
+const DEFAULT_FASTGPT_HOME_ORIGIN = GPTGO_GITHUB_URL;
 
 export const DOCS_UTM_CAMPAIGNS = {
   gettingStarted: 'docs_getting_started',
@@ -12,21 +13,30 @@ export type FastGPTSite = 'configured' | 'cn' | 'io';
 
 const normalizeOrigin = (value?: string): string => {
   try {
-    return new URL(value || DEFAULT_FASTGPT_HOME_ORIGIN).origin;
+    const url = new URL(value || DEFAULT_FASTGPT_HOME_ORIGIN);
+    url.search = '';
+    url.hash = '';
+    return `${url.origin}${url.pathname.replace(/\/+$/, '')}/`;
   } catch {
     return DEFAULT_FASTGPT_HOME_ORIGIN;
   }
 };
 
-export const getFastGPTHomeOrigin = (): string =>
-  normalizeOrigin(
-    process.env.NEXT_PUBLIC_FASTGPT_HOME_DOMAIN || process.env.FASTGPT_HOME_DOMAIN
-  );
+export const getFastGPTHomeOrigin = (): string => {
+  const configuredOrigin =
+    process.env.NEXT_PUBLIC_FASTGPT_HOME_DOMAIN || process.env.FASTGPT_HOME_DOMAIN;
+  return configuredOrigin && !/fastgpt/i.test(configuredOrigin)
+    ? normalizeOrigin(configuredOrigin)
+    : DEFAULT_FASTGPT_HOME_ORIGIN;
+};
 
 export const getFastGPTDocsOrigin = (): string => {
-  const homeUrl = new URL(getFastGPTHomeOrigin());
-  homeUrl.hostname = `doc.${homeUrl.hostname}`;
-  return homeUrl.origin;
+  const configuredOrigin = process.env.NEXT_PUBLIC_DOCS_ORIGIN;
+  const docsOrigin =
+    configuredOrigin && !/fastgpt/i.test(configuredOrigin)
+      ? normalizeOrigin(configuredOrigin)
+      : GPTGO_GITHUB_URL;
+  return docsOrigin.replace(/\/$/, '');
 };
 
 export const buildFastGPTHomeUrl = ({
@@ -38,13 +48,8 @@ export const buildFastGPTHomeUrl = ({
   content: string;
   site?: FastGPTSite;
 }): string => {
-  const origin =
-    site === 'cn'
-      ? 'https://fastgpt.cn'
-      : site === 'io'
-        ? 'https://fastgpt.io'
-        : getFastGPTHomeOrigin();
-  const url = new URL('/', origin);
+  const origin = site === 'configured' ? getFastGPTHomeOrigin() : GPTGO_GITHUB_URL;
+  const url = new URL(origin);
 
   url.searchParams.set('utm_source', 'docs');
   url.searchParams.set('utm_medium', 'referral');

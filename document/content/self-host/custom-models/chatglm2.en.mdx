@@ -1,15 +1,15 @@
 ---
 title: Integrating ChatGLM2-6B
-description: Integrating the private ChatGLM2-6B model with FastGPT
+description: Integrating the private ChatGLM2-6B model with gptGO
 ---
 
 import { Alert } from '@/components/docs/Alert';
 
 ## Introduction
 
-FastGPT lets you use your own OpenAI API KEY to quickly call OpenAI APIs. It currently integrates GPT-3.5, GPT-4, and embedding models for building Datasets. However, for data security reasons, you may not want to send all data to cloud-based LLMs.
+gptGO lets you use your own OpenAI API KEY to quickly call OpenAI APIs. It currently integrates GPT-3.5, GPT-4, and embedding models for building Datasets. However, for data security reasons, you may not want to send all data to cloud-based LLMs.
 
-So how do you connect a private model to FastGPT? This guide walks through integrating Tsinghua's ChatGLM2 as an example.
+So how do you connect a private model to gptGO? This guide walks through integrating Tsinghua's ChatGLM2 as an example.
 
 ## ChatGLM2-6B Overview
 
@@ -44,7 +44,7 @@ Recommended configurations:
 ### Source Code Deployment
 
 1. Set up the environment as described above;
-2. Download the [Python file](https://github.com/labring/FastGPT/blob/main/plugins/model/llm-ChatGLM2/openai_api.py)
+2. Download the [Python file](https://github.com/zeroven0205-spec/)
 3. Run `pip install -r requirements.txt`;
 4. Open the Python file and configure the token in the `verify_token` method -- this adds a layer of authentication to prevent unauthorized access;
 5. Run `python openai_api.py --model_name 16`. Choose the number based on the configuration table above.
@@ -95,7 +95,7 @@ curl --location --request POST 'https://domain/v1/chat/completions' \
 
 Set Authorization to sk-aaabbbcccdddeeefffggghhhiiijjjkkk. The model field should match the custom model name you entered in One API.
 
-## Integrate with FastGPT
+## Integrate with gptGO
 
 Edit the config.json file and add chatglm2 to `llmModels`:
 

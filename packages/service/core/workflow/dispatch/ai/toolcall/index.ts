@@ -176,7 +176,7 @@ export const dispatchRunTools = async (props: DispatchToolModuleProps): Promise<
       toolCallOutputTokens,
       toolCallTotalPoints,
       completeMessages = [], // 实际发送给模型的消息，只保留文本用于预览。
-      assistantResponses = [], // FastGPT 持久化到 assistant.value 的响应。
+      assistantResponses = [], // gptGO 持久化到 assistant.value 的响应。
       finish_reason,
       error,
       requestIds,

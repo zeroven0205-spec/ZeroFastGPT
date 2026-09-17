@@ -4,7 +4,7 @@ export enum BucketNameEnum {
   chat = 'chat'
 }
 
-/** FastGPT 原有解析器覆盖的文档扩展名。 */
+/** gptGO 原有解析器覆盖的文档扩展名。 */
 const builtInDocumentFileExtensions = [
   '.txt',
   '.docx',

@@ -5,16 +5,16 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "description": "FastGPT SDK for object storage",
-  "author": "FastGPT",
+  "description": "gptGO SDK for object storage",
+  "author": "gptGO",
   "repository": {
     "type": "git",
-    "url": "https://github.com/labring/FastGPT.git",
+    "url": "https://github.com/zeroven0205-spec/",
     "directory": "sdk/storage"
   },
-  "homepage": "https://github.com/labring/FastGPT",
+  "homepage": "https://github.com/zeroven0205-spec/",
   "bugs": {
-    "url": "https://github.com/labring/FastGPT/issues"
+    "url": "https://github.com/zeroven0205-spec/"
   },
   "publishConfig": {
     "access": "public"

@@ -16,7 +16,7 @@ const privateToolSchemaKeys = new Set([
 ]);
 
 /**
- * 清理 FastGPT 内部工具参数扩展字段，避免 OpenAI-compatible SDK 转成 Gemini 等原生
+ * 清理 gptGO 内部工具参数扩展字段，避免 OpenAI-compatible SDK 转成 Gemini 等原生
  * function declaration 时，把 toolDescription 这类非供应商 schema 字段透传出去。
  */
 const sanitizeToolParametersSchema = (schema: unknown): unknown => {
@@ -46,10 +46,10 @@ const sanitizeCompletionTools = (tools?: ChatCompletionTool[]): ChatCompletionTo
   }));
 
 /**
- * 把 FastGPT 内部 LLM body 转成 OpenAI SDK 可请求的 completions body。
+ * 把 gptGO 内部 LLM body 转成 OpenAI SDK 可请求的 completions body。
  *
  * 这个函数只做“请求体格式化”：
- * - 移除 FastGPT 内部字段。
+ * - 移除 gptGO 内部字段。
  * - 应用模型配置中的真实 model/defaultConfig/fieldMap。
  * - 根据模型能力裁剪不支持的参数。
  * - prompt tool 模式下不把 tools 直接传给模型。
@@ -70,7 +70,7 @@ export const llmCompletionsBodyFormat = async <T extends ChatCompletionCreatePar
     ...body
   } = input;
   const sanitizedTools = sanitizeCompletionTools(tools);
-  // 这些字段只影响 FastGPT 自身逻辑，不能透传给模型供应商。
+  // 这些字段只影响 gptGO 自身逻辑，不能透传给模型供应商。
   delete body.retainDatasetCite;
   delete body.useVision;
   delete body.useAudio;

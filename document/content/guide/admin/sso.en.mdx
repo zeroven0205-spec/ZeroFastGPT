@@ -1,6 +1,6 @@
 ---
 title: SSO & External Member Sync
-description: FastGPT External Member System Integration and Configuration
+description: gptGO External Member System Integration and Configuration
 ---
 
 import { Alert } from '@/components/docs/Alert';
@@ -9,18 +9,18 @@ If you don't need SSO or member sync, or only need quick login via GitHub, Googl
 
 ## Overview
 
-To simplify integration with **external member systems**, FastGPT provides a set of **standard interfaces** for connecting to external systems, along with a FastGPT-SSO-Service image that serves as an **adapter**.
+To simplify integration with **external member systems**, gptGO provides a set of **standard interfaces** for connecting to external systems, along with a gptGO-SSO-Service image that serves as an **adapter**.
 
 Through these standard interfaces, you can:
 
-1. SSO login. After a callback from an external system, create a user in FastGPT.
+1. SSO login. After a callback from an external system, create a user in gptGO.
 2. Member and organizational structure sync (referred to as "member sync" below).
 
 **How It Works**
 
-FastGPT-pro includes a standard set of SSO and member sync interfaces. The system performs SSO and member sync operations based on these interfaces.
+gptGO-pro includes a standard set of SSO and member sync interfaces. The system performs SSO and member sync operations based on these interfaces.
 
-FastGPT-SSO-Service aggregates SSO and member sync interfaces from different sources and converts them into the format recognized by fastgpt-pro.
+gptGO-SSO-Service aggregates SSO and member sync interfaces from different sources and converts them into the format recognized by gptGO-pro.
 
 ![](/imgs/sso2.png)
 
@@ -87,7 +87,7 @@ Depending on the provider, you'll need different environment variables. Below ar
   </tbody>
 </table>
 
-### 2. Configure fastgpt-pro
+### 2. Configure gptGO-pro
 
 #### 1. Configure Environment Variables
 
@@ -128,7 +128,7 @@ If you need to sync members from an external system, you can enable member sync.
 
 1. Automatic scheduled member sync
 
-Set the fastgpt-pro environment variable to enable automatic member sync:
+Set the gptGO-pro environment variable to enable automatic member sync:
 
 ```yaml
 env:
@@ -178,7 +178,7 @@ Note: The accessible data scope must be set to visible to all members.
 #### 3. Redirect URL
 
 Go to the developer console, click on your enterprise self-built app, and set the redirect URL in Security Settings under Development Configuration.
-The redirect URL should follow the format `https://www.fastgpt.cn/login/provider` — replace the domain with your publicly accessible FastGPT domain.
+The redirect URL should follow the format `https://your-domain.example/login/provider` — replace the domain with your publicly accessible gptGO domain.
 ![](/imgs/sso5.png)
 
 #### 4. yml Configuration Example
@@ -200,7 +200,7 @@ fastgpt-sso:
     # User info endpoint
     - FEISHU_GET_USER_INFO_URL=https://open.feishu.cn/open-apis/authen/v1/user_info
     # Redirect address — must match the URL from step 3 exactly
-    - FEISHU_REDIRECT_URI=https://fastgpt.cn/login/provider
+    - FEISHU_REDIRECT_URI=https://your-domain.example/login/provider
     # Lark App ID, usually starts with cli
     - FEISHU_APP_ID=xxx
     # Lark App Secret
@@ -273,7 +273,7 @@ fastgpt-sso:
 
     ![](/imgs/sso7.png)
 
-2.  Create an internal app for FastGPT:
+2.  Create an internal app for gptGO:
 
     a. Get the app's AgentID and Secret
 
@@ -315,7 +315,7 @@ fastgpt-sso:
 
     ![](/imgs/sso14.png)
 
-#### 2. Use the latest image to deploy the fastgpt-sso relay service
+#### 2. Use the latest image to deploy the gptGO-sso relay service
 
 WeCom SSO login uses the app Secret, while member synchronization uses the Contact Sync Assistant Secret. Pull the published `latest` image and recreate the service:
 
@@ -366,7 +366,7 @@ fastgpt-sso:
 
 - `/org/list` returns departments visible to the WeCom app.
 - `/user/list` still retrieves members through the Contact Sync Assistant, but keeps only members who belong to at least one department visible to the app.
-- A member's department list is filtered to visible departments; a member who belongs only to invisible departments is not synchronized to FastGPT.
+- A member's department list is filtered to visible departments; a member who belongs only to invisible departments is not synchronized to gptGO.
 - After changing the app visibility scope or image version, run member synchronization again. You can also call the endpoints below to verify the result first.
 
 ### Standard OAuth 2.0
@@ -389,7 +389,7 @@ We provide a standard OAuth 2.0 integration flow requiring three endpoints:
    "http://example.com/oauth/authorize?response_type=code&client_id=s6BhdRkqt3&state=xyz&redirect_uri=https%3A%2F%2Ffastgpt.cn%2Flogin%2Fprovider"
    ```
    After entering credentials, users are redirected to redirect_uri with a code parameter:
-   `https://fastgpt.cn/login/provider?code=4/P7qD2qAz4&state=xyz`
+   `https://your-domain.example/login/provider?code=4/P7qD2qAz4&state=xyz`
 2. Access token endpoint. After obtaining the code, make a _server-side request_ to this endpoint to get the access_token, e.g., `http://example.com/oauth/access_token`
    ```bash
    curl -X POST\
@@ -484,9 +484,9 @@ fastgpt-sso:
 
 SSO_PROVIDER remains responsible for login. Setting SSO_SYNC_PROVIDER=ldap makes /user/list and /org/list use LDAP. LDAP does not provide login endpoints; do not set SSO_PROVIDER=ldap when SSO login is required.
 
-#### FastGPT Configuration
+#### gptGO Configuration
 
-fastgpt-pro must reach the SSO service and use the same token as SSO-service.AUTH_TOKEN:
+gptGO-pro must reach the SSO service and use the same token as SSO-service.AUTH_TOKEN:
 
 ```yaml
 env:
@@ -611,11 +611,11 @@ curl -H 'Authorization: Bearer replace-with-a-sync-token' http://fastgpt-sso:300
 
 ## Standard Interface Documentation
 
-Below is the standard interface documentation for SSO and member sync in FastGPT-pro. If you need to integrate with a non-standard system, refer to this section for development.
+Below is the standard interface documentation for SSO and member sync in gptGO-pro. If you need to integrate with a non-standard system, refer to this section for development.
 
 ![](/imgs/sso18.png)
 
-FastGPT provides the following standard interfaces:
+gptGO provides the following standard interfaces:
 
 1. https://example.com/login/oauth/getAuthURL - Get the authorization redirect URL
 2. https://example.com/login/oauth/getUserInfo?code=xxxxx - Consume the code and exchange it for user info
@@ -624,7 +624,7 @@ FastGPT provides the following standard interfaces:
 
 ### Get SSO Login Redirect URL
 
-Returns a redirect login URL. FastGPT will automatically redirect to this URL. The redirect_uri is automatically appended to the URL query string.
+Returns a redirect login URL. gptGO will automatically redirect to this URL. The redirect_uri is automatically appended to the URL query string.
 
 <Tabs items={['Request Example','Response Example']}>
   <Tab value="Request Example" >
@@ -818,8 +818,8 @@ curl example
 
 ## How to Integrate Non-Standard Systems
 
-1. Self-development: Build according to the standard interfaces provided by FastGPT, then enter the deployed service address into fastgpt-pro.
-   You can use this template repository as a starting point: [fastgpt-sso-template](https://github.com/labring/fastgpt-sso-template)
-2. Custom development by the FastGPT team:
+1. Self-development: Build according to the standard interfaces provided by gptGO, then enter the deployed service address into fastgpt-pro.
+   You can use this template repository as a starting point: [fastgpt-sso-template](https://github.com/zeroven0205-spec/)
+2. Custom development by the gptGO team:
    a. Provide the system's SSO documentation, member and organization retrieval documentation, and an external test address.
-   b. In fastgpt-sso-service, add the corresponding provider and environment variables, and write the integration code.
+   b. In gptGO-sso-service, add the corresponding provider and environment variables, and write the integration code.

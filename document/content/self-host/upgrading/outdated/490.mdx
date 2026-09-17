@@ -1,6 +1,6 @@
 ---
 title: V4.9.0
-description: FastGPT V4.9.0 更新说明
+description: gptGO V4.9.0 更新说明
 releaseTime: '2025-03-06'
 upgradeTags:
   - 配置变更
@@ -13,10 +13,10 @@ upgradeTags:
 
 ### 2. 更新镜像和 PG 容器
 
-- 更新 FastGPT 镜像 tag: v4.9.0
-- 更新 FastGPT 商业版镜像 tag: v4.9.0
+- 更新 gptGO 镜像 tag: v4.9.0
+- 更新 gptGO 商业版镜像 tag: v4.9.0
 - Sandbox 镜像，可以不更新
-- 更新 PG 容器为 v0.8.0-pg15, 可以查看[最新的 yml](https://raw.githubusercontent.com/labring/FastGPT/main/document/public/deploy/docker/main/global/docker-compose.pg.yml)
+- 更新 PG 容器为 v0.8.0-pg15, 可以查看[最新的 yml](https://github.com/zeroven0205-spec/)
 
 ### 3. 替换 OneAPI（可选）
 
@@ -24,7 +24,7 @@ upgradeTags:
 
 #### 1. 修改 yml 文件
 
-参考[最新的 yml](https://raw.githubusercontent.com/labring/FastGPT/main/document/public/deploy/docker/main/global/docker-compose.pg.yml) 文件。里面已移除 OneAPI 并添加了 AIProxy 配置。包含一个服务和一个 PgSQL 数据库。将 `aiproxy` 的配置 `追加` 到 OneAPI 的配置后面（先不要删除 OneAPI，有一个初始化会自动同步 OneAPI 的配置）
+参考[最新的 yml](https://github.com/zeroven0205-spec/) 文件。里面已移除 OneAPI 并添加了 AIProxy 配置。包含一个服务和一个 PgSQL 数据库。将 `aiproxy` 的配置 `追加` 到 OneAPI 的配置后面（先不要删除 OneAPI，有一个初始化会自动同步 OneAPI 的配置）
 
 <details>
 <summary>AI Proxy Yml 配置</summary>
@@ -81,9 +81,9 @@ upgradeTags:
 
 </details>
 
-#### 2. 增加 FastGPT 环境变量：
+#### 2. 增加 gptGO 环境变量：
 
-修改 yml 文件中，fastgpt 容器的环境变量：
+修改 yml 文件中，gptGO 容器的环境变量：
 
 ```
 # AI Proxy 的地址，如果配了该地址，优先使用
@@ -94,7 +94,7 @@ upgradeTags:
 
 #### 3. 重载服务
 
-`docker-compose down` 停止服务，然后 `docker-compose up -d` 启动服务，此时会追加 `aiproxy` 服务，并修改 FastGPT 的配置。
+`docker-compose down` 停止服务，然后 `docker-compose up -d` 启动服务，此时会追加 `aiproxy` 服务，并修改 gptGO 的配置。
 
 #### 4. 执行 OneAPI 迁移 AI proxy 脚本
 
@@ -132,7 +132,7 @@ curl --location --request POST 'http://localhost:3003/api/channels/import/oneapi
 
 - 如果不熟悉 docker 操作，建议不要走脚本迁移，直接删除 OneAPI 所有内容，然后手动重新添加渠道。
 
-#### 5. 进入 FastGPT 检查 `AI Proxy` 服务是否正常启动。
+#### 5. 进入 gptGO 检查 `AI Proxy` 服务是否正常启动。
 
 登录 root 账号后，在 `账号-模型提供商` 页面，可以看到多出了 `模型渠道` 和 `调用日志` 两个选项，打开模型渠道，可以看到之前 OneAPI 的渠道，说明迁移完成，此时可以手动再检查下渠道是否正常。
 
@@ -146,9 +146,9 @@ docker-compose down
 docker-compose up -d
 ```
 
-### 4. 运行 FastGPT 升级脚本
+### 4. 运行 gptGO 升级脚本
 
-从任意终端，发起 1 个 HTTP 请求。其中 `{{rootkey}}` 替换成环境变量里的 `rootkey`；`{{host}}` 替换成 **FastGPT 域名**。
+从任意终端，发起 1 个 HTTP 请求。其中 `{{rootkey}}` 替换成环境变量里的 `rootkey`；`{{host}}` 替换成 **gptGO 域名**。
 
 ```bash
 curl --location --request POST 'https://{{host}}/api/admin/initv490' \

@@ -67,7 +67,7 @@ import {
 
 type AppToolType = WorkflowTemplateType & {
   status?: PluginStatusType;
-  // FastGPT-plugin tool
+  // gptGO-plugin tool
   inputs?: FlowNodeInputItemType[];
   outputs?: FlowNodeOutputItemType[];
 

@@ -32,8 +32,8 @@ import { pluginClient } from '@fastgpt/service/thirdProvider/fastgptPlugin';
 
 const logger = getLogger(LogCategories.SYSTEM);
 const pluginFeaturesProbeTimeoutMs = 3000;
-const defaultOpenSourceLoginGuideDocUrl =
-  'https://doc.fastgpt.io/zh-CN/guide/version/cloud/faq#%E8%B4%A6%E5%8F%B7%E7%99%BB%E5%BD%95%E9%97%AE%E9%A2%98';
+const GPTGO_GITHUB_URL = 'https://github.com/zeroven0205-spec/';
+const defaultOpenSourceLoginGuideDocUrl = GPTGO_GITHUB_URL;
 
 /* Init global variables */
 export function initGlobalVariables() {
@@ -93,14 +93,13 @@ export async function getInitConfig() {
 const defaultFeConfigs: FastGPTFeConfigsType = {
   show_emptyChat: true,
   show_git: true,
-  docUrl: 'https://doc.fastgpt.io',
-  openAPIDocUrl: 'https://doc.fastgpt.io/openapi/intro',
+  docUrl: GPTGO_GITHUB_URL,
+  openAPIDocUrl: GPTGO_GITHUB_URL,
   enable_team_plugin_upload: false,
   appTemplateCourse:
     'https://fael3z0zfze.feishu.cn/wiki/CX9wwMGyEi5TL6koiLYcg7U0nWb?fromScene=spaceOverview',
-  systemTitle: 'FastGPT',
-  concatMd:
-    '项目开源地址: [FastGPT GitHub](https://github.com/labring/FastGPT)\n交流群: ![](https://oss.laf.run/otnvvf-imgs/fastgpt-feishu1.png)',
+  systemTitle: 'gptGO',
+  concatMd: `项目开源地址: [gptGO GitHub](${GPTGO_GITHUB_URL})`,
   limit: {
     exportDatasetLimitMinutes: 0,
     websiteSyncLimitMinuted: 0,
@@ -131,6 +130,37 @@ async function getPluginRemoteDebugEnabled() {
 }
 
 export async function initSystemConfig() {
+  /**
+   * 清理系统配置中会暴露原产品品牌的公开文案和链接，同时保留内部协议、包名和历史配置键。
+   * 自定义配置只有在命中旧品牌时才被替换，避免覆盖部署方自己的标题和业务链接。
+   */
+  const sanitizePublicBrandConfig = (feConfigs: Partial<FastGPTFeConfigsType>) => {
+    const sanitizeText = (value?: string) => value?.replace(/\bFastGPT\b/gi, 'gptGO');
+    const sanitizeLink = (value?: string) =>
+      value && /fastgpt/i.test(value) ? GPTGO_GITHUB_URL : value;
+    const sanitizedConfig: Partial<FastGPTFeConfigsType> = { ...feConfigs };
+
+    if (feConfigs.systemTitle !== undefined) {
+      sanitizedConfig.systemTitle = sanitizeText(feConfigs.systemTitle);
+    }
+    if (feConfigs.concatMd !== undefined) {
+      sanitizedConfig.concatMd = /fastgpt/i.test(feConfigs.concatMd)
+        ? `项目开源地址: [gptGO GitHub](${GPTGO_GITHUB_URL})`
+        : sanitizeText(feConfigs.concatMd);
+    }
+    if (feConfigs.docUrl !== undefined) {
+      sanitizedConfig.docUrl = sanitizeLink(feConfigs.docUrl);
+    }
+    if (feConfigs.openAPIDocUrl !== undefined) {
+      sanitizedConfig.openAPIDocUrl = sanitizeLink(feConfigs.openAPIDocUrl);
+    }
+    if (feConfigs.loginGuideDocUrl !== undefined) {
+      sanitizedConfig.loginGuideDocUrl = sanitizeLink(feConfigs.loginGuideDocUrl);
+    }
+
+    return sanitizedConfig;
+  };
+
   const [{ fastgptConfig, licenseData }, pluginRemoteDebug] = await Promise.all([
     getFastGPTConfigFromDB(),
     getPluginRemoteDebugEnabled()
@@ -140,7 +170,7 @@ export async function initSystemConfig() {
   const config: FastGPTConfigFileType = {
     feConfigs: {
       ...defaultFeConfigs,
-      ...(fastgptConfig.feConfigs || {}),
+      ...sanitizePublicBrandConfig(fastgptConfig.feConfigs || {}),
       mcpServerProxyEndpoint: appEnv.SSE_MCP_SERVER_PROXY_ENDPOINT,
       limit: {
         ...defaultFeConfigs.limit,

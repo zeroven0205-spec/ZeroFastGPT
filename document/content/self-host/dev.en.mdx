@@ -1,16 +1,16 @@
 ---
 title: Local Development Setup
-description: Develop and debug FastGPT locally
+description: Develop and debug gptGO locally
 ---
 
 import { Alert } from '@/components/docs/Alert';
 import FastGPTLink from '@/components/docs/linkFastGPT';
 
-This guide covers how to set up your development environment to build and test <FastGPTLink campaign="docs_self_host_dev" content="intro_product_link">FastGPT</FastGPTLink>.
+This guide covers how to set up your development environment to build and test <FastGPTLink campaign="docs_self_host_dev" content="intro_product_link">gptGO</FastGPTLink>.
 
 ## Prerequisites
 
-Install and configure these dependencies on your machine to build <FastGPTLink campaign="docs_self_host_dev" content="prerequisites_product_link">FastGPT</FastGPTLink>:
+Install and configure these dependencies on your machine to build <FastGPTLink campaign="docs_self_host_dev" content="prerequisites_product_link">gptGO</FastGPTLink>:
 
 - [Git](https://git-scm.com/)
 - [Docker](https://www.docker.com/)
@@ -21,9 +21,9 @@ We recommend developing on \*nix environments (Linux, macOS, Windows WSL).
 
 ## Local Development
 
-### 1. Fork the FastGPT Repository
+### 1. Fork the gptGO Repository
 
-Fork the [FastGPT repository](https://github.com/labring/FastGPT).
+Fork the [gptGO repository](https://github.com/zeroven0205-spec/).
 
 ### 2. Clone the Repository
 
@@ -35,9 +35,9 @@ git clone git@github.com:<your_github_username>/FastGPT.git
 
 ### 3. Start the Development Environment with Docker
 
-If you're already running FastGPT locally via Docker, stop it first to avoid port conflicts.
+If you're already running gptGO locally via Docker, stop it first to avoid port conflicts.
 
-Navigate to `FastGPT/deploy/dev` and run `docker compose up -d` to start FastGPT's dependencies:
+Navigate to `FastGPT/deploy/dev` and run `docker compose up -d` to start gptGO's dependencies:
 
 ```bash
 cd FastGPT/deploy/dev
@@ -115,11 +115,11 @@ Without Docker, you'd need to manually execute all the run-stage commands from t
 
 ## Contributing to the Open Source Repository
 
-1. Make sure your code is forked from the [FastGPT](https://github.com/labring/FastGPT) repository.
+1. Make sure your code is forked from the [gptGO](https://github.com/zeroven0205-spec/) repository.
 2. Keep commits small and focused — each should address one issue.
-3. Submit a PR to FastGPT's main branch. The FastGPT team and community will review it with you.
+3. Submit a PR to gptGO's main branch. The gptGO team and community will review it with you.
 
-If you run into issues like merge conflicts, check GitHub's [pull request tutorial](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests). Once your PR is merged, you'll be listed in the [contributors table](https://github.com/labring/FastGPT/graphs/contributors).
+If you run into issues like merge conflicts, check GitHub's [pull request tutorial](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests). Once your PR is merged, you'll be listed in the [contributors table](https://github.com/zeroven0205-spec/).
 
 ## QA
 
@@ -137,7 +137,7 @@ If your default timezone is `Asia/Shanghai`, system time may be incorrect in non
 
 ### sh ./scripts/postinstall.sh Permission Denied
 
-FastGPT runs a `postinstall` script after `pnpm i` to auto-generate ChakraUI types. If you get a permission error, run `chmod -R +x ./scripts/` first, then `pnpm i`.
+gptGO runs a `postinstall` script after `pnpm i` to auto-generate ChakraUI types. If you get a permission error, run `chmod -R +x ./scripts/` first, then `pnpm i`.
 
 If that doesn't work, manually execute the contents of `./scripts/postinstall.sh`.
 _On Windows, use git bash to add execute permissions and run the script._
@@ -160,23 +160,17 @@ This may be caused by leftover files from a previous container stop. Make sure a
 
 Having trouble? Join the Lark group to connect with developers and users.
 
-<img
-  width="400px"
-  src="https://oss.laf.run/otnvvf-imgs/fastgpt-feishu1.png"
-  className="medium-zoom-image"
-/>
-
 ## Code Structure
 
 ### Next.js
 
-FastGPT uses Next.js page routing. To separate frontend and backend code, directories are split into global, service, and web subdirectories for shared, backend-only, and frontend-only code respectively.
+gptGO uses Next.js page routing. To separate frontend and backend code, directories are split into global, service, and web subdirectories for shared, backend-only, and frontend-only code respectively.
 
 ### Monorepo
 
-FastGPT uses pnpm workspace for its monorepo structure, with two main parts:
+gptGO uses pnpm workspace for its monorepo structure, with two main parts:
 
-- projects/app - FastGPT main project
+- projects/app - gptGO main project
 - packages/ - Submodules
   - global - Shared code: functions, type declarations, and constants usable on both frontend and backend
   - service - Server-side code
@@ -185,7 +179,7 @@ FastGPT uses pnpm workspace for its monorepo structure, with two main parts:
 
 ### Domain-Driven Design (DDD)
 
-FastGPT's code modules follow DDD principles, divided into these domains:
+gptGO's code modules follow DDD principles, divided into these domains:
 
 - core - Core features (Dataset, workflow, app, conversation)
 - support - Supporting features (user system, billing, authentication, etc.)

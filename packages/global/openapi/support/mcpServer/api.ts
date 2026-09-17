@@ -177,7 +177,7 @@ export const McpServerToolCallBodySchema = z.object({
     description: '需要调用的 MCP 工具名称'
   }),
   inputs: z.record(z.string(), z.any()).meta({
-    example: { question: 'FastGPT 如何创建知识库？' },
+    example: { question: 'gptGO 如何创建知识库？' },
     description: '传递给工具的输入参数，需符合工具 inputSchema'
   })
 });

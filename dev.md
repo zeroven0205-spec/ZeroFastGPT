@@ -1,6 +1,6 @@
-# FastGPT 开发文档
+# gptGO 开发文档
 
-FastGPT 采用 monorepo 方式管理。
+gptGO 采用 monorepo 方式管理。
 
 ## 📁 仓库结构
 

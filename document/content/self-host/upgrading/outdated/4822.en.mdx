@@ -1,6 +1,6 @@
 ---
 title: V4.8.22
-description: FastGPT V4.8.22 Release Notes
+description: gptGO V4.8.22 Release Notes
 releaseTime: '2025-02-19'
 upgradeTags:
   - MIGRATION
@@ -12,15 +12,15 @@ upgradeTags:
 
 ### 2. Update images:
 
-- Update the fastgpt image tag to v4.8.22
-- Update the fastgpt-pro commercial edition image tag to v4.8.22
+- Update the gptGO image tag to v4.8.22
+- Update the gptGO-pro commercial edition image tag to v4.8.22
 - Sandbox image update is not required
 
 ### 3. Run migration script
 
 Only required for commercial edition users providing SaaS services.
 
-From any terminal, send an HTTP request. Replace `{{rootkey}}` with the `rootkey` from your environment variables, and `{{host}}` with your **FastGPT domain**:
+From any terminal, send an HTTP request. Replace `{{rootkey}}` with the `rootkey` from your environment variables, and `{{host}}` with your **gptGO domain**:
 
 ```bash
 curl --location --request POST 'https://{{host}}/api/admin/initv4822' \

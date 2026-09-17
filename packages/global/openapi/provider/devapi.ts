@@ -40,9 +40,9 @@ export const openAPIDocument = setRequiredRequestExamples(
   createDocument({
     openapi: '3.1.0',
     info: {
-      title: 'FastGPT Dev API',
+      title: 'gptGO Dev API',
       version: '0.1.0',
-      description: 'FastGPT 所有 API 的文档'
+      description: 'gptGO 所有 API 的文档'
     },
     paths: omitSystemOpenApiTags(openAPIPaths),
     servers: [{ url: '/api' }],

@@ -1,11 +1,11 @@
 ---
 title: Integrating ChatGLM2 and M3E Models
-description: Integrating private ChatGLM2 and m3e-large models with FastGPT
+description: Integrating private ChatGLM2 and m3e-large models with gptGO
 ---
 
 ## Introduction
 
-FastGPT uses OpenAI's LLM and embedding models by default. For private deployment, you can use ChatGLM2 and m3e-large as replacements. The following method was contributed by community user @不做了睡大觉. This image bundles both M3E-Large and ChatGLM2-6B models, ready to use out of the box.
+gptGO uses OpenAI's LLM and embedding models by default. For private deployment, you can use ChatGLM2 and m3e-large as replacements. The following method was contributed by community user @不做了睡大觉. This image bundles both M3E-Large and ChatGLM2-6B models, ready to use out of the box.
 
 ## Deploy the Image
 
@@ -55,7 +55,7 @@ curl --location --request POST 'https://domain/v1/chat/completions' \
 
 Set Authorization to sk-aaabbbcccdddeeefffggghhhiiijjjkkk. The model field should match the custom model name you entered in One API.
 
-## Integrate with FastGPT
+## Integrate with gptGO
 
 Edit the config.json file. Add chatglm2 to `llmModels` and M3E to `vectorModels`:
 

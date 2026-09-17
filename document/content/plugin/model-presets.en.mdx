@@ -1,9 +1,9 @@
 ---
 title: Add Model Presets
-description: Model preset notes for the FastGPT plugin system
+description: Model preset notes for the gptGO plugin system
 ---
 
-Model presets are maintained in the `fastgpt-plugin` repository. They provide FastGPT with built-in model providers, model lists, model capabilities, and default request parameters. After FastGPT loads these static presets, users can select the corresponding models in model configuration, AIProxy channels, and plugin-related features.
+Model presets are maintained in the `fastgpt-plugin` repository. They provide gptGO with built-in model providers, model lists, model capabilities, and default request parameters. After gptGO loads these static presets, users can select the corresponding models in model configuration, AIProxy channels, and plugin-related features.
 
 This page follows the plugin system code structure for version 1.0 and later. The old `modules/model/*` paths are no longer the primary maintenance entry point.
 
@@ -116,7 +116,7 @@ Common fields:
 | `name`               | Optional display name; defaults to `model` when omitted                        |
 | `maxContext`         | Maximum LLM context length                                                     |
 | `maxTokens`          | Maximum LLM output length                                                      |
-| `quoteMaxToken`      | Maximum token budget FastGPT can use for cited Dataset content                 |
+| `quoteMaxToken`      | Maximum token budget gptGO can use for cited Dataset content                   |
 | `maxTemperature`     | Maximum temperature; use `null` when the model does not support temperature    |
 | `responseFormatList` | Supported response formats, such as `text`, `json_object`, and `json_schema`   |
 | `vision`             | Whether vision input is supported                                              |
@@ -219,9 +219,9 @@ If you do not add the provider to `ModelProviderMap`, the system falls back to t
 Adding an AIProxy protocol is not the same as adding a model provider:
 
 - Model provider: decides which `provider` owns the model presets, maintains the model list and model capabilities, and uses `provider/{Provider}/logo.svg` as its avatar.
-- AIProxy protocol: decides whether the protocol appears in the AIProxy channel list. AIProxy routes requests to the corresponding adaptor by `channelId`, and FastGPT uses `channel-avatar/{avatar}.svg` as the channel avatar.
+- AIProxy protocol: decides whether the protocol appears in the AIProxy channel list. AIProxy routes requests to the corresponding adaptor by `channelId`, and gptGO uses `channel-avatar/{avatar}.svg` as the channel avatar.
 
-If you are only adding model presets, you may not need to add an AIProxy protocol. Maintain `aiproxyChannels` only when FastGPT needs to display that protocol in the AIProxy channel list.
+If you are only adding model presets, you may not need to add an AIProxy protocol. Maintain `aiproxyChannels` only when gptGO needs to display that protocol in the AIProxy channel list.
 
 ### 1. Check AIProxy protocols and get channelId
 
@@ -235,20 +235,20 @@ rg -n "ChannelType.*=" core/model/chtype.go
 
 Examples:
 
-| AIProxy type              | ID   | FastGPT `channelId` |
-| ------------------------- | ---- | ------------------- |
-| `ChannelTypeOpenAI`       | `1`  | `1`                 |
-| `ChannelTypeAnthropic`    | `14` | `14`                |
-| `ChannelTypeAli`          | `17` | `17`                |
-| `ChannelTypeGoogleGemini` | `24` | `24`                |
-| `ChannelTypeDeepseek`     | `36` | `36`                |
-| `ChannelTypeDoubao`       | `40` | `40`                |
-| `ChannelTypeSiliconflow`  | `43` | `43`                |
-| `ChannelTypeAntLing`      | `54` | `54`                |
+| AIProxy type              | ID   | gptGO `channelId` |
+| ------------------------- | ---- | ----------------- |
+| `ChannelTypeOpenAI`       | `1`  | `1`               |
+| `ChannelTypeAnthropic`    | `14` | `14`              |
+| `ChannelTypeAli`          | `17` | `17`              |
+| `ChannelTypeGoogleGemini` | `24` | `24`              |
+| `ChannelTypeDeepseek`     | `36` | `36`              |
+| `ChannelTypeDoubao`       | `40` | `40`              |
+| `ChannelTypeSiliconflow`  | `43` | `43`              |
+| `ChannelTypeAntLing`      | `54` | `54`              |
 
 Use the current `core/model/chtype.go` file on the AIProxy main branch as the source of truth.
 
-### 2. Add the protocol declaration in fastgpt-plugin
+### 2. Add the protocol declaration in gptGO-plugin
 
 After confirming AIProxy supports the protocol, add an entry to `aiproxyChannels` in `packages/infrastructure/src/static-data/models/model.ts`:
 
@@ -271,7 +271,7 @@ Field reference:
 | Field       | Description                                                            |
 | ----------- | ---------------------------------------------------------------------- |
 | `channelId` | Numeric AIProxy `ChannelType` ID. It must match `core/model/chtype.go` |
-| `name`      | Multilingual display name in the FastGPT channel list                  |
+| `name`      | Multilingual display name in the gptGO channel list                    |
 | `avatar`    | Channel avatar filename without the extension                          |
 
 Also add the avatar file under `channel-avatar/`:
@@ -282,7 +282,7 @@ packages/infrastructure/src/static-data/models/channel-avatar/antling.svg
 
 The `avatar` value must match the filename under `channel-avatar/`. Supported avatar extensions are `svg`, `png`, `jpeg`, `webp`, and `jpg`.
 
-If AIProxy does not support the protocol yet, add the `ChannelType` and adaptor in the AIProxy repository first, and confirm the adaptor is imported in [`core/relay/adaptors/register.go`](https://github.com/labring/aiproxy/blob/main/core/relay/adaptors/register.go). The FastGPT plugin side only declares channel display data; it does not implement AIProxy adaptor logic.
+If AIProxy does not support the protocol yet, add the `ChannelType` and adaptor in the AIProxy repository first, and confirm the adaptor is imported in [`core/relay/adaptors/register.go`](https://github.com/labring/aiproxy/blob/main/core/relay/adaptors/register.go). The gptGO plugin side only declares channel display data; it does not implement AIProxy adaptor logic.
 
 ## Validation
 

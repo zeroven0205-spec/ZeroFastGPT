@@ -29,7 +29,7 @@ export const computedMaxToken = ({
   return Math.max(maxToken, min || 1);
 };
 
-// FastGPT temperature range: [0,10], ai temperature:[0,2],{0,1]……
+// gptGO temperature range: [0,10], ai temperature:[0,2],{0,1]……
 export const computedTemperature = ({
   model,
   temperature

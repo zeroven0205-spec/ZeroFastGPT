@@ -1,6 +1,6 @@
 ---
 title: 'V4.16.0'
-description: 'FastGPT V4.16.0 更新说明'
+description: 'gptGO V4.16.0 更新说明'
 releaseTime: '2026-08-16'
 upgradeTags:
   - 配置变更
@@ -20,11 +20,11 @@ PORT=1006
 PREVIEW_PORT=1007
 ```
 
-访问地址以 `http://` 或 `https://` 开头。单端口部署时，它可以与 `AGENT_SANDBOX_PROXY_URL` 指向同一域名和端口，但协议分别使用 HTTP(S) 和 WebSocket(S)。强烈建议配置的域名与 FastGPT 主站使用不同的 origin。同源部署会让这些脚本进入主站的同源安全边界，可能访问主站凭证或接口。系统当前不会强制检查 origin 是否隔离。
+访问地址以 `http://` 或 `https://` 开头。单端口部署时，它可以与 `AGENT_SANDBOX_PROXY_URL` 指向同一域名和端口，但协议分别使用 HTTP(S) 和 WebSocket(S)。强烈建议配置的域名与 gptGO 主站使用不同的 origin。同源部署会让这些脚本进入主站的同源安全边界，可能访问主站凭证或接口。系统当前不会强制检查 origin 是否隔离。
 
 可以通过访问: `https://{{host}}/health` 来确认是否可访问。
 
-### 2. 更新 fastgpt 环境变量(启用沙盒的需更新)
+### 2. 更新 gptGO 环境变量(启用沙盒的需更新)
 
 在 `fastgpt-app` 和 `fastgpt-pro` 同时修改变量。
 
@@ -53,13 +53,13 @@ VM_VOLUME_NAME_PREFIX=fastgpt-session
 
 E2B Sandbox Provider 已移除。此前配置过 E2B 的环境需要切换为 `opensandbox` 或 `sealosdevbox`，并删除 `AGENT_SANDBOX_E2B_API_KEY`。
 
-> FastGPT、`fastgpt-agent-sandbox-proxy` 和 `fastgpt-agent-sandbox` 的预览协议已同步变更。启用 Agent Sandbox 时必须使用本版本配套镜像，不支持新旧版本混合部署。
+> gptGO、`fastgpt-agent-sandbox-proxy` 和 `fastgpt-agent-sandbox` 的预览协议已同步变更。启用 Agent Sandbox 时必须使用本版本配套镜像，不支持新旧版本混合部署。
 
 ### 3. 镜像更新
 
-- 更新 fastgpt-app(fastgpt 主服务) 镜像 tag: v4.16.0
-- 更新 fastgpt-pro(fastgpt 商业版) 镜像 tag: v4.16.0
-- 更新 fastgpt-plugin 镜像 tag: v1.1.0
+- 更新 gptGO-app(gptGO 主服务) 镜像 tag: v4.16.0
+- 更新 gptGO-pro(gptGO 商业版) 镜像 tag: v4.16.0
+- 更新 gptGO-plugin 镜像 tag: v1.1.0
 - 更新 agent-sandbox-volumn 镜像 tag: v0.3.0 (Opensandbox 专属)
 - 更新 agent-sandbox-proxy 镜像 tag: v0.3.0 (沙盒专属)
 

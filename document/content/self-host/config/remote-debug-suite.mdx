@@ -1,23 +1,23 @@
 ---
 title: 系统插件的远程调试功能套件配置
-description: FastGPT 接入系统插件的远程调试功能套件
+description: gptGO 接入系统插件的远程调试功能套件
 ---
 
 import { Alert } from '@/components/docs/Alert';
 
 ## 适用场景
 
-系统插件的远程调试功能套件用于把开发者本地运行的 FastGPT 系统插件临时接入 FastGPT 测试环境。它适合系统插件开发、联调和验收，不适合作为生产插件运行时。
+系统插件的远程调试功能套件用于把开发者本地运行的 gptGO 系统插件临时接入 gptGO 测试环境。它适合系统插件开发、联调和验收，不适合作为生产插件运行时。
 
 <Alert icon="🤖" context="warning">
 
 系统插件的远程调试功能套件仅商业版支持。
 
-优先推荐在 FastGPT 云服务版本中使用远程调试能力。自部署需要额外维护 Plugin Server、Connection Gateway、Redis、反向代理、TLS 和密钥轮换，运维成本更高。
+优先推荐在 gptGO 云服务版本中使用远程调试能力。自部署需要额外维护 Plugin Server、Connection Gateway、Redis、反向代理、TLS 和密钥轮换，运维成本更高。
 
 </Alert>
 
-默认的 Docker Compose 部署脚本只包含 FastGPT 主服务和常规 `fastgpt-plugin` 运行环境，不包含 Connection Gateway 的公网 WebSocket 接入配置。自部署环境需要按本文额外部署系统插件的远程调试功能套件。
+默认的 Docker Compose 部署脚本只包含 gptGO 主服务和常规 `fastgpt-plugin` 运行环境，不包含 Connection Gateway 的公网 WebSocket 接入配置。自部署环境需要按本文额外部署系统插件的远程调试功能套件。
 
 ## 组件关系
 
@@ -25,7 +25,7 @@ import { Alert } from '@/components/docs/Alert';
 
 | 组件                 | 作用                                                            |
 | -------------------- | --------------------------------------------------------------- |
-| FastGPT 主服务       | 提供开启、刷新、关闭调试通道的页面和 API。                      |
+| gptGO 主服务         | 提供开启、刷新、关闭调试通道的页面和 API。                      |
 | Plugin Server        | 管理 `connectionKey`、调试 source，并把调试调用转发给 Gateway。 |
 | Connection Gateway   | 维护 CLI WebSocket 长连接、session、mailbox 和调试调用流转。    |
 | Redis                | 保存 Gateway session、source owner 和 mailbox 数据。            |
@@ -58,8 +58,8 @@ sequenceDiagram
 
 ## 部署前提
 
-1. FastGPT 主服务已能正常访问 `fastgpt-plugin`，并且两侧的 `PLUGIN_TOKEN` / `AUTH_TOKEN` 一致。
-2. `fastgpt-plugin` 版本需要包含远程调试能力；建议与当前 FastGPT 版本要求的 plugin 版本保持一致。
+1. gptGO 主服务已能正常访问 `fastgpt-plugin`，并且两侧的 `PLUGIN_TOKEN` / `AUTH_TOKEN` 一致。
+2. `fastgpt-plugin` 版本需要包含远程调试能力；建议与当前 gptGO 版本要求的 plugin 版本保持一致。
 3. Gateway WebSocket 地址需要从开发者本地可访问，生产建议使用 HTTPS 反向代理暴露为 `wss://`。
 4. Gateway internal HTTP API 只允许 Plugin Server 所在内网访问。
 5. Gateway 使用的 Redis 必须支持 Stream。
@@ -126,17 +126,17 @@ JWT_SECRET=replace-with-a-random-jwt-secret-at-least-32-chars
 
 配置后重启 `fastgpt-plugin`。`CONNECTION_GATEWAY_BASE_URL` 未配置时，Plugin Server 会关闭远程调试能力。
 
-## 配置 FastGPT 主服务
+## 配置 gptGO 主服务
 
-FastGPT 主服务继续使用常规插件配置：
+gptGO 主服务继续使用常规插件配置：
 
 ```dotenv
 PLUGIN_BASE_URL=http://fastgpt-plugin:3000
 PLUGIN_TOKEN=replace-with-the-same-value-as-plugin-auth-token
-NEXT_PUBLIC_BASE_URL=https://fastgpt.example.com
+NEXT_PUBLIC_BASE_URL=https://gptgo.example.com
 ```
 
-`NEXT_PUBLIC_BASE_URL` 会影响调试连接链接的生成。公网用户访问 FastGPT 时，应配置为浏览器可访问的 FastGPT 地址。
+`NEXT_PUBLIC_BASE_URL` 会影响调试连接链接的生成。公网用户访问 gptGO 时，应配置为浏览器可访问的 gptGO 地址。
 
 ## 配置反向代理
 
@@ -159,14 +159,14 @@ location /connection-gateway/v1 {
 
 ## 开发者连接
 
-1. 在 FastGPT 插件调试入口开启调试通道，复制页面返回的连接链接。
+1. 在 gptGO 插件调试入口开启调试通道，复制页面返回的连接链接。
 2. 在本地插件目录运行：
 
 ```bash
 fastgpt-plugin dev --connect '<connectionUrl>'
 ```
 
-连接成功后，本地 CLI 会通过 Gateway 上报插件 metadata。FastGPT 工具列表中会出现当前调试 source 下的本地插件。调试 source 的格式为：
+连接成功后，本地 CLI 会通过 Gateway 上报插件 metadata。gptGO 工具列表中会出现当前调试 source 下的本地插件。调试 source 的格式为：
 
 ```text
 debug:tmbId:{tmbId}
@@ -180,9 +180,9 @@ debug:tmbId:{tmbId}
 curl http://connection-gateway:3000/health
 ```
 
-2. 在 FastGPT 页面开启调试通道，确认状态从 `enabled` 变为 `connected`。
+2. 在 gptGO 页面开启调试通道，确认状态从 `enabled` 变为 `connected`。
 3. 运行本地 `fastgpt-plugin dev`，确认 CLI 显示 WebSocket 已连接。
-4. 在 FastGPT 中选择调试 source 下的工具并触发一次调用，确认结果由本地插件返回。
+4. 在 gptGO 中选择调试 source 下的工具并触发一次调用，确认结果由本地插件返回。
 
 ## 安全注意事项
 
@@ -198,7 +198,7 @@ curl http://connection-gateway:3000/health
 
 检查 `CONNECTION_GATEWAY_PUBLIC_URL` 是否为开发者本地可访问地址。浏览器和 CLI 在开发者电脑上运行，不能使用 Docker 内网域名。
 
-### CLI 已连接，但 FastGPT 显示 disconnected
+### CLI 已连接，但 gptGO 显示 disconnected
 
 检查 Plugin Server 是否能访问 `CONNECTION_GATEWAY_BASE_URL`，并确认 `CONNECTION_GATEWAY_AUTH_TOKEN` 与 Gateway 配置一致。
 

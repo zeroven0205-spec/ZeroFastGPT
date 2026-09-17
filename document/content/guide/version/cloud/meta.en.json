@@ -1,6 +1,6 @@
 {
-  "title": "FastGPT Cloud",
-  "description": "FastGPT Cloud Service",
+  "title": "gptGO Cloud",
+  "description": "gptGO Cloud Service",
   "icon": "🌐",
   "pages": ["intro", "faq", "terms", "privacy"]
 }

@@ -24,13 +24,13 @@ export function UpgradeVersionTimeline({ items, language }: UpgradeVersionTimeli
         count: 'versions',
         latest: 'Latest release',
         inProgress: 'In progress',
-        description: 'A chronological record of FastGPT self-hosted releases.'
+        description: 'A chronological record of gptGO self-hosted releases.'
       }
     : {
         count: '个版本',
         latest: '最新发布',
         inProgress: '进行中',
-        description: 'FastGPT 自部署版本的发布时间记录。'
+        description: 'gptGO 自部署版本的发布时间记录。'
       };
 
   const sortedItems = [...items].sort((a, b) => {

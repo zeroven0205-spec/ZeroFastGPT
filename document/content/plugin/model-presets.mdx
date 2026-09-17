@@ -1,9 +1,9 @@
 ---
 title: 增加模型预设
-description: FastGPT 插件系统中的模型预设说明
+description: gptGO 插件系统中的模型预设说明
 ---
 
-模型预设维护在 `fastgpt-plugin` 仓库中，用于向 FastGPT 提供内置模型供应商、模型列表、模型能力和默认参数。FastGPT 读取这些静态预设后，用户才能在模型配置、AIProxy 渠道和相关插件能力中选择对应模型。
+模型预设维护在 `fastgpt-plugin` 仓库中，用于向 gptGO 提供内置模型供应商、模型列表、模型能力和默认参数。gptGO 读取这些静态预设后，用户才能在模型配置、AIProxy 渠道和相关插件能力中选择对应模型。
 
 本文基于 1.0 版本以上的插件系统代码结构，旧版 `modules/model/*` 路径已经不再作为主要维护入口。
 
@@ -116,7 +116,7 @@ export default models;
 | `name`               | 可选显示名，不填时默认使用 `model`                                              |
 | `maxContext`         | LLM 最大上下文长度                                                              |
 | `maxTokens`          | LLM 最大输出长度                                                                |
-| `quoteMaxToken`      | FastGPT 引用知识库内容时可使用的最大 token                                      |
+| `quoteMaxToken`      | gptGO 引用知识库内容时可使用的最大 token                                        |
 | `maxTemperature`     | 最大温度；不支持温度时填 `null`                                                 |
 | `responseFormatList` | 支持的返回格式，如 `text`、`json_object`、`json_schema`                         |
 | `vision`             | 是否支持视觉输入                                                                |
@@ -221,7 +221,7 @@ NewProvider: {
 - 模型供应商：决定模型预设属于哪个 `provider`，维护模型列表和模型能力，使用 `provider/{Provider}/logo.svg` 作为头像。
 - AIProxy 协议：决定 AIProxy 渠道列表中是否出现该协议，最终由 AIProxy 根据 `channelId` 路由到对应 adaptor，使用 `channel-avatar/{avatar}.svg` 作为头像。
 
-如果只是新增模型预设，不一定要增加 AIProxy 协议。只有当 FastGPT 需要在 AIProxy 渠道列表中展示该协议时，才需要维护 `aiproxyChannels`。
+如果只是新增模型预设，不一定要增加 AIProxy 协议。只有当 gptGO 需要在 AIProxy 渠道列表中展示该协议时，才需要维护 `aiproxyChannels`。
 
 ### 1. 查看 AIProxy 支持的协议并获取 channelId
 
@@ -235,20 +235,20 @@ rg -n "ChannelType.*=" core/model/chtype.go
 
 例如：
 
-| AIProxy 类型              | ID   | FastGPT `channelId` |
-| ------------------------- | ---- | ------------------- |
-| `ChannelTypeOpenAI`       | `1`  | `1`                 |
-| `ChannelTypeAnthropic`    | `14` | `14`                |
-| `ChannelTypeAli`          | `17` | `17`                |
-| `ChannelTypeGoogleGemini` | `24` | `24`                |
-| `ChannelTypeDeepseek`     | `36` | `36`                |
-| `ChannelTypeDoubao`       | `40` | `40`                |
-| `ChannelTypeSiliconflow`  | `43` | `43`                |
-| `ChannelTypeAntLing`      | `54` | `54`                |
+| AIProxy 类型              | ID   | gptGO `channelId` |
+| ------------------------- | ---- | ----------------- |
+| `ChannelTypeOpenAI`       | `1`  | `1`               |
+| `ChannelTypeAnthropic`    | `14` | `14`              |
+| `ChannelTypeAli`          | `17` | `17`              |
+| `ChannelTypeGoogleGemini` | `24` | `24`              |
+| `ChannelTypeDeepseek`     | `36` | `36`              |
+| `ChannelTypeDoubao`       | `40` | `40`              |
+| `ChannelTypeSiliconflow`  | `43` | `43`              |
+| `ChannelTypeAntLing`      | `54` | `54`              |
 
 完整列表以 AIProxy 主分支的 `core/model/chtype.go` 为准。
 
-### 2. 在 fastgpt-plugin 中增加协议声明
+### 2. 在 gptGO-plugin 中增加协议声明
 
 确认 AIProxy 已经支持该协议后，在 `packages/infrastructure/src/static-data/models/model.ts` 的 `aiproxyChannels` 中增加声明：
 
@@ -271,7 +271,7 @@ export const aiproxyChannels: AIProxyChannelsType = [
 | 字段        | 说明                                                                    |
 | ----------- | ----------------------------------------------------------------------- |
 | `channelId` | AIProxy `ChannelType` 对应的数字 ID，必须和 `core/model/chtype.go` 一致 |
-| `name`      | FastGPT 渠道列表中的多语言显示名                                        |
+| `name`      | gptGO 渠道列表中的多语言显示名                                          |
 | `avatar`    | 渠道头像文件名，不包含扩展名                                            |
 
 同时在 `channel-avatar/` 下增加头像文件：
@@ -282,7 +282,7 @@ packages/infrastructure/src/static-data/models/channel-avatar/antling.svg
 
 `avatar` 字段必须和 `channel-avatar/` 下的文件名一致。支持的头像扩展名包括 `svg`、`png`、`jpeg`、`webp`、`jpg`。
 
-如果 AIProxy 仓库还没有该协议，需要先在 AIProxy 中新增 `ChannelType` 和 adaptor，并确认 adaptor 已在 [`core/relay/adaptors/register.go`](https://github.com/labring/aiproxy/blob/main/core/relay/adaptors/register.go) 中被引入。FastGPT 插件侧只声明渠道展示信息，不负责实现 AIProxy 协议适配逻辑。
+如果 AIProxy 仓库还没有该协议，需要先在 AIProxy 中新增 `ChannelType` 和 adaptor，并确认 adaptor 已在 [`core/relay/adaptors/register.go`](https://github.com/labring/aiproxy/blob/main/core/relay/adaptors/register.go) 中被引入。gptGO 插件侧只声明渠道展示信息，不负责实现 AIProxy 协议适配逻辑。
 
 ## 校验
 

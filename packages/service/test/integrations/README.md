@@ -1,11 +1,11 @@
 # Service Integration Tests
 
 - `vectorDB/`: real vector database integration tests and local compose files
-- `sandbox/`: FastGPT Agent Sandbox business chains against the dev infrastructure
+- `sandbox/`: gptGO Agent Sandbox business chains against the dev infrastructure
 
 ## Sandbox
 
-This suite tests FastGPT rather than the provider SDK. It covers `prepareSandboxToolRuntime`, all
+This suite tests gptGO rather than the provider SDK. It covers `prepareSandboxToolRuntime`, all
 eight tools dispatched by `runSandboxTools`, Mongo lifecycle state, Redis leases and preview
 sessions, provider/volume cleanup, egress policy, and failure recovery.
 
@@ -26,5 +26,5 @@ timeouts and lifecycle recovery use separate budgets because they intentionally 
 state transitions.
 
 The suite includes the multi-Chat and concurrent-command case. Every fixture creates a unique App
-source and is removed through FastGPT's delete lifecycle, including provider runtime, egress
+source and is removed through gptGO's delete lifecycle, including provider runtime, egress
 sidecar, persistent volume, archive phase, and Mongo record.

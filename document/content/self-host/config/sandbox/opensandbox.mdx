@@ -1,6 +1,6 @@
 ---
 title: OpenSandbox 配置
-description: FastGPT OpenSandbox 与 Agent Sandbox Proxy 配置
+description: gptGO OpenSandbox 与 Agent Sandbox Proxy 配置
 ---
 
 import { Alert } from '@/components/docs/Alert';
@@ -9,7 +9,7 @@ import { Alert } from '@/components/docs/Alert';
   OpenSandbox 方案默认未做网络隔离。如有安全隔离要求，请自行补充网络隔离策略。
 </Alert>
 
-OpenSandbox 适合需要自托管 Agent/Skill 沙盒运行环境的场景。FastGPT 通过 OpenSandbox Server 创建沙盒，并通过 Agent Sandbox Proxy 为浏览器提供文件、终端和预览访问能力。
+OpenSandbox 适合需要自托管 Agent/Skill 沙盒运行环境的场景。gptGO 通过 OpenSandbox Server 创建沙盒，并通过 Agent Sandbox Proxy 为浏览器提供文件、终端和预览访问能力。
 
 ## Docker Compose 配置
 
@@ -29,8 +29,8 @@ Docker compose yml 文件里均已带默认值，这里补充做每个变量的�
 
 | 配置                          | 说明                                                                                                             |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `x-volume-manager-auth-token` | Volume Manager 的认证 Token，需要与 FastGPT 的 `AGENT_SANDBOX_OPENSANDBOX_VOLUME_MANAGER_TOKEN` 一致。           |
-| `[server].api_key`            | OpenSandbox Server API Key，需要与 FastGPT 的 `AGENT_SANDBOX_OPENSANDBOX_API_KEY` 一致。                         |
+| `x-volume-manager-auth-token` | Volume Manager 的认证 Token，需要与 gptGO 的 `AGENT_SANDBOX_OPENSANDBOX_VOLUME_MANAGER_TOKEN` 一致。             |
+| `[server].api_key`            | OpenSandbox Server API Key，需要与 gptGO 的 `AGENT_SANDBOX_OPENSANDBOX_API_KEY` 一致。                           |
 | `[docker].host_ip`            | 沙盒端点对 Proxy 可访问的宿主机地址，通常使用宿主机内网 IP 或 `host.docker.internal`。                           |
 | Docker socket 挂载            | Docker runtime 需要挂载宿主机 Docker socket，默认是 `/var/run/docker.sock`；OrbStack 等环境需替换为实际 socket。 |
 
@@ -42,14 +42,14 @@ Docker compose yml 文件里均已带默认值，这里补充做每个变量的�
 | ---------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | `PORT`                             | `1006`                                   | Proxy 容器监听端口，默认映射到宿主机 `3006`。                                                           |
 | `PREVIEW_PORT`                     | 与 `PORT` 相同                           | 4.16 可单独指定 HTTP 预览监听端口；修改后需同步调整宿主机端口映射和 `AGENT_SANDBOX_PREVIEW_PROXY_URL`。 |
-| `AGENT_SANDBOX_PROXY_SECRET`       | 无                                       | 与 FastGPT 主服务共用的密钥，至少 32 位。                                                               |
-| `FASTGPT_APP_URL`                  | `http://fastgpt-app:3000`                | Proxy 回源 FastGPT 主服务的内网地址。                                                                   |
+| `AGENT_SANDBOX_PROXY_SECRET`       | 无                                       | 与 gptGO 主服务共用的密钥，至少 32 位。                                                                 |
+| `FASTGPT_APP_URL`                  | `http://fastgpt-app:3000`                | Proxy 回源 gptGO 主服务的内网地址。                                                                     |
 | `FASTGPT_APP_REQUEST_TIMEOUT_SECS` | `10`                                     | Proxy 回源请求超时时间，单位秒；沙盒冷启动较慢时可适当调大。                                            |
 | `RUST_LOG`                         | `info,fastgpt_agent_sandbox_proxy=debug` | Proxy 服务日志级别。                                                                                    |
 
 4.16 默认使用同一个端口提供 WebSocket 和 HTTP 预览。如果网关不支持同端口转发，可设置 `PREVIEW_PORT` 为其他容器端口（例如 `1007`），并将 Compose 端口映射改为 `3007:1007`，同时把 `AGENT_SANDBOX_PREVIEW_PROXY_URL` 指向新的 3007 端口。
 
-### fastgpt-app 服务
+### gptGO-app 服务
 
 在 Compose 文件的 `x-agent-sandbox-config` 中配置以下变量，使 `fastgpt-app` 和 `fastgpt-pro` 共用 OpenSandbox 配置：
 
@@ -97,7 +97,7 @@ AGENT_SANDBOX_STORAGE_SIZE_GI=1
 `fastgpt-pro` 不提供 Sandbox Editor 和 WebSocket Proxy 链路，因此不要求 `AGENT_SANDBOX_PROXY_SECRET` 和 `AGENT_SANDBOX_PROXY_URL`，但必须配置 `AGENT_SANDBOX_PREVIEW_PROXY_URL`。
 
 <Alert icon="⚠️" context="warning">
-  预览代理应部署在与 FastGPT 主站不同的 origin（协议、域名或端口至少一项不同）。Sandbox 中的 HTML
+  预览代理应部署在与 gptGO 主站不同的 origin（协议、域名或端口至少一项不同）。Sandbox 中的 HTML
   可能包含用户生成的脚本；如果预览地址与主站同源，脚本可能访问主站凭证或接口。
 </Alert>
 
@@ -132,7 +132,7 @@ AGENT_SANDBOX_APT_MIRROR=https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports
 
 清华镜像站的 [Ubuntu 镜像帮助](https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/) 和 [Ubuntu Ports 镜像帮助](https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu-ports/) 可用于确认其他 Ubuntu 版本的路径。使用其他镜像站时，同样选择该镜像站提供的 Ubuntu 普通仓库或 Ports 仓库路径。
 
-配置后，FastGPT 会读取沙盒的 `/etc/os-release`，根据 Ubuntu 版本和 codename 生成并覆盖 `/etc/apt/sources.list.d/ubuntu.sources`，写入主仓库、updates、backports 和 security。修改配置前，已有 sources 文件会备份为 `.copy`；删除环境变量后，有备份的文件会恢复，没有备份的文件保持不变。初始化阶段不会执行 `apt-get update`。
+配置后，gptGO 会读取沙盒的 `/etc/os-release`，根据 Ubuntu 版本和 codename 生成并覆盖 `/etc/apt/sources.list.d/ubuntu.sources`，写入主仓库、updates、backports 和 security。修改配置前，已有 sources 文件会备份为 `.copy`；删除环境变量后，有备份的文件会恢复，没有备份的文件保持不变。初始化阶段不会执行 `apt-get update`。
 
 ### 资源与生命周期
 
@@ -162,11 +162,11 @@ AGENT_SANDBOX_APT_MIRROR=https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports
 
 ### 浏览器 WebSocket 连接失败
 
-检查 Proxy 是否可从浏览器访问，并确认反向代理支持 WebSocket Upgrade。如果 FastGPT 使用 HTTPS，`AGENT_SANDBOX_PROXY_URL` 也应使用 `wss://`。
+检查 Proxy 是否可从浏览器访问，并确认反向代理支持 WebSocket Upgrade。如果 gptGO 使用 HTTPS，`AGENT_SANDBOX_PROXY_URL` 也应使用 `wss://`。
 
 ### Proxy 校验失败或返回 401
 
-确认 FastGPT 主服务和 Agent Sandbox Proxy 中的 `AGENT_SANDBOX_PROXY_SECRET` 完全一致，且长度不少于 32 位。
+确认 gptGO 主服务和 Agent Sandbox Proxy 中的 `AGENT_SANDBOX_PROXY_SECRET` 完全一致，且长度不少于 32 位。
 
 ### 沙盒创建成功，但文件树或终端连接失败
 

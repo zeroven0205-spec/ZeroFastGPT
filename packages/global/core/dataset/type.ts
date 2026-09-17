@@ -408,11 +408,11 @@ export const UpdateDatasetDataPropsSchema = z.object({
     description: '数据 ID'
   }),
   q: z.string().meta({
-    example: '什么是 FastGPT？',
+    example: '什么是 gptGO？',
     description: '问题/主文本'
   }),
   a: z.string().optional().meta({
-    example: 'FastGPT 是一个 AI Agent 构建平台',
+    example: 'gptGO 是一个 AI Agent 构建平台',
     description: '回答/补充文本'
   }),
   indexes: z.array(DatasetDataIndexOptionalSchema).optional().meta({

@@ -1,6 +1,6 @@
 {
   "title": "Self-Hosting",
-  "description": "FastGPT self-hosting guide",
+  "description": "gptGO self-hosting guide",
   "root": true,
   "pages": [
     "---Getting Started---",

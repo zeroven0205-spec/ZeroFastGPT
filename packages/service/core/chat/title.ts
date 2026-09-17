@@ -48,9 +48,9 @@ Title requirements:
 Examples:
 Input:
 <user_message>
-How do I deploy FastGPT with Docker?
+How do I deploy gptGO with Docker?
 </user_message>
-Title: FastGPT Docker Deployment
+Title: gptGO Docker Deployment
 
 Input:
 <user_message>

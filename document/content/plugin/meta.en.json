@@ -1,6 +1,6 @@
 {
   "title": "Plugin System",
-  "description": "FastGPT plugin system documentation",
+  "description": "gptGO plugin system documentation",
   "root": true,
   "pages": [
     "intro",

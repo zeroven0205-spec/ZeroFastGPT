@@ -1,6 +1,6 @@
 ---
 title: 'V4.16.2'
-description: 'FastGPT V4.16.2 更新说明'
+description: 'gptGO V4.16.2 更新说明'
 releaseTime: '2026-09-01'
 upgradeTags:
   - 配置变更
@@ -19,10 +19,10 @@ HTML 转 Markdown 和文本切块 Worker 的硬上限为可用 CPU 并行度与 
 
 ### 2. 镜像更新
 
-- 更新 fastgpt-app（FastGPT 主服务）镜像 tag: v4.16.2
-- 更新 fastgpt-pro（FastGPT 商业版）镜像 tag: v4.16.2
-- 更新 fastgpt-plugin 镜像 tag: v1.1.2
-- 更新 fastgpt-code-sandbox 镜像 tag: v4.16.2
+- 更新 gptGO-app（gptGO 主服务）镜像 tag: v4.16.2
+- 更新 gptGO-pro（gptGO 商业版）镜像 tag: v4.16.2
+- 更新 gptGO-plugin 镜像 tag: v1.1.2
+- 更新 gptGO-code-sandbox 镜像 tag: v4.16.2
 
 ### 3. 清理并迁移资源权限数据(商业版执行)
 
@@ -52,7 +52,7 @@ dry-run 中的迁移预览基于清理前的当前权限数据；如果 `cleanup
 
 ### 4. 使用 Milvus 向量库时升级全文检索
 
-如果当前向量库是 Milvus，升级 FastGPT 前必须先将 Milvus 升级到 **2.5.16 或更高版本**。V4.16.2 会把全文检索自动切换到 Milvus BM25，并使用新的 `modeldata_v2` 集合存储向量和全文；Milvus 版本过低、版本无法识别或 BM25 能力校验失败时，FastGPT 会终止启动，不会回退到 MongoDB 全文检索。
+如果当前向量库是 Milvus，升级 gptGO 前必须先将 Milvus 升级到 **2.5.16 或更高版本**。V4.16.2 会把全文检索自动切换到 Milvus BM25，并使用新的 `modeldata_v2` 集合存储向量和全文；Milvus 版本过低、版本无法识别或 BM25 能力校验失败时，gptGO 会终止启动，不会回退到 MongoDB 全文检索。
 
 已有 Milvus 部署升级时，必须确认旧向量数据仍然存在：
 

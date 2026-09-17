@@ -1,6 +1,6 @@
 ---
 title: V4.9.6
-description: FastGPT V4.9.6 Release Notes
+description: gptGO V4.9.6 Release Notes
 releaseTime: '2025-04-18'
 upgradeTags:
   - CONFIG
@@ -58,7 +58,7 @@ fastgpt-mcp-server:
 
 In `App Management`, add a new `fastgpt-mcp-server` app with the image `ghcr.io/labring/fastgpt-mcp_server:v4.9.6` and set the environment variable `FASTGPT_ENDPOINT=<your FastGPT access URL>`.
 
-### 3. Update FastGPT Container Environment Variables
+### 3. Update gptGO Container Environment Variables
 
 #### Community Edition
 
@@ -68,7 +68,7 @@ Add the following to your `config.json` configuration file: `"feconfigs.mcpServe
 {
   "feConfigs": {
     "lafEnv": "https://laf.dev",
-    "mcpServerProxyEndpoint": "https://mcp.fastgpt.cn"
+    "mcpServerProxyEndpoint": "https://mcp.example.com"
   }
 }
 ```
@@ -79,8 +79,8 @@ In the Admin panel, go to `System Configuration - Basic Settings - System Parame
 
 ### 4. Update Image Tags
 
-- Update FastGPT image tag: v4.9.6
-- Update FastGPT Pro image tag: v4.9.6
+- Update gptGO image tag: v4.9.6
+- Update gptGO Pro image tag: v4.9.6
 - Update Sandbox image tag: v4.9.6
-- Add FastGPT MCP Server image tag: v4.9.6
+- Add gptGO MCP Server image tag: v4.9.6
 - AIProxy: no update required

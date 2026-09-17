@@ -27,7 +27,7 @@ async function handler(
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      'User-Agent': 'Mozilla/5.0 (compatible; FastGPT/1.0)'
+      'User-Agent': 'Mozilla/5.0 (compatible; gptGO/1.0)'
     },
     timeout: 30000,
     validateStatus: (status) => status < 500

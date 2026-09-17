@@ -16,7 +16,7 @@ import {
 
 const PushDataChunkSchema = z.object({
   q: z.string().optional().meta({
-    example: '什么是 FastGPT？',
+    example: '什么是 gptGO？',
     description: '问题/主文本'
   }),
   a: z.string().optional().meta({
@@ -66,7 +66,7 @@ export const UpdateDatasetDataResponseSchema = z.object({
     description: '展示态问题/主文本，内部 S3 图片会替换为签名访问地址'
   }),
   a: z.string().optional().meta({
-    example: 'FastGPT 是一个 AI Agent 构建平台',
+    example: 'gptGO 是一个 AI Agent 构建平台',
     description: '展示态回答/补充文本，内部 S3 图片会替换为签名访问地址'
   })
 });
@@ -77,7 +77,7 @@ const DatasetDataIndexContentSchema = z.object({
     description: '索引类型'
   }),
   text: z.string().min(1).meta({
-    example: 'FastGPT 是一个 AI Agent 构建平台',
+    example: 'gptGO 是一个 AI Agent 构建平台',
     description: '索引文本'
   })
 });
@@ -187,11 +187,11 @@ export type GetQuoteDataRuntimeBody = z.infer<typeof GetQuoteDataBodySchema>;
 
 export const GetQuoteDataResponseSchema = z.object({
   q: z.string().meta({
-    example: '什么是 FastGPT？',
+    example: '什么是 gptGO？',
     description: '问题/主文本'
   }),
   a: z.string().optional().meta({
-    example: 'FastGPT 是一个 AI Agent 构建平台',
+    example: 'gptGO 是一个 AI Agent 构建平台',
     description: '回答/补充文本'
   }),
   collection: DatasetCollectionSchema.meta({
@@ -206,7 +206,7 @@ export type GetQuoteDataResponse = z.infer<typeof GetQuoteDataResponseSchema>;
  * ============================================================================ */
 export const InsertDataBodySchema = PushDataChunkSchema.omit({ q: true }).extend({
   q: z.string().nonempty().meta({
-    example: '什么是 FastGPT？',
+    example: '什么是 gptGO？',
     description: '问题/主文本'
   }),
   collectionId: ObjectIdSchema.meta({
@@ -313,7 +313,7 @@ export const GetDatasetDataListBodySchema = PaginationSchema.extend({
     description: '集合 ID'
   }),
   searchText: z.string().optional().meta({
-    example: 'FastGPT',
+    example: 'gptGO',
     description: '搜索关键词，按 q/a 字段模糊匹配'
   })
 });
@@ -333,7 +333,7 @@ export const GetDatasetDataListLegacyBodySchema = PaginationSchema.extend({
     description: '集合 ID'
   }),
   searchText: z.string().optional().meta({
-    example: 'FastGPT',
+    example: 'gptGO',
     description: '搜索关键词'
   })
 });

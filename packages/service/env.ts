@@ -72,7 +72,7 @@ export const serviceEnv = createEnv({
       .optional()
       .meta({
         description:
-          'agent-sandbox-proxy 与 FastGPT 主服务共用的 HMAC 密钥；启用 Agent Sandbox 时必填，至少 32 个字符'
+          'agent-sandbox-proxy 与 gptGO 主服务共用的 HMAC 密钥；启用 Agent Sandbox 时必填，至少 32 个字符'
       }),
     AGENT_SANDBOX_PROXY_URL: AgentSandboxProxyUrlSchema.optional().meta({
       description: '浏览器访问 agent-sandbox-proxy 的 WebSocket 地址，必须以 ws:// 或 wss:// 开头'
@@ -134,13 +134,13 @@ export const serviceEnv = createEnv({
       .default(64 * 1024 * 1024)
       .meta({
         description:
-          'Agent sandbox WebSocket 单消息上限（字节），由 FastGPT app 统一下发给 proxy/IDE Agent'
+          'Agent sandbox WebSocket 单消息上限（字节），由 gptGO app 统一下发给 proxy/IDE Agent'
       }),
     AGENT_SANDBOX_WS_MAX_FRAME_BYTES: IntSchema.min(1)
       .default(16 * 1024 * 1024)
       .meta({
         description:
-          'Agent sandbox WebSocket 单帧上限（字节），由 FastGPT app 统一下发给 proxy/IDE Agent'
+          'Agent sandbox WebSocket 单帧上限（字节），由 gptGO app 统一下发给 proxy/IDE Agent'
       }),
     AGENT_SANDBOX_NPM_REGISTRY: z.string().optional(),
     AGENT_SANDBOX_PYPI_INDEX_URL: z.string().optional(),
@@ -252,7 +252,7 @@ export const serviceEnv = createEnv({
       .default('short-proxy')
       .meta({
         description:
-          '下载链接模式：short-proxy 返回 FastGPT 短链并由 app 代理；short-redirect 返回 FastGPT 短链并 302 到短 TTL S3 链接'
+          '下载链接模式：short-proxy 返回 gptGO 短链并由 app 代理；short-redirect 返回 gptGO 短链并 302 到短 TTL S3 链接'
       }),
     STORAGE_DOWNLOAD_REDIRECT_TTL_SECONDS: IntSchema.min(1).default(300).meta({
       description: 'short-redirect 模式下临时 S3 预签名下载链接 TTL（秒）'
@@ -298,15 +298,15 @@ export const serviceEnv = createEnv({
     // ==================== 域名与前端 ====================
     FE_DOMAIN: UrlSchema.meta({
       description:
-        '客户端访问 FastGPT 时使用的地址（由协议、主机和可选端口组成），用于补全文件资源路径。例如 https://fastgpt.cn；本地开发可使用 http://localhost:3000。'
+        '客户端访问 gptGO 时使用的地址（由协议、主机和可选端口组成），用于补全文件资源路径。例如 https://fastgpt.cn；本地开发可使用 http://localhost:3000。'
     }),
     FILE_DOMAIN: UrlSchema.optional().meta({
       description:
-        '文件域名（也指向 FastGPT 服务）；如需更高安全性可独立分配域名，避免高危文件读取到主域名内容'
+        '文件域名（也指向 gptGO 服务）；如需更高安全性可独立分配域名，避免高危文件读取到主域名内容'
     }),
     FILE_DOWNLOAD_PUBLIC_URL_PREFIX: UrlSchema.optional().meta({
       description:
-        '下载短链公开 URL 前缀。配置后下载链接生成为 {prefix}/{signedAlias}，通常由 nginx rewrite 到 FastGPT /api/system/file/d/{signedAlias}；仅影响下载，不影响上传'
+        '下载短链公开 URL 前缀。配置后下载链接生成为 {prefix}/{signedAlias}，通常由 nginx rewrite 到 gptGO /api/system/file/d/{signedAlias}；仅影响下载，不影响上传'
     }),
     NEXT_PUBLIC_BASE_URL: z.string().default(''),
 
@@ -344,7 +344,7 @@ export const serviceEnv = createEnv({
       description: '是否启用知识库同义词能力；关闭时不读取同义词配置或执行查询扩展'
     }),
     AGENT_ENGINE: z.enum(['fastAgent', 'piAgent']).default('fastAgent').meta({
-      description: 'Agent 引擎选择：fastAgent（FastGPT agent loop）| piAgent（pi-agent-core 引擎）'
+      description: 'Agent 引擎选择：fastAgent（gptGO agent loop）| piAgent（pi-agent-core 引擎）'
     }),
     SKIP_FILE_TYPE_CHECK: BoolSchema.default(false).meta({
       description: '是否跳过文件类型检查'

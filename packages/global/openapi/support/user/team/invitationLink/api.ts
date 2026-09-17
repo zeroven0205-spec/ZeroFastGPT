@@ -73,7 +73,7 @@ export type AcceptInvitationLinkBodyType = z.infer<typeof AcceptInvitationLinkBo
 export const CreateInvitationLinkBodySchema = z
   .object({
     description: z.string().min(1).meta({
-      example: '邀请新成员加入 FastGPT 团队',
+      example: '邀请新成员加入 gptGO 团队',
       description: '邀请链接描述'
     }),
     expires: InvitationLinkExpiresSchema,
@@ -84,7 +84,7 @@ export const CreateInvitationLinkBodySchema = z
   })
   .meta({
     example: {
-      description: '邀请新成员加入 FastGPT 团队',
+      description: '邀请新成员加入 gptGO 团队',
       expires: '7d',
       usedTimesLimit: 1
     }

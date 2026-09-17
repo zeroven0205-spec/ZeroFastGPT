@@ -1,6 +1,6 @@
 {
-  "title": "FastGPT 云服务",
-  "description": "FastGPT 云服务",
+  "title": "gptGO 云服务",
+  "description": "gptGO 云服务",
   "icon": "🌐",
   "pages": ["intro", "faq", "terms", "privacy"]
 }

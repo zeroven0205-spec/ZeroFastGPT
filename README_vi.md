@@ -1,8 +1,8 @@
 <div align="center">
 
-<a href="https://fastgpt.io/?source=github&utm_source=github&utm_medium=referral&utm_campaign=github_home&utm_content=logo"><img src="/.github/imgs/logo.svg" width="120" height="120" alt="fastgpt logo"></a>
+<a href="https://github.com/zeroven0205-spec/"><img src="/.github/imgs/logo.svg" width="120" height="120" alt="gptGO logo"></a>
 
-# FastGPT
+# gptGO
 
 <p align="center">
   <a href="./README_en.md">English</a> |
@@ -13,18 +13,15 @@
   <a href="./README_ja.md">日本語</a>
 </p>
 
-FastGPT là nền tảng xây dựng AI Agent cung cấp khả năng sẵn sàng sử dụng cho xử lý dữ liệu và gọi mô hình. Ngoài ra, bạn có thể điều phối workflow thông qua trực quan hóa Flow để đạt được các kịch bản ứng dụng phức tạp!
+gptGO là nền tảng xây dựng AI Agent cung cấp khả năng sẵn sàng sử dụng cho xử lý dữ liệu và gọi mô hình. Ngoài ra, bạn có thể điều phối workflow thông qua trực quan hóa Flow để đạt được các kịch bản ứng dụng phức tạp!
 
 </div>
 
 <p align="center">
-  <a href="https://fastgpt.io/?source=github&utm_source=github&utm_medium=referral&utm_campaign=github_home&utm_content=cloud_badge">
-    <img height="21" src="https://img.shields.io/badge/Sử_Dụng_Online-d4eaf7?style=flat-square&logo=spoj&logoColor=7d09f1" alt="cloud">
-  </a>
-  <a href="https://doc.fastgpt.io/guide/getting-started">
+  <a href="https://github.com/zeroven0205-spec/">
     <img height="21" src="https://img.shields.io/badge/Tài_Liệu-7d09f1?style=flat-square" alt="document">
   </a>
-  <a href="https://doc.fastgpt.io/self-host/dev">
+  <a href="https://github.com/zeroven0205-spec/">
     <img height="21" src="https://img.shields.io/badge/Phát_Triển_Local-%23d4eaf7?style=flat-square&logo=xcode&logoColor=7d09f1" alt="development">
   </a>
   <a href="#-dự-án--liên-kết-của-chúng-tôi">
@@ -32,33 +29,31 @@ FastGPT là nền tảng xây dựng AI Agent cung cấp khả năng sẵn sàng
   </a>
 </p>
 
-https://github.com/labring/FastGPT/assets/15308462/7d3a38df-eb0e-4388-9250-2409bd33f6d4
-
 ## Bắt Đầu Nhanh
 
-Bạn có thể khởi động FastGPT nhanh chóng bằng Docker. Chạy lệnh sau trong terminal và làm theo hướng dẫn để tải cấu hình.
+Bạn có thể khởi động gptGO nhanh chóng bằng Docker. Chạy lệnh sau trong terminal và làm theo hướng dẫn để tải cấu hình.
 
 ```bash
 # Chạy lệnh để tải file cấu hình
-bash <(curl -fsSL https://doc.fastgpt.io/deploy/install.sh)
+# Xem dự án GitHub gptGO để biết cấu hình triển khai
 # Khởi động dịch vụ
 docker compose up -d
 ```
 
-Sau khi khởi động hoàn tất, bạn có thể truy cập FastGPT tại `http://localhost:3000`. Tài khoản mặc định là `root` và mật khẩu là `1234`.
+Sau khi khởi động hoàn tất, bạn có thể truy cập gptGO tại `http://localhost:3000`. Tài khoản mặc định là `root` và mật khẩu là `1234`.
 
-Nếu bạn gặp vấn đề, bạn có thể [xem hướng dẫn triển khai Docker đầy đủ](https://doc.fastgpt.io/self-host/deploy/docker)
+Nếu bạn gặp vấn đề, bạn có thể [xem hướng dẫn triển khai Docker đầy đủ](https://github.com/zeroven0205-spec/)
 
 ## 🛸 Cách Sử Dụng
 
 - **Phiên Bản Đám Mây**  
-  Nếu bạn không cần triển khai riêng, bạn có thể sử dụng trực tiếp dịch vụ đám mây của chúng tôi tại: [fastgpt.io](https://fastgpt.io/?source=github&utm_source=github&utm_medium=referral&utm_campaign=github_home&utm_content=cloud_service_link)
+  Nếu không cần triển khai riêng, hãy xem các tùy chọn triển khai tại [dự án gptGO trên GitHub](https://github.com/zeroven0205-spec/).
 
 - **Phiên Bản Tự Host Cộng Đồng**  
-  Bạn có thể triển khai nhanh chóng bằng [Docker](https://doc.fastgpt.io/self-host/deploy/docker) hoặc sử dụng [Sealos Cloud](https://doc.fastgpt.io/self-host/deploy/sealos) để triển khai FastGPT bằng một cú nhấp chuột.
+  Bạn có thể triển khai nhanh chóng bằng [Docker](https://github.com/zeroven0205-spec/) hoặc sử dụng [Sealos Cloud](https://github.com/zeroven0205-spec/) để triển khai gptGO bằng một cú nhấp chuột.
 
 - **Phiên Bản Thương Mại**  
-  Nếu bạn cần các tính năng đầy đủ hơn hoặc hỗ trợ dịch vụ chuyên sâu, bạn có thể chọn [Phiên Bản Thương Mại](https://doc.fastgpt.io/guide/version/commercial). Ngoài việc cung cấp phần mềm đầy đủ, chúng tôi còn cung cấp hướng dẫn triển khai cho các kịch bản cụ thể. Bạn có thể gửi [tư vấn thương mại](https://fastgpt.cn/en/contact?source=github&utm_source=github&utm_medium=referral&utm_campaign=github_home&utm_content=commercial_consultation).
+  Nếu bạn cần các tính năng đầy đủ hơn hoặc hỗ trợ dịch vụ chuyên sâu, bạn có thể chọn [Phiên Bản Thương Mại](https://github.com/zeroven0205-spec/). Ngoài việc cung cấp phần mềm đầy đủ, chúng tôi còn cung cấp hướng dẫn triển khai cho các kịch bản cụ thể. Bạn có thể gửi [tư vấn thương mại](https://github.com/zeroven0205-spec/).
 
 ## 💡 Tính Năng Cốt Lõi
 
@@ -109,9 +104,9 @@ Nếu bạn gặp vấn đề, bạn có thể [xem hướng dẫn triển khai 
 
 ## 💪 Dự Án & Liên Kết Của Chúng Tôi
 
-- [Bắt Đầu Phát Triển Địa Phương](https://doc.fastgpt.io/self-host/dev/)
-- [Tài Liệu OpenAPI](https://cloud.fastgpt.io/apidoc/systemopenapi)
-- [FastGPT-plugin](https://github.com/labring/fastgpt-plugin)
+- [Bắt Đầu Phát Triển Địa Phương](https://github.com/zeroven0205-spec/)
+- [Tài Liệu OpenAPI](https://github.com/zeroven0205-spec/)
+- [gptGO-plugin](https://github.com/zeroven0205-spec/)
 - [AI Proxy: Dịch Vụ Cân Bằng Tải Tổng Hợp Mô Hình](https://github.com/labring/aiproxy)
 - [Sealos: Triển Khai Nhanh Ứng Dụng Cụm](https://github.com/labring/sealos)
 
@@ -121,7 +116,7 @@ Nếu bạn gặp vấn đề, bạn có thể [xem hướng dẫn triển khai 
 
 ## 🌿 Hệ Sinh Thái Bên Thứ Ba
 
-- [AI Proxy: Dịch Vụ Tổng Hợp Mô Hình Lớn](https://sealos.run/aiproxy/?k=fastgpt-github/)
+- [AI Proxy: Dịch Vụ Tổng Hợp Mô Hình Lớn](https://github.com/labring/aiproxy)
 - [SiliconCloud - Nền Tảng Trải Nghiệm Mô Hình Nguồn Mở Trực Tuyến](https://cloud.siliconflow.cn/i/TR9Ym0c4)
 
 <a href="#readme">
@@ -132,57 +127,15 @@ Nếu bạn gặp vấn đề, bạn có thể [xem hướng dẫn triển khai 
 
 Tham gia nhóm Feishu của chúng tôi:
 
-![](https://oss.laf.run/otnvvf-imgs/fastgpt-feishu2.png)
-
 <a href="#readme">
     <img src="https://img.shields.io/badge/-Về_Đầu_Trang-7d09f1.svg" alt="#" align="right">
 </a>
 
 ## 🤝 Đóng Góp
 
-Chúng tôi rất hoan nghênh đóng góp dưới mọi hình thức. Nếu bạn quan tâm đến việc đóng góp mã, hãy xem [Issues GitHub](https://github.com/labring/FastGPT/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) của chúng tôi và cho chúng tôi thấy ý tưởng tuyệt vời của bạn!
+Chúng tôi rất hoan nghênh đóng góp dưới mọi hình thức. Nếu bạn quan tâm đến việc đóng góp mã, hãy xem [Issues GitHub](https://github.com/zeroven0205-spec/) của chúng tôi và cho chúng tôi thấy ý tưởng tuyệt vời của bạn!
 
-<a href="https://github.com/labring/FastGPT/graphs/contributors" target="_blank">
-  <table>
-    <tr>
-      <th colspan="2">
-        <br><img src="https://contrib.rocks/image?repo=labring/FastGPT"><br><br>
-      </th>
-    </tr>
-    <tr>
-      <td>
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://next.ossinsight.io/widgets/official/compose-org-active-contributors/thumbnail.png?activity=active&period=past_28_days&owner_id=102226726&repo_ids=605673387&image_size=2x3&color_scheme=dark">
-          <img alt="Active participants of labring - past 28 days" src="https://next.ossinsight.io/widgets/official/compose-org-active-contributors/thumbnail.png?activity=active&period=past_28_days&owner_id=102226726&repo_ids=605673387&image_size=2x3&color_scheme=light">
-        </picture>
-      </td>
-      <td rowspan="2">
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://next.ossinsight.io/widgets/official/compose-org-participants-growth/thumbnail.png?activity=new&period=past_28_days&owner_id=102226726&repo_ids=605673387&image_size=4x7&color_scheme=dark">
-            <img alt="New trends of labring" src="https://next.ossinsight.io/widgets/official/compose-org-participants-growth/thumbnail.png?activity=new&period=past_28_days&owner_id=102226726&repo_ids=605673387&image_size=4x7&color_scheme=light">
-        </picture>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://next.ossinsight.io/widgets/official/compose-org-active-contributors/thumbnail.png?activity=new&period=past_28_days&owner_id=102226726&repo_ids=605673387&image_size=2x3&color_scheme=dark">
-            <img alt="New participants of labring - past 28 days" src="https://next.ossinsight.io/widgets/official/compose-org-active-contributors/thumbnail.png?activity=new&period=past_28_days&owner_id=102226726&repo_ids=605673387&image_size=2x3&color_scheme=light">
-        </picture>
-      </td>
-    </tr>
-  </table>
-</a>
 
-## 🌟 Star History
-
-<a href="https://github.com/labring/FastGPT/stargazers" target="_blank" style="display: block" align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://star-history.dera.page/svg?repos=labring/FastGPT&type=Date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://star-history.dera.page/svg?repos=labring/FastGPT&type=Date" />
-    <img alt="Star History Chart" src="https://star-history.dera.page/svg?repos=labring/FastGPT&type=Date" />
-  </picture>
-</a>
 
 <a href="#readme">
     <img src="https://img.shields.io/badge/-Về_Đầu_Trang-7d09f1.svg" alt="#" align="right">
@@ -190,9 +143,9 @@ Chúng tôi rất hoan nghênh đóng góp dưới mọi hình thức. Nếu b�
 
 ## Giấy Phép
 
-Kho này tuân thủ [FastGPT Open Source License](./LICENSE).
+Kho này tuân thủ [Open Source License](./LICENSE).
 
 1. Cho phép sử dụng thương mại như dịch vụ backend, nhưng không cho phép cung cấp dịch vụ SaaS.
 2. Bất kỳ dịch vụ thương mại nào không có giấy phép thương mại phải giữ lại thông tin bản quyền liên quan.
-3. Xem [FastGPT Open Source License](./LICENSE) để biết đầy đủ chi tiết.
-4. Liên hệ: Dennis@sealos.io, [Xem Giá Thương Mại](https://doc.fastgpt.io/guide/version/commercial)
+3. Xem [Open Source License](./LICENSE) để biết đầy đủ chi tiết.
+4. Liên hệ: Dennis@sealos.io, [Xem Giá Thương Mại](https://github.com/zeroven0205-spec/)

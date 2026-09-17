@@ -1,6 +1,6 @@
 ---
 title: OpenSandbox Configuration
-description: Configure OpenSandbox and Agent Sandbox Proxy for FastGPT
+description: Configure OpenSandbox and Agent Sandbox Proxy for gptGO
 ---
 
 import { Alert } from '@/components/docs/Alert';
@@ -10,7 +10,7 @@ import { Alert } from '@/components/docs/Alert';
   if your environment requires it.
 </Alert>
 
-OpenSandbox is designed for self-hosted Agent and Skill sandbox runtimes. FastGPT creates sandboxes through OpenSandbox Server, while Agent Sandbox Proxy provides browser access to files, terminals, and previews.
+OpenSandbox is designed for self-hosted Agent and Skill sandbox runtimes. gptGO creates sandboxes through OpenSandbox Server, while Agent Sandbox Proxy provides browser access to files, terminals, and previews.
 
 ## Docker Compose Configuration
 
@@ -30,8 +30,8 @@ Review these settings in the Compose file for your environment:
 
 | Setting                       | Description                                                                                                                  |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `x-volume-manager-auth-token` | Volume Manager token. It must match `AGENT_SANDBOX_OPENSANDBOX_VOLUME_MANAGER_TOKEN` in FastGPT.                             |
-| `[server].api_key`            | OpenSandbox Server API key. It must match `AGENT_SANDBOX_OPENSANDBOX_API_KEY` in FastGPT.                                    |
+| `x-volume-manager-auth-token` | Volume Manager token. It must match `AGENT_SANDBOX_OPENSANDBOX_VOLUME_MANAGER_TOKEN` in gptGO.                               |
+| `[server].api_key`            | OpenSandbox Server API key. It must match `AGENT_SANDBOX_OPENSANDBOX_API_KEY` in gptGO.                                      |
 | `[docker].host_ip`            | Host address that sandbox endpoints expose to the proxy. Use the host's internal IP or `host.docker.internal`.               |
 | Docker socket mount           | The Docker runtime requires the host Docker socket. The default is `/var/run/docker.sock`; use the actual path if different. |
 
@@ -43,14 +43,14 @@ If the host uses `HTTP_PROXY` or `HTTPS_PROXY`, explicitly set `NO_PROXY` and `n
 | ---------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
 | `PORT`                             | `1006`                                   | Proxy container port, mapped to port `3006` on the host by default.                                                             |
 | `PREVIEW_PORT`                     | Same as `PORT`                           | In 4.16, sets a separate HTTP preview listener; update the host port mapping and `AGENT_SANDBOX_PREVIEW_PROXY_URL` accordingly. |
-| `AGENT_SANDBOX_PROXY_SECRET`       | None                                     | Secret shared with the FastGPT main service. Must be at least 32 characters.                                                    |
-| `FASTGPT_APP_URL`                  | `http://fastgpt-app:3000`                | Internal FastGPT URL used by the proxy.                                                                                         |
-| `FASTGPT_APP_REQUEST_TIMEOUT_SECS` | `10`                                     | Timeout for proxy requests to FastGPT, in seconds. Increase for slow cold starts.                                               |
+| `AGENT_SANDBOX_PROXY_SECRET`       | None                                     | Secret shared with the gptGO main service. Must be at least 32 characters.                                                      |
+| `FASTGPT_APP_URL`                  | `http://fastgpt-app:3000`                | Internal gptGO URL used by the proxy.                                                                                           |
+| `FASTGPT_APP_REQUEST_TIMEOUT_SECS` | `10`                                     | Timeout for proxy requests to gptGO, in seconds. Increase for slow cold starts.                                                 |
 | `RUST_LOG`                         | `info,fastgpt_agent_sandbox_proxy=debug` | Proxy service log level.                                                                                                        |
 
 In 4.16, WebSocket and HTTP preview traffic use the same port by default. If your gateway cannot route both protocols on one port, set `PREVIEW_PORT` to another container port (for example, `1007`), change the Compose mapping to `3007:1007`, and point `AGENT_SANDBOX_PREVIEW_PROXY_URL` to port 3007.
 
-### fastgpt-app Service
+### gptGO-app Service
 
 Configure these variables in the Compose file's `x-agent-sandbox-config` anchor so `fastgpt-app` and `fastgpt-pro` share the OpenSandbox settings:
 
@@ -98,9 +98,9 @@ For China Mainland registries, replace `ghcr.io/labring` with `registry.cn-hangz
 `fastgpt-pro` does not provide the Sandbox Editor or WebSocket proxy path, so it does not require `AGENT_SANDBOX_PROXY_SECRET` or `AGENT_SANDBOX_PROXY_URL`. It still requires `AGENT_SANDBOX_PREVIEW_PROXY_URL`.
 
 <Alert icon="⚠️" context="warning">
-  Host the preview proxy on an origin separate from the FastGPT application, using a different
-  scheme, host, or port. Sandbox HTML may contain user-generated scripts. If previews share the
-  application origin, those scripts may be able to access application credentials or APIs.
+  Host the preview proxy on an origin separate from the gptGO application, using a different scheme,
+  host, or port. Sandbox HTML may contain user-generated scripts. If previews share the application
+  origin, those scripts may be able to access application credentials or APIs.
 </Alert>
 
 Preview URLs are temporary, read-only bearer capabilities. Anyone with a URL can change its path to read other files in the same Sandbox Workspace while the URL remains valid. Do not share preview URLs with users who should not have access to that Workspace.
@@ -134,7 +134,7 @@ AGENT_SANDBOX_APT_MIRROR=https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports
 
 Use the [Ubuntu mirror guide](https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/) and [Ubuntu Ports mirror guide](https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu-ports/) to confirm paths for other Ubuntu releases. With another mirror provider, use its standard Ubuntu or Ubuntu Ports repository path for the target architecture.
 
-FastGPT reads `/etc/os-release` and generates or overwrites `/etc/apt/sources.list.d/ubuntu.sources` based on the Ubuntu version and codename. The file includes the main repository, updates, backports, and security. Before overwriting an existing sources file, FastGPT creates a `.copy` backup. When the variable is removed, files with a backup are restored and files without a backup are left unchanged. Initialization does not run `apt-get update`.
+gptGO reads `/etc/os-release` and generates or overwrites `/etc/apt/sources.list.d/ubuntu.sources` based on the Ubuntu version and codename. The file includes the main repository, updates, backports, and security. Before overwriting an existing sources file, gptGO creates a `.copy` backup. When the variable is removed, files with a backup are restored and files without a backup are left unchanged. Initialization does not run `apt-get update`.
 
 ### Resource and Lifecycle Settings
 
@@ -164,11 +164,11 @@ Check `AGENT_SANDBOX_OPENSANDBOX_VOLUME_MANAGER_URL` and `AGENT_SANDBOX_OPENSAND
 
 ### Browser WebSocket connection fails
 
-Check that the proxy is reachable from the browser and that your reverse proxy supports WebSocket Upgrade. If FastGPT uses HTTPS, `AGENT_SANDBOX_PROXY_URL` should use `wss://`.
+Check that the proxy is reachable from the browser and that your reverse proxy supports WebSocket Upgrade. If gptGO uses HTTPS, `AGENT_SANDBOX_PROXY_URL` should use `wss://`.
 
 ### Proxy validation fails or returns 401
 
-Make sure `AGENT_SANDBOX_PROXY_SECRET` is identical in FastGPT and Agent Sandbox Proxy and contains at least 32 characters.
+Make sure `AGENT_SANDBOX_PROXY_SECRET` is identical in gptGO and Agent Sandbox Proxy and contains at least 32 characters.
 
 ### The sandbox is created, but the file tree or terminal does not connect
 

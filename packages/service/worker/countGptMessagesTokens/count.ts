@@ -27,7 +27,7 @@ const tokenizer: TokenizerApi = o200kTokenizer;
 const noDisallowedSpecial = { disallowedSpecial: new Set<string>() };
 
 /**
- * FastGPT 的 worker token 计数统一使用 GPT 现代模型的 o200k_base 编码。
+ * gptGO 的 worker token 计数统一使用 GPT 现代模型的 o200k_base 编码。
  * 该路径只做上下文预算和缺 usage 时的近似兜底；供应商返回 usage 时仍以 usage 为准。
  */
 export const GPT_TOKENIZER_ENCODING = 'o200k_base';

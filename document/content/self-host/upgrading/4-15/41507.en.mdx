@@ -1,6 +1,6 @@
 ---
 title: 'V4.15.0-beta7'
-description: 'FastGPT V4.15.0-beta7 Release Notes'
+description: 'gptGO V4.15.0-beta7 Release Notes'
 releaseTime: '2026-06-30'
 upgradeTags:
   - CONFIG
@@ -67,7 +67,7 @@ See the [4.15.0 stable image tags](./41500.mdx) and update all images to the sta
 
 ### 5. Run the Workflow V1 to V2 Migration (Optional)
 
-Only users who have deployed a FastGPT version earlier than `<4.8` need to run this step.
+Only users who have deployed a gptGO version earlier than `<4.8` need to run this step.
 
 Starting from V4.15.0-beta7, workflow save payloads use the V2 structure consistently. Historical `apps.modules` and `app_versions.nodes` records may still use the V1 structure. After upgrading, run the V1 -> V2 migration first, then run the V2 dirty-data cleanup in the next step.
 

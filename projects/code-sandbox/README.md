@@ -1,4 +1,4 @@
-# FastGPT Code Sandbox
+# gptGO Code Sandbox
 
 基于 Node + Hono 的代码执行沙盒，支持 JS 和 Python。两种语言都采用 one-shot 预热进程池，Linux/Docker 环境固定启用 chroot、setuid/setgid 隔离，并默认启用 seccomp。
 

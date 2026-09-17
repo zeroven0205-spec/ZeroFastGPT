@@ -4,7 +4,7 @@ import { type CompletionModel, type CompletionPosition } from './type';
 
 /**
  * Sandbox runtime type declarations.
- * Matches the actual globals exposed by FastGPT sandbox worker (worker.ts).
+ * Matches the actual globals exposed by gptGO sandbox worker (worker.ts).
  */
 export const SANDBOX_GLOBALS_LIB = `
 // ===== SystemHelper =====

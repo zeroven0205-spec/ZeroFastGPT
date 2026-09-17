@@ -1,7 +1,6 @@
 import { TeamEnterpriseAuthTaskStatusEnum } from '@fastgpt/global/support/user/team/enterpriseAuth/constant';
 
-export const enterpriseAuthContactBusinessUrl =
-  'https://fastgpt.cn/zh/contact?source=cloud-app&utm_source=app&utm_medium=referral&utm_campaign=enterprise_auth&utm_content=contact_business';
+export const enterpriseAuthContactBusinessUrl = 'https://github.com/zeroven0205-spec/';
 
 /**
  * 判断金额输入框下方是否展示“金额错误”。

@@ -1,6 +1,6 @@
 ---
 title: Integrating the bge-rerank Rerank Model
-description: Integrating the bge-rerank Rerank model with FastGPT
+description: Integrating the bge-rerank Rerank model with gptGO
 ---
 
 ## Recommended Configuration by Model
@@ -23,9 +23,9 @@ description: Integrating the bge-rerank Rerank model with FastGPT
 
 Code repositories for the 3 models:
 
-1. [https://github.com/labring/FastGPT/tree/main/plugins/model/rerank-bge/bge-reranker-base](https://github.com/labring/FastGPT/tree/main/plugins/model/rerank-bge/bge-reranker-base)
-2. [https://github.com/labring/FastGPT/tree/main/plugins/model/rerank-bge/bge-reranker-large](https://github.com/labring/FastGPT/tree/main/plugins/model/rerank-bge/bge-reranker-large)
-3. [https://github.com/labring/FastGPT/tree/main/plugins/model/rerank-bge/bge-reranker-v2-m3](https://github.com/labring/FastGPT/tree/main/plugins/model/rerank-bge/bge-reranker-v2-m3)
+1. [https://github.com/zeroven0205-spec/](https://github.com/zeroven0205-spec/)
+2. [https://github.com/zeroven0205-spec/](https://github.com/zeroven0205-spec/)
+3. [https://github.com/zeroven0205-spec/](https://github.com/zeroven0205-spec/)
 
 ### 3. Install Dependencies
 
@@ -66,9 +66,9 @@ On successful startup, you should see an address like this:
 
 **Image names:**
 
-1. registry.cn-hangzhou.aliyuncs.com/fastgpt/bge-rerank-base:v0.1 (4 GB+)
-2. registry.cn-hangzhou.aliyuncs.com/fastgpt/bge-rerank-large:v0.1 (5 GB+)
-3. registry.cn-hangzhou.aliyuncs.com/fastgpt/bge-rerank-v2-m3:v0.1 (5 GB+)
+1. registry.cn-hangzhou.aliyuncs.com/gptGO/bge-rerank-base:v0.1 (4 GB+)
+2. registry.cn-hangzhou.aliyuncs.com/gptGO/bge-rerank-large:v0.1 (5 GB+)
+3. registry.cn-hangzhou.aliyuncs.com/gptGO/bge-rerank-v2-m3:v0.1 (5 GB+)
 
 **Port**
 
@@ -110,9 +110,9 @@ services:
 
 ```
 
-## Integrate with FastGPT
+## Integrate with gptGO
 
-1. Open the FastGPT model configuration and add a new Rerank model.
+1. Open the gptGO model configuration and add a new Rerank model.
 2. Fill in the model configuration form: set the Model ID to `bge-reranker-base` and the address to `{{host}}/v1/rerank`, where host is your deployed domain or IP:Port.
 
 ![alt text](../../../public/imgs/image-102.png)
@@ -121,7 +121,7 @@ services:
 
 ### 403 Error
 
-The custom request token in FastGPT does not match the ACCESS_TOKEN environment variable.
+The custom request token in gptGO does not match the ACCESS_TOKEN environment variable.
 
 ### Docker reports `Bus error (core dumped)`
 

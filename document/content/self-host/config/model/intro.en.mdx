@@ -1,6 +1,6 @@
 ---
 title: Model Configuration
-description: FastGPT model configuration guide
+description: gptGO model configuration guide
 ---
 
 import { Alert } from '@/components/docs/Alert';
@@ -8,7 +8,7 @@ import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
 
 ## Introduction
 
-FastGPT uses the `AI Proxy` service to connect to different model providers. AI Proxy also provides load balancing, model logging, and analytics dashboards to help you monitor model usage.
+gptGO uses the `AI Proxy` service to connect to different model providers. AI Proxy also provides load balancing, model logging, and analytics dashboards to help you monitor model usage.
 
 <Alert icon="🤖" context="success">
   <p>Notes:</p>
@@ -43,7 +43,7 @@ FastGPT uses the `AI Proxy` service to connect to different model providers. AI 
 
 ## Adding Channels and Models
 
-You can configure models from `Admin - Model provider` in FastGPT.
+You can configure models from `Admin - Model provider` in gptGO.
 
 ### 1. Create a Channel
 
@@ -62,7 +62,7 @@ Using Alibaba Bailian models as an example:
 1. Channel Name: A display label for the channel, used for identification only.
 2. Protocol Type: The API protocol for the model. Generally, select the provider that offers the model. Most providers support the OpenAI protocol, so you can also choose OpenAI as the protocol type.
 3. Models: The specific models available in this channel. The system includes popular models by default. If the model you need isn't in the dropdown, click "Add Model" to [add a custom model](./intro.en.mdx#add-a-custom-model).
-4. Model Mapping: Maps the model name in FastGPT requests to the actual model name at the provider. For example:
+4. Model Mapping: Maps the model name in gptGO requests to the actual model name at the provider. For example:
 
 ```json
 {
@@ -70,7 +70,7 @@ Using Alibaba Bailian models as an example:
 }
 ```
 
-In FastGPT, the model is `gpt-4o-test`, and requests to AI Proxy also use `gpt-4o-test`. When AI Proxy forwards the request upstream, the actual `model` value becomes `gpt-4o`.
+In gptGO, the model is `gpt-4o-test`, and requests to AI Proxy also use `gpt-4o-test`. When AI Proxy forwards the request upstream, the actual `model` value becomes `gpt-4o`.
 
 5. Proxy URL: Do not enter the full model request URL. Enter the `BaseUrl` instead, and check whether `/v1` needs to be appended.
 6. API Key: The API credentials obtained from the model provider. Some providers require multiple keys — follow the on-screen prompts to enter them.
@@ -105,7 +105,7 @@ Click "Enable" to activate the model.
 
 ### 4. Test Models
 
-FastGPT provides simple tests for each model type on the UI to verify that models are working correctly. Each test sends an actual request using a template.
+gptGO provides simple tests for each model type on the UI to verify that models are working correctly. Each test sends an actual request using a template.
 
 ![alt text](../../../../public/imgs/image-105.png)
 
@@ -145,7 +145,7 @@ If you find it tedious to configure models through the UI, you can use a configu
   "metadata": {
     "isCustom": true, // Whether this is a custom model
     "isActive": true, // Whether the model is enabled
-    "provider": "OpenAI", // Model provider, used for categorization. Built-in providers: https://github.com/labring/FastGPT/blob/main/packages/global/core/ai/provider.ts. You can submit a PR for new providers, or use "Other"
+    "provider": "OpenAI", // Model provider, used for categorization. Built-in providers: https://github.com/zeroven0205-spec/ You can submit a PR for new providers, or use "Other"
     "model": "gpt-5", // Model ID (corresponds to the model name in the channel)
     "name": "gpt-5", // Display name
     "maxContext": 125000, // Maximum context length

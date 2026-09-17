@@ -1,17 +1,15 @@
 ---
 title: Sealos 部署
-description: 使用 Sealos 一键部署 FastGPT
+description: 使用 Sealos 一键部署 gptGO
 ---
 
 import { Alert } from '@/components/docs/Alert';
 
 ## 部署架构图
 
-![](../../../public/imgs/sealos-fastgpt.webp)
-
 ## 多模型支持
 
-FastGPT 使用了 one-api 项目来管理模型池，其可以兼容 OpenAI、Azure、国内主流模型和本地模型等。
+gptGO 使用了 one-api 项目来管理模型池，其可以兼容 OpenAI、Azure、国内主流模型和本地模型等。
 
 可参考：[Sealos 快速部署 OneAPI](../config/model/intro.mdx)
 
@@ -23,11 +21,7 @@ FastGPT 使用了 one-api 项目来管理模型池，其可以兼容 OpenAI、Az
 
 新加披区的服务器在国外，可以直接访问 OpenAI，但国内用户需要梯子才可以正常访问新加坡区。国际区价格稍贵，点击下面按键即可部署👇
 
-<a
-  href="https://template.cloud.sealos.io/deploy?templateName=fastgpt&uid=fnWRt09fZP"
-  rel="external"
-  target="_blank"
->
+<a href="https://github.com/zeroven0205-spec/" rel="external" target="_blank">
   <img
     src="https://cdn.jsdelivr.net/gh/labring-actions/templates@main/Deploy-on-Sealos.svg"
     alt="Deploy on Sealos"
@@ -38,11 +32,7 @@ FastGPT 使用了 one-api 项目来管理模型池，其可以兼容 OpenAI、Az
 
 北京区服务提供商为火山云，国内用户可以稳定访问，但无法访问 OpenAI 等境外服务，价格约为新加坡区的 1/4。点击下面按键即可部署👇
 
-<a
-  href="https://bja.sealos.run/?openapp=system-template%3FtemplateName%3Dfastgpt&uid=fnWRt09fZP"
-  rel="external"
-  target="_blank"
->
+<a href="https://github.com/zeroven0205-spec/" rel="external" target="_blank">
   <img
     src="https://raw.githubusercontent.com/labring-actions/templates/main/Deploy-on-Sealos.svg"
     alt="Deploy on Sealos"
@@ -61,7 +51,7 @@ FastGPT 使用了 one-api 项目来管理模型池，其可以兼容 OpenAI、Az
 
 ![](../../../public/imgs/sealos-deploy1.jpg)
 
-点击详情后，会跳转到 fastgpt 的部署管理页面，点击外网访问地址中的链接，即可打开 fastgpt 服务。
+点击详情后，会跳转到 gptGO 的部署管理页面，点击外网访问地址中的链接，即可打开 gptGO 服务。
 
 如需绑定自定义域名、修改部署参数，可以点击右上角变更，根据 sealos 的指引完成。
 
@@ -89,7 +79,7 @@ Sealos 采用按量计费的方式，也就是申请了多少 cpu、内存、磁
 
 ### 简介
 
-FastGPT 商业版共包含了 2 个应用（fastgpt, fastgpt-plus）和 2 个数据库，使用多 API Key 时候需要安装 OneAPI（一个应用和一个数据库），总计 3 个应用和 3 个数据库。
+gptGO 商业版共包含了 2 个应用（gptGO, gptGO-plus）和 2 个数据库，使用多 API Key 时候需要安装 OneAPI（一个应用和一个数据库），总计 3 个应用和 3 个数据库。
 
 ![](../../../public/imgs/onSealos1.png)
 
@@ -97,18 +87,16 @@ FastGPT 商业版共包含了 2 个应用（fastgpt, fastgpt-plus）和 2 个数
 
 ### 修改配置文件和环境变量
 
-在 Sealos 中，你可以打开 `应用管理`（App Launchpad）看到部署的 FastGPT，可以打开 `数据库`（Database）看到对应的数据库。
+在 Sealos 中，你可以打开 `应用管理`（App Launchpad）看到部署的 gptGO，可以打开 `数据库`（Database）看到对应的数据库。
 
-在 `应用管理` 中，选中 FastGPT，点击变更，可以看到对应的环境变量和配置文件。
-
-![](../../../public/imgs/fastgptonsealos1.png)
+在 `应用管理` 中，选中 gptGO，点击变更，可以看到对应的环境变量和配置文件。
 
 <Alert icon="🤖" context="success">
-  在 Sealos 上，FastGPT 一共运行了 1 个服务和 2
+  在 Sealos 上，gptGO 一共运行了 1 个服务和 2
   个数据库，如暂停和删除请注意数据库一同操作。（你可以白天启动，晚上暂停它们，省钱大法）
 </Alert>
 
-### 如何更新/升级 FastGPT
+### 如何更新/升级 gptGO
 
 [升级脚本文档](../upgrading/upgrade-instruction.mdx)先看下文档，看下需要升级哪个版本。注意，不要跨版本升级。
 
@@ -118,7 +106,7 @@ FastGPT 商业版共包含了 2 个应用（fastgpt, fastgpt-plus）和 2 个数
 
 1. 查看[更新文档](../upgrading/upgrade-instruction.mdx)，确认要升级的版本，避免跨版本升级。
 2. 打开 sealos 的应用管理
-3. 有 2 个应用 fastgpt、fastgpt-pro
+3. 有 2 个应用 gptGO、fastgpt-pro
 4. 点击对应应用右边 3 个点，变更。或者点详情后右上角的变更。
 5. 修改镜像的版本号
 
@@ -127,7 +115,7 @@ FastGPT 商业版共包含了 2 个应用（fastgpt, fastgpt-plus）和 2 个数
 6. 点击变更/重启，会自动拉取最新镜像进行更新
 7. 执行对应版本的初始化脚本(如果有)
 
-### 如何获取 FastGPT 访问链接
+### 如何获取 gptGO 访问链接
 
 打开对应的应用，点击外网访问地址。
 

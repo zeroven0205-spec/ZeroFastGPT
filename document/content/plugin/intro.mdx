@@ -1,30 +1,30 @@
 ---
 title: 插件系统说明
-description: FastGPT 插件系统说明
+description: gptGO 插件系统说明
 ---
 
-> 本文档适用于 FastGPT Plugin v1.0.0 及以上版本的插件系统。
+> 本文档适用于 gptGO Plugin v1.0.0 及以上版本的插件系统。
 
 ## 背景
 
-原先 FastGPT 的各项能力均在 FastGPT 主服务内维护，并通过 Monorepo 方式组织。系统插件也曾作为一个子仓库存在于 `FastGPT/packages/plugin` 下。
+原先 gptGO 的各项能力均在 gptGO 主服务内维护，并通过 Monorepo 方式组织。系统插件也曾作为一个子仓库存在于 `FastGPT/packages/plugin` 下。
 
 随着系统工具数量和社区贡献增加，旧结构暴露出几个问题：
 
-1. 系统插件必须伴随 FastGPT 主服务一起发版，限制了插件迭代速度。
-2. 社区贡献插件需要运行完整 FastGPT 应用，并直接向主仓库提交 PR。
-3. 使用自定义插件需要维护 FastGPT fork，手动处理升级和合并。
+1. 系统插件必须伴随 gptGO 主服务一起发版，限制了插件迭代速度。
+2. 社区贡献插件需要运行完整 gptGO 应用，并直接向主仓库提交 PR。
+3. 使用自定义插件需要维护 gptGO fork，手动处理升级和合并。
 4. Next.js/webpack 构建模型不适合在运行时挂载新插件。
 
 因此，系统插件被拆分到独立仓库：
 
-[FastGPT Plugin](https://github.com/labring/fastgpt-plugin)
+[gptGO Plugin](https://github.com/zeroven0205-spec/)
 
-FastGPT Plugin v1.0.0 对插件项目进行了系统性重构，目标是让插件的安装、版本管理、运行隔离和运维配置形成统一模型。
+gptGO Plugin v1.0.0 对插件项目进行了系统性重构，目标是让插件的安装、版本管理、运行隔离和运维配置形成统一模型。
 
 ## 设计目标
 
-FastGPT Plugin 的核心目标：
+gptGO Plugin 的核心目标：
 
 1. 解耦和模块化：系统工具、模型预设、App 模板等能力可以独立迭代，后续也能扩展 RAG 算法、Agent 策略和第三方接入。
 2. 插件包统一协议：使用 `.pkg` 文件管理插件安装、更新和分发，为后续插件类型预留扩展空间。
@@ -80,7 +80,7 @@ fastgpt-plugin/
 
 ## 仓库分工
 
-FastGPT Plugin 生态主要涉及以下仓库：
+gptGO Plugin 生态主要涉及以下仓库：
 
 | 仓库                        | 作用                                           |
 | --------------------------- | ---------------------------------------------- |
@@ -93,7 +93,7 @@ FastGPT Plugin 生态主要涉及以下仓库：
 
 ## 插件市场与使用边界
 
-FastGPT Marketplace 是插件分发渠道，用于集中展示和分发官方及社区插件。当前边界如下：
+gptGO Marketplace 是插件分发渠道，用于集中展示和分发官方及社区插件。当前边界如下：
 
 - Marketplace 是 SaaS 分发服务，不提供私有化部署版本。
 - 社区插件需要先提交到 Community Plugins 仓库，经基础审核后再进入 Marketplace。
@@ -102,7 +102,7 @@ FastGPT Marketplace 是插件分发渠道，用于集中展示和分发官方及
 
 ## 插件安装与管理
 
-FastGPT Plugin 服务负责插件包管理、运行时注册、插件调用转发和系统级配置管理。FastGPT 主服务通过插件运行时接口调用插件，插件服务负责把调用分发到对应运行时。
+gptGO Plugin 服务负责插件包管理、运行时注册、插件调用转发和系统级配置管理。gptGO 主服务通过插件运行时接口调用插件，插件服务负责把调用分发到对应运行时。
 
 系统插件安装主要有两种方式：
 
@@ -131,7 +131,7 @@ FastGPT Plugin 服务负责插件包管理、运行时注册、插件调用转�
 - 可选的 `README.md`
 - 可选的 `assets/**`
 
-`.pkg` 文件用于上传、安装、上架和版本管理。插件元信息、输入输出 schema、密钥 schema 和图标资源都会进入构建产物，供 FastGPT 页面、工作流和 Agent 调用使用。
+`.pkg` 文件用于上传、安装、上架和版本管理。插件元信息、输入输出 schema、密钥 schema 和图标资源都会进入构建产物，供 gptGO 页面、工作流和 Agent 调用使用。
 
 ## local-pool 运行时
 
@@ -183,7 +183,7 @@ Pod 启动错误会被记录并分类。连续非超时启动失败达到阈值�
 
 ## 参考
 
-- [FastGPT Plugin](https://github.com/labring/fastgpt-plugin)
-- [FastGPT 插件系统设计文档](https://github.com/labring/fastgpt-plugin/blob/main/docs/dev/design.zh.md)
-- [FastGPT Plugin 架构文档](https://github.com/labring/fastgpt-plugin/blob/main/docs/dev/architecture.zh.md)
-- [系统插件开发指南](https://github.com/labring/fastgpt-plugin/blob/main/docs/dev/how-to-devlop-plugin.md)
+- [gptGO Plugin](https://github.com/zeroven0205-spec/)
+- [gptGO 插件系统设计文档](https://github.com/zeroven0205-spec/)
+- [gptGO Plugin 架构文档](https://github.com/zeroven0205-spec/)
+- [系统插件开发指南](https://github.com/zeroven0205-spec/)

@@ -73,9 +73,9 @@ export const MarketplaceToolBaseSchema = z.object({
     description: '工具简介'
   }),
   icon: z.string().meta({ example: 'https://example.com/icon.svg', description: '工具图标' }),
-  author: z.string().optional().meta({ example: 'FastGPT', description: '插件作者' }),
+  author: z.string().optional().meta({ example: 'gptGO', description: '插件作者' }),
   repoUrl: z.string().optional().meta({
-    example: 'https://github.com/labring/FastGPT',
+    example: 'https://github.com/labring/gptGO',
     description: '插件源码仓库地址'
   }),
   tutorialUrl: z.string().optional().meta({
@@ -151,7 +151,7 @@ export const MarketplaceToolDetailItemSchema = MarketplaceToolBaseSchema.extend(
   }),
   permission: PluginPermissionListSchema.optional().meta({
     example: ['userInfo:read'],
-    description: '工具运行所需的 FastGPT 权限'
+    description: '工具运行所需的 gptGO 权限'
   }),
   readme: z.string().meta({
     example: 'https://example.com/readme.md',
@@ -176,7 +176,7 @@ export const MarketplaceToolDetailSchema = z.object({
  * API: 获取 Marketplace 工具列表
  * Route: POST /marketplace/api/tool/list
  * Method: POST
- * Description: 分页查询 FastGPT 插件市场中的系统工具
+ * Description: 分页查询 gptGO 插件市场中的系统工具
  * Tags: ['系统工具', 'Read']
  * ============================================================================ */
 

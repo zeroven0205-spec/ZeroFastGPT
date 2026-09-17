@@ -1,6 +1,6 @@
 ---
 title: 'V4.15.2'
-description: 'FastGPT V4.15.2 Release Notes'
+description: 'gptGO V4.15.2 Release Notes'
 releaseTime: '2026-07-17'
 upgradeTags:
   - CONFIG
@@ -27,16 +27,16 @@ Starting with V4.15.2, `AGENT_ENGINE` uses new enum values. Update the environme
 | `default`      | `fastAgent` |
 | `pi`           | `piAgent`   |
 
-The previous values are no longer supported. Using `default` or `pi` will fail environment variable validation and prevent FastGPT from starting. If `AGENT_ENGINE` is not set, FastGPT uses `fastAgent` by default.
+The previous values are no longer supported. Using `default` or `pi` will fail environment variable validation and prevent gptGO from starting. If `AGENT_ENGINE` is not set, gptGO uses `fastAgent` by default.
 
 ### Configure the File Download URL Mode
 
 V4.15.2 introduces the `STORAGE_DOWNLOAD_URL_MODE` environment variable, which defaults to `short-proxy`.
 
-- `short-proxy`: Returns a FastGPT short URL and proxies file downloads through the FastGPT App.
-- `short-redirect`: Returns a FastGPT short URL that redirects to a temporary S3/CDN URL after validation.
+- `short-proxy`: Returns a gptGO short URL and proxies file downloads through the gptGO App.
+- `short-redirect`: Returns a gptGO short URL that redirects to a temporary S3/CDN URL after validation.
 
-To use short URLs without routing file traffic through the FastGPT App, set:
+To use short URLs without routing file traffic through the gptGO App, set:
 
 `STORAGE_DOWNLOAD_URL_MODE=short-redirect`
 
@@ -47,7 +47,7 @@ When using `short-redirect`, you must configure `STORAGE_EXTERNAL_ENDPOINT`.
 1. Enterprise verification / company verification.
 2. The portal page now supports selecting Agent V2 apps for chats.
 3. File upload and download URLs now use short access URLs, reducing the context consumed by long URLs and the risk of malformed model output. Previously issued URLs remain supported.
-4. For file URLs without a recognizable extension, FastGPT now infers the file type from the buffer to improve parsing success rates.
+4. For file URLs without a recognizable extension, gptGO now infers the file type from the buffer to improve parsing success rates.
 5. The Custom Tool Parameters node now supports manually entering a JSON Schema and marking parameters as required.
 
 ## ⚙️ Improvements
@@ -87,7 +87,7 @@ When using `short-redirect`, you must configure `STORAGE_EXTERNAL_ENDPOINT`.
 
 ### Agent Loop Fixes
 
-1. Fixed unfinished interactive sessions failing to resume when `history=0`. Regular requests still exclude history. When the latest round contains an unfinished interaction, FastGPT retains the nearest Human/AI pair long enough to detect and restore the interaction, then filters the history as configured.
+1. Fixed unfinished interactive sessions failing to resume when `history=0`. Regular requests still exclude history. When the latest round contains an unfinished interaction, gptGO retains the nearest Human/AI pair long enough to detect and restore the interaction, then filters the history as configured.
 2. Fixed ask answers in nested workflows not being restored as the matching tool response. New interaction records use `askId` to associate the ask call with the user's answer, while legacy `planId` records remain readable.
 3. Fixed duplicate tool responses and plan snapshots after resuming a child interaction. Tool results are updated in place by `toolCallId`, and plans are updated by `planId`, preventing duplicate tool cards or plans after a refresh.
 4. Fixed Agent Dataset search not reading the split dataset parameters from the main workflow, adding compatibility with the latest Dataset search parameter structure.

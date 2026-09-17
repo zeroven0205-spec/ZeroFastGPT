@@ -1,7 +1,7 @@
 ---
 title: Dataset API
 sidebarTag: No longer maintained
-description: FastGPT OpenAPI Dataset API
+description: gptGO OpenAPI Dataset API
 ---
 
 | How to Get Dataset ID (datasetId)       | How to Get Collection ID (collection_id)   |
@@ -355,7 +355,7 @@ curl --location --request POST 'http://localhost:3000/api/core/dataset/collectio
 --header 'Authorization: Bearer {{authorization}}' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "link":"https://doc.fastgpt.io/guide/getting-started/quick-start",
+    "link":"https://github.com/zeroven0205-spec/",
     "datasetId":"6593e137231a2be9c5603ba7",
     "parentId": null,
 
@@ -531,7 +531,7 @@ curl --location --request POST 'http://localhost:3000/api/proApi/core/dataset/co
 --header 'User-Agent: Apifox/1.0.0 (https://apifox.com)' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "externalFileUrl":"https://image.xxxxx.com/fastgpt-dev/%E6%91%82.pdf",
+    "externalFileUrl":"https://image.xxxxx.com/gptgo-dev/%E6%91%82.pdf",
     "externalFileId":"1111",
     "createTime": "2024-05-01T00:00:00.000Z",
     "filename":"自定义File名.pdf",
@@ -649,7 +649,7 @@ curl --location --request POST 'http://localhost:3000/api/core/dataset/collectio
         "tmbId": "65422be6aa44b7da77729ec9",
         "type": "link",
         "name": "快速上手 | FastGPT",
-        "rawLink": "https://doc.fastgpt.io/guide/getting-started/quick-start",
+        "rawLink": "https://github.com/zeroven0205-spec/",
         "updateTime": "2024-01-20T13:54:53.031Z",
         "dataAmount": 3,
         "trainingAmount": 0,
@@ -872,7 +872,7 @@ Maximum 5 custom indexes per data group
 
 ### Push Data to Processing Queue
 
-Each request can push up to 200 data groups. FastGPT automatically creates the processing usage record, so you do not need to provide `billId`.
+Each request can push up to 200 data groups. gptGO automatically creates the processing usage record, so you do not need to provide `billId`.
 
 <Tabs items={['Request Example','Parameters','Response Example']}>
 <Tab value="Request Example" >

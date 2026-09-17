@@ -4,7 +4,7 @@ import type { AIChatItemValueItemType } from '@fastgpt/global/core/chat/type';
 import type { BuildAgentLoopCoreAssistantResponsesFromMessagesParams } from './type';
 
 /**
- * 将 agent-loop 返回的 assistantMessages transcript 转为 FastGPT assistantResponses。
+ * 将 agent-loop 返回的 assistantMessages transcript 转为 gptGO assistantResponses。
  *
  * 这里只处理标准 LLM transcript：文本、reasoning、tool_call 和 tool response。
  * plan/ask/contextCheckpoint 等 agent-loop 元事件由对应事件 builder 追加，避免两类语义混在一起。

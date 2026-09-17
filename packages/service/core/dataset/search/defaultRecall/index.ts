@@ -20,7 +20,7 @@ import { countRecallLimit, filterDatasetDataByMaxTokens } from './utils';
  *
  * 这条链路可以按“补充 query -> 多路召回 -> 分组融合 -> 精排/过滤 -> 输出格式化”理解：
  * 1. 输入阶段：`textQueries` 是已经完成 query extension 的文本问题；`imageQueries` 是图片
- *    URL 或 FastGPT 内部对象 key。图片会先尝试生成 caption，把图片补成一条可搜索的文本 query。
+ *    URL 或 gptGO 内部对象 key。图片会先尝试生成 caption，把图片补成一条可搜索的文本 query。
  * 2. 召回阶段：文本 query 与图片 caption 走 embedding/full-text 召回；原始图片在 embedding
  *    模型支持图片时额外走图片向量召回。任一图片处理失败只丢弃该图片路径，不影响其他 query。
  * 3. 融合阶段：先分别合并“用户文本”“图片 caption”“图片向量”三类结果，再按图文混合权重合成

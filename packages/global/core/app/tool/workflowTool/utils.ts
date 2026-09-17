@@ -3,7 +3,7 @@ import { FlowNodeInputTypeEnum, FlowNodeTypeEnum } from '../../../workflow/node/
 import { type StoreNodeItemType } from '../../../workflow/type/node';
 
 /**
- * 系统工具关联的工作流暂不支持这些需要 FastGPT 运行时上下文的输入类型：
+ * 系统工具关联的工作流暂不支持这些需要 gptGO 运行时上下文的输入类型：
  * 文件、知识库、模型和外部动态输入。
  * hidden 是内部变量，schema 需要保留其元数据/默认值；对外入参会在工具边界过滤。
  */

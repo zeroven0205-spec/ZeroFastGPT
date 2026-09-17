@@ -58,7 +58,7 @@ function buildOpenSandboxNetworkPolicy(
 }
 
 /**
- * 构建 OpenSandbox 的 FastGPT 运行态 profile。
+ * 构建 OpenSandbox 的 gptGO 运行态 profile。
  *
  * OpenSandbox 需要在 createConfig 中显式注入镜像、入口脚本、资源限制和 volume。
  */

@@ -1,30 +1,30 @@
 ---
 title: Plugin System Overview
-description: FastGPT plugin system overview
+description: gptGO plugin system overview
 ---
 
-> This document applies to FastGPT Plugin v1.0.0 and later.
+> This document applies to gptGO Plugin v1.0.0 and later.
 
 ## Background
 
-FastGPT capabilities were previously maintained inside the FastGPT main service and organized as a Monorepo. System plugins also existed as a sub-repository under `FastGPT/packages/plugin`.
+gptGO capabilities were previously maintained inside the gptGO main service and organized as a Monorepo. System plugins also existed as a sub-repository under `FastGPT/packages/plugin`.
 
 As the number of system tools and community contributions grew, the old structure exposed several problems:
 
-1. System plugins had to be released together with the FastGPT main service, which slowed plugin iteration.
-2. Community contributors needed to run the full FastGPT stack and submit PRs directly to the main repository.
-3. Custom plugins required maintaining a FastGPT fork and manually handling upgrades and merges.
+1. System plugins had to be released together with the gptGO main service, which slowed plugin iteration.
+2. Community contributors needed to run the full gptGO stack and submit PRs directly to the main repository.
+3. Custom plugins required maintaining a gptGO fork and manually handling upgrades and merges.
 4. The Next.js/webpack build model was not suitable for mounting new plugins at runtime.
 
 System plugins have therefore been split into a standalone repository:
 
-[FastGPT Plugin](https://github.com/labring/fastgpt-plugin)
+[gptGO Plugin](https://github.com/zeroven0205-spec/)
 
-FastGPT Plugin v1.0.0 systematically refactors the plugin project so plugin installation, version management, runtime isolation, and operations configuration share one model.
+gptGO Plugin v1.0.0 systematically refactors the plugin project so plugin installation, version management, runtime isolation, and operations configuration share one model.
 
 ## Design Goals
 
-The main goals of FastGPT Plugin are:
+The main goals of gptGO Plugin are:
 
 1. Decoupling and modularization: system tools, model presets, app templates, and future capabilities such as RAG algorithms, Agent strategies, and third-party integrations can evolve independently.
 2. Unified plugin package protocol: `.pkg` files manage plugin installation, updates, and distribution, with extension points reserved for future plugin types.
@@ -80,12 +80,12 @@ For system tool development, see [System Tool Development Guide](./system-tool-d
 
 ## Repository Responsibilities
 
-The FastGPT Plugin ecosystem mainly involves these repositories:
+The gptGO Plugin ecosystem mainly involves these repositories:
 
 | Repository                  | Purpose                                                                |
 | --------------------------- | ---------------------------------------------------------------------- |
 | `labring/fastgpt-plugin`    | Plugin service, SDK, CLI, debug monitor, and infrastructure code.      |
-| `fastgpt-official-plugins`  | Plugins maintained or reviewed by FastGPT officials.                   |
+| `fastgpt-official-plugins`  | Plugins maintained or reviewed by gptGO officials.                     |
 | `fastgpt-community-plugins` | Community third-party plugins.                                         |
 | `fastgpt-business-plugins`  | Private plugins, customer-customized plugins, and commercial delivery. |
 
@@ -93,7 +93,7 @@ The `fastgpt-plugin` repository only provides development, build, check, packagi
 
 ## Marketplace And Usage Boundaries
 
-FastGPT Marketplace is the plugin distribution channel for centrally displaying and distributing official and community plugins. Current boundaries:
+gptGO Marketplace is the plugin distribution channel for centrally displaying and distributing official and community plugins. Current boundaries:
 
 - Marketplace is a SaaS distribution service and does not provide a private deployment version.
 - Community plugins must first be submitted to the Community Plugins repository, pass basic review, and then enter Marketplace.
@@ -102,7 +102,7 @@ FastGPT Marketplace is the plugin distribution channel for centrally displaying 
 
 ## Plugin Installation And Management
 
-The FastGPT Plugin service is responsible for plugin package management, runtime registration, plugin call forwarding, and system-level configuration. The FastGPT main service invokes plugins through the plugin runtime interface, and the plugin service dispatches each call to the corresponding runtime.
+The gptGO Plugin service is responsible for plugin package management, runtime registration, plugin call forwarding, and system-level configuration. The gptGO main service invokes plugins through the plugin runtime interface, and the plugin service dispatches each call to the corresponding runtime.
 
 System plugins can be installed in two main ways:
 
@@ -131,7 +131,7 @@ Build artifacts usually include:
 - optional `README.md`
 - optional `assets/**`
 
-`.pkg` files are used for upload, installation, listing, and version management. Plugin metadata, input/output schemas, secret schemas, and icon assets are included in the build output for FastGPT pages, workflows, and Agents.
+`.pkg` files are used for upload, installation, listing, and version management. Plugin metadata, input/output schemas, secret schemas, and icon assets are included in the build output for gptGO pages, workflows, and Agents.
 
 ## local-pool Runtime
 
@@ -183,7 +183,7 @@ Continue with [System Tool Development Guide](./system-tool-development.en.mdx) 
 
 ## References
 
-- [FastGPT Plugin](https://github.com/labring/fastgpt-plugin)
-- [FastGPT Plugin System Design](https://github.com/labring/fastgpt-plugin/blob/main/docs/dev/design.md)
-- [FastGPT Plugin Architecture](https://github.com/labring/fastgpt-plugin/blob/main/docs/dev/architecture.md)
-- [System Plugin Development Guide](https://github.com/labring/fastgpt-plugin/blob/main/docs/dev/how-to-devlop-plugin.en.md)
+- [gptGO Plugin](https://github.com/zeroven0205-spec/)
+- [gptGO Plugin System Design](https://github.com/zeroven0205-spec/)
+- [gptGO Plugin Architecture](https://github.com/zeroven0205-spec/)
+- [System Plugin Development Guide](https://github.com/zeroven0205-spec/)

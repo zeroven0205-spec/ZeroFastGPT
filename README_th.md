@@ -1,8 +1,8 @@
 <div align="center">
 
-<a href="https://fastgpt.io/?source=github&utm_source=github&utm_medium=referral&utm_campaign=github_home&utm_content=logo"><img src="/.github/imgs/logo.svg" width="120" height="120" alt="fastgpt logo"></a>
+<a href="https://github.com/zeroven0205-spec/"><img src="/.github/imgs/logo.svg" width="120" height="120" alt="gptGO logo"></a>
 
-# FastGPT
+# gptGO
 
 <p align="center">
   <a href="./README_en.md">English</a> |
@@ -13,18 +13,15 @@
   <a href="./README_ja.md">日本語</a>
 </p>
 
-FastGPT เป็นแพลตฟอร์มสำหรับสร้าง AI Agent ที่มีความสามารถพร้อมใช้งานสำหรับการประมวลผลข้อมูลและการเรียกใช้โมเดล นอกจากนี้ยังสามารถจัดระเบียบ workflow ผ่านการแสดงภาพ Flow เพื่อให้บรรลุสถานการณ์การใช้งานที่ซับซ้อนได้!
+gptGO เป็นแพลตฟอร์มสำหรับสร้าง AI Agent ที่มีความสามารถพร้อมใช้งานสำหรับการประมวลผลข้อมูลและการเรียกใช้โมเดล นอกจากนี้ยังสามารถจัดระเบียบ workflow ผ่านการแสดงภาพ Flow เพื่อให้บรรลุสถานการณ์การใช้งานที่ซับซ้อนได้!
 
 </div>
 
 <p align="center">
-  <a href="https://fastgpt.io/?source=github&utm_source=github&utm_medium=referral&utm_campaign=github_home&utm_content=cloud_badge">
-    <img height="21" src="https://img.shields.io/badge/ใช้งานออนไลน์-d4eaf7?style=flat-square&logo=spoj&logoColor=7d09f1" alt="cloud">
-  </a>
-  <a href="https://doc.fastgpt.io/guide/getting-started">
+  <a href="https://github.com/zeroven0205-spec/">
     <img height="21" src="https://img.shields.io/badge/เอกสาร-7d09f1?style=flat-square" alt="document">
   </a>
-  <a href="https://doc.fastgpt.io/self-host/dev">
+  <a href="https://github.com/zeroven0205-spec/">
     <img height="21" src="https://img.shields.io/badge/พัฒนาในเครื่อง-%23d4eaf7?style=flat-square&logo=xcode&logoColor=7d09f1" alt="development">
   </a>
   <a href="#-โปรเจกต์และลิงก์ของเรา">
@@ -32,33 +29,31 @@ FastGPT เป็นแพลตฟอร์มสำหรับสร้าง
   </a>
 </p>
 
-https://github.com/labring/FastGPT/assets/15308462/7d3a38df-eb0e-4388-9250-2409bd33f6d4
-
 ## เริ่มต้นอย่างรวดเร็ว
 
-คุณสามารถเริ่มต้น FastGPT ได้อย่างรวดเร็วโดยใช้ Docker รันคำสั่งต่อไปนี้ในเทอร์มินัลและทำตามคำแนะนำเพื่อดึงการกำหนดค่า
+คุณสามารถเริ่มต้น gptGO ได้อย่างรวดเร็วโดยใช้ Docker รันคำสั่งต่อไปนี้ในเทอร์มินัลและทำตามคำแนะนำเพื่อดึงการกำหนดค่า
 
 ```bash
 # รันคำสั่งเพื่อดึงไฟล์การกำหนดค่า
-bash <(curl -fsSL https://doc.fastgpt.io/deploy/install.sh)
+# ดูการตั้งค่า deploy ได้ที่โปรเจกต์ gptGO บน GitHub
 # เริ่มบริการ
 docker compose up -d
 ```
 
-เมื่อเริ่มต้นสมบูรณ์แล้ว คุณสามารถเข้าถึง FastGPT ที่ `http://localhost:3000` บัญชีเริ่มต้นคือ `root` และรหัสผ่านคือ `1234`
+เมื่อเริ่มต้นสมบูรณ์แล้ว คุณสามารถเข้าถึง gptGO ที่ `http://localhost:3000` บัญชีเริ่มต้นคือ `root` และรหัสผ่านคือ `1234`
 
-หากคุณพบปัญหา คุณสามารถ [ดูบทแนะนำการติดตั้ง Docker ฉบับสมบูรณ์](https://doc.fastgpt.io/self-host/deploy/docker)
+หากคุณพบปัญหา คุณสามารถ [ดูบทแนะนำการติดตั้ง Docker ฉบับสมบูรณ์](https://github.com/zeroven0205-spec/)
 
 ## 🛸 วิธีการใช้งาน
 
 - **เวอร์ชันคลาวด์**  
-  หากคุณไม่ต้องการติดตั้งแบบส่วนตัว คุณสามารถใช้บริการคลาวด์ของเราได้โดยตรงที่: [fastgpt.io](https://fastgpt.io/?source=github&utm_source=github&utm_medium=referral&utm_campaign=github_home&utm_content=cloud_service_link)
+  หากไม่ต้องการติดตั้งแบบส่วนตัว โปรดดูตัวเลือกการติดตั้งที่มีใน [โปรเจกต์ gptGO บน GitHub](https://github.com/zeroven0205-spec/)
 
 - **เวอร์ชันโฮสต์ตัวเองของชุมชน**  
-  คุณสามารถติดตั้งได้อย่างรวดเร็วโดยใช้ [Docker](https://doc.fastgpt.io/self-host/deploy/docker) หรือใช้ [Sealos Cloud](https://doc.fastgpt.io/self-host/deploy/sealos) เพื่อติดตั้ง FastGPT ด้วยคลิกเดียว
+  คุณสามารถติดตั้งได้อย่างรวดเร็วโดยใช้ [Docker](https://github.com/zeroven0205-spec/) หรือใช้ [Sealos Cloud](https://github.com/zeroven0205-spec/) เพื่อติดตั้ง gptGO ด้วยคลิกเดียว
 
 - **เวอร์ชันพาณิชย์**  
-  หากคุณต้องการคุณสมบัติที่สมบูรณ์มากขึ้นหรือการสนับสนุนบริการเชิงลึก คุณสามารถเลือก [เวอร์ชันพาณิชย์](https://doc.fastgpt.io/guide/version/commercial) นอกจากการให้ซอฟต์แวร์ที่สมบูรณ์ เรายังให้คำแนะนำการนำไปใช้สำหรับสถานการณ์เฉพาะ คุณสามารถส่ง[ปรึกษาธุรกิจ](https://fastgpt.cn/en/contact?source=github&utm_source=github&utm_medium=referral&utm_campaign=github_home&utm_content=commercial_consultation)
+  หากคุณต้องการคุณสมบัติที่สมบูรณ์มากขึ้นหรือการสนับสนุนบริการเชิงลึก คุณสามารถเลือก [เวอร์ชันพาณิชย์](https://github.com/zeroven0205-spec/) นอกจากการให้ซอฟต์แวร์ที่สมบูรณ์ เรายังให้คำแนะนำการนำไปใช้สำหรับสถานการณ์เฉพาะ คุณสามารถส่ง[ปรึกษาธุรกิจ](https://github.com/zeroven0205-spec/)
 
 ## 💡 คุณสมบัติหลัก
 
@@ -109,9 +104,9 @@ docker compose up -d
 
 ## 💪 โปรเจกต์และลิงก์ของเรา
 
-- [เริ่มต้นพัฒนาในเครื่อง](https://doc.fastgpt.io/self-host/dev/)
-- [เอกสาร OpenAPI](https://cloud.fastgpt.io/apidoc/systemopenapi)
-- [FastGPT-plugin](https://github.com/labring/fastgpt-plugin)
+- [เริ่มต้นพัฒนาในเครื่อง](https://github.com/zeroven0205-spec/)
+- [เอกสาร OpenAPI](https://github.com/zeroven0205-spec/)
+- [gptGO-plugin](https://github.com/zeroven0205-spec/)
 - [AI Proxy: บริการ Load Balancing การรวมโมเดล](https://github.com/labring/aiproxy)
 - [Sealos: การติดตั้งแอปพลิเคชันคลัสเตอร์อย่างรวดเร็ว](https://github.com/labring/sealos)
 
@@ -121,7 +116,7 @@ docker compose up -d
 
 ## 🌿 ระบบนิเวศของบุคคลที่สาม
 
-- [AI Proxy: บริการรวมโมเดลขนาดใหญ่](https://sealos.run/aiproxy/?k=fastgpt-github/)
+- [AI Proxy: บริการรวมโมเดลขนาดใหญ่](https://github.com/labring/aiproxy)
 - [SiliconCloud - แพลตฟอร์มประสบการณ์โมเดล Open Source ออนไลน์](https://cloud.siliconflow.cn/i/TR9Ym0c4)
 
 <a href="#readme">
@@ -132,57 +127,15 @@ docker compose up -d
 
 เข้าร่วมกลุ่ม Feishu ของเรา:
 
-![](https://oss.laf.run/otnvvf-imgs/fastgpt-feishu2.png)
-
 <a href="#readme">
     <img src="https://img.shields.io/badge/-กลับด้านบน-7d09f1.svg" alt="#" align="right">
 </a>
 
 ## 🤝 ผู้มีส่วนร่วม
 
-เรายินดีต้อนรับการมีส่วนร่วมในรูปแบบต่างๆ หากคุณสนใจการมีส่วนร่วมในโค้ด ดู [Issues บน GitHub](https://github.com/labring/FastGPT/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) ของเราและแสดงความคิดที่ยอดเยี่ยมของคุณ!
+เรายินดีต้อนรับการมีส่วนร่วมในรูปแบบต่างๆ หากคุณสนใจการมีส่วนร่วมในโค้ด ดู [Issues บน GitHub](https://github.com/zeroven0205-spec/) ของเราและแสดงความคิดที่ยอดเยี่ยมของคุณ!
 
-<a href="https://github.com/labring/FastGPT/graphs/contributors" target="_blank">
-  <table>
-    <tr>
-      <th colspan="2">
-        <br><img src="https://contrib.rocks/image?repo=labring/FastGPT"><br><br>
-      </th>
-    </tr>
-    <tr>
-      <td>
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://next.ossinsight.io/widgets/official/compose-org-active-contributors/thumbnail.png?activity=active&period=past_28_days&owner_id=102226726&repo_ids=605673387&image_size=2x3&color_scheme=dark">
-          <img alt="Active participants of labring - past 28 days" src="https://next.ossinsight.io/widgets/official/compose-org-active-contributors/thumbnail.png?activity=active&period=past_28_days&owner_id=102226726&repo_ids=605673387&image_size=2x3&color_scheme=light">
-        </picture>
-      </td>
-      <td rowspan="2">
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://next.ossinsight.io/widgets/official/compose-org-participants-growth/thumbnail.png?activity=new&period=past_28_days&owner_id=102226726&repo_ids=605673387&image_size=4x7&color_scheme=dark">
-            <img alt="New trends of labring" src="https://next.ossinsight.io/widgets/official/compose-org-participants-growth/thumbnail.png?activity=new&period=past_28_days&owner_id=102226726&repo_ids=605673387&image_size=4x7&color_scheme=light">
-        </picture>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://next.ossinsight.io/widgets/official/compose-org-active-contributors/thumbnail.png?activity=new&period=past_28_days&owner_id=102226726&repo_ids=605673387&image_size=2x3&color_scheme=dark">
-            <img alt="New participants of labring - past 28 days" src="https://next.ossinsight.io/widgets/official/compose-org-active-contributors/thumbnail.png?activity=new&period=past_28_days&owner_id=102226726&repo_ids=605673387&image_size=2x3&color_scheme=light">
-        </picture>
-      </td>
-    </tr>
-  </table>
-</a>
 
-## 🌟 Star History
-
-<a href="https://github.com/labring/FastGPT/stargazers" target="_blank" style="display: block" align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://star-history.dera.page/svg?repos=labring/FastGPT&type=Date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://star-history.dera.page/svg?repos=labring/FastGPT&type=Date" />
-    <img alt="Star History Chart" src="https://star-history.dera.page/svg?repos=labring/FastGPT&type=Date" />
-  </picture>
-</a>
 
 <a href="#readme">
     <img src="https://img.shields.io/badge/-กลับด้านบน-7d09f1.svg" alt="#" align="right">
@@ -190,9 +143,9 @@ docker compose up -d
 
 ## ใบอนุญาต
 
-ที่เก็บนี้ปฏิบัติตาม [FastGPT Open Source License](./LICENSE)
+ที่เก็บนี้ปฏิบัติตาม [Open Source License](./LICENSE)
 
 1. อนุญาตให้ใช้เชิงพาณิชย์เป็นบริการแบ็กเอนด์ แต่ไม่อนุญาตให้ให้บริการ SaaS
 2. บริการเชิงพาณิชย์ใดๆ ที่ไม่มีการอนุญาตเชิงพาณิชย์ต้องเก็บข้อมูลลิขสิทธิ์ที่เกี่ยวข้องไว้
-3. โปรดดู [FastGPT Open Source License](./LICENSE) สำหรับรายละเอียดฉบับเต็ม
-4. ติดต่อ: Dennis@sealos.io, [ดูราคาพาณิชย์](https://doc.fastgpt.io/guide/version/commercial)
+3. โปรดดู [Open Source License](./LICENSE) สำหรับรายละเอียดฉบับเต็ม
+4. ติดต่อ: Dennis@sealos.io, [ดูราคาพาณิชย์](https://github.com/zeroven0205-spec/)

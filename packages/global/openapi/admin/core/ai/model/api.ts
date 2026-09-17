@@ -101,7 +101,7 @@ export const CreateAdminAIProxyChannelBodySchema = z
   })
   .passthrough();
 export type CreateAdminAIProxyChannelBody = z.infer<typeof CreateAdminAIProxyChannelBodySchema>;
-/** 此代理保留第三方 envelope，而不是 FastGPT NextAPI 的 data 响应。 */
+/** 此代理保留第三方 envelope，而不是 gptGO NextAPI 的 data 响应。 */
 export const CreateAdminAIProxyChannelResponseSchema = z.discriminatedUnion('success', [
   z.object({
     success: z.literal(true),

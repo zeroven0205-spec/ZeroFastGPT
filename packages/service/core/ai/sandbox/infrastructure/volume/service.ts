@@ -92,7 +92,7 @@ export const createLegacySessionVolumeClaimName = (sandboxId: string) => {
 /**
  * 确保指定 sandbox 会话拥有可挂载的持久卷。
  *
- * claimName 必须先由 FastGPT 生成并持久化，volume-manager 不理解 sandboxId。
+ * claimName 必须先由 gptGO 生成并持久化，volume-manager 不理解 sandboxId。
  */
 export const ensureSessionVolume = async (claimName: string): Promise<string> => {
   const vmConfig = getVolumeManagerEnvConfig();

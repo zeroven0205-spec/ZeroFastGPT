@@ -88,9 +88,9 @@ export const apiDocOpenAPIDocument = setRequiredRequestExamples(
   createDocument({
     openapi: '3.1.0',
     info: {
-      title: 'FastGPT System OpenAPI',
+      title: 'gptGO System OpenAPI',
       version: '0.1.0',
-      description: 'FastGPT 开放 API 文档，仅包含支持 API key 鉴权的接口。'
+      description: 'gptGO 开放 API 文档，仅包含支持 API key 鉴权的接口。'
     },
     paths: apiKeyOpenAPIPaths,
     servers: [{ url: '/api' }],

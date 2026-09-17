@@ -96,7 +96,7 @@ export const flatModelToDocumentData = (
     ...(normalized.config && typeof normalized.config === 'object' ? normalized.config : {})
   };
 
-  // scope 由 FastGPT 赋值；Schema 是最终边界，负责类型校验和未知字段清理。
+  // scope 由 gptGO 赋值；Schema 是最终边界，负责类型校验和未知字段清理。
   return SystemModelDocumentDataSchema.parse(
     Object.fromEntries(
       Object.entries({ ...normalized, scope: ModelScopeEnum.system, config }).filter(

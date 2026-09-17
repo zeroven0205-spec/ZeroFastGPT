@@ -1,6 +1,6 @@
 ---
 title: 'V4.15.0-beta6'
-description: 'FastGPT V4.15.0-beta6 Release Notes'
+description: 'gptGO V4.15.0-beta6 Release Notes'
 releaseTime: '2026-06-29'
 upgradeTags:
   - CONFIG
@@ -11,7 +11,7 @@ upgradeTags:
 
 ### 1. Update the default model configuration
 
-The chat title generation model is no longer configured through the `CHAT_TITLE_MODEL` environment variable. After upgrading, select the Chat Title Model in Model Configuration > Default Model Configuration. This setting can be left unset. When unset, FastGPT does not call a model to generate the title and uses a truncated user question instead.
+The chat title generation model is no longer configured through the `CHAT_TITLE_MODEL` environment variable. After upgrading, select the Chat Title Model in Model Configuration > Default Model Configuration. This setting can be left unset. When unset, gptGO does not call a model to generate the title and uses a truncated user question instead.
 
 If you previously configured `CHAT_TITLE_MODEL`, remove it from the `fastgpt` and `fastgpt-pro` environment variables, then select the corresponding model in the UI.
 
@@ -58,7 +58,7 @@ This endpoint does not backfill `sourceType` for existing App Chat records.
 
 ### 3. Update environment variables (optional)
 
-Agent Sandbox now supports package registry mirror configuration. When configured, FastGPT writes mirror configuration files for npm, yarn, bun, pip, and uv under the sandbox HOME directory during sandbox initialization. This improves dependency installation stability in private networks or cross-region network environments.
+Agent Sandbox now supports package registry mirror configuration. When configured, gptGO writes mirror configuration files for npm, yarn, bun, pip, and uv under the sandbox HOME directory during sandbox initialization. This improves dependency installation stability in private networks or cross-region network environments.
 
 ```dotenv
 # npm registry used by npm/yarn/pnpm/bun inside Agent Sandbox
@@ -71,15 +71,15 @@ The configuration is cached by content hash in the sandbox runtime state, so the
 
 ### 4. Update images
 
-- Update the fastgpt-app (FastGPT main service) image tag to v4.15.0-beta6.
-- Update the fastgpt-pro (FastGPT commercial edition) image tag to v4.15.0-beta6.
-- Update the fastgpt-plugin image tag to v1.0.0-beta6.
+- Update the gptGO-app (gptGO main service) image tag to v4.15.0-beta6.
+- Update the gptGO-pro (gptGO commercial edition) image tag to v4.15.0-beta6.
+- Update the gptGO-plugin image tag to v1.0.0-beta6.
 - Update the aiproxy image tag to v0.6.2.
 
 If Agent Sandbox is enabled, also update the following images:
 
-- Update the fastgpt-agent-sandbox-proxy image tag to v0.2.0-beta3.
-- Update the fastgpt-agent-sandbox image tag to v0.2.0.-beta3.
+- Update the gptGO-agent-sandbox-proxy image tag to v0.2.0-beta3.
+- Update the gptGO-agent-sandbox image tag to v0.2.0.-beta3.
 
 ## Risks
 
@@ -93,7 +93,7 @@ Risk: trace records written before this upgrade do not have `teamId`, so they ca
 
 ## 🚀 New Features
 
-1. The commercial edition now supports local direct-connect debugging for FastGPT plugins.
+1. The commercial edition now supports local direct-connect debugging for gptGO plugins.
 
 ## ⚙️ Improvements
 

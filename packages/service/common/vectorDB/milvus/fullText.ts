@@ -43,7 +43,7 @@ export const assertMilvusVersion = async (client: MilvusClient): Promise<void> =
       patch < MIN_MILVUS_VERSION.patch);
   if (belowMin) {
     throw new Error(
-      `Milvus version ${version} is not supported. FastGPT requires Milvus 2.5.16+. Please upgrade your Milvus instance.`
+      `Milvus version ${version} is not supported. gptGO requires Milvus 2.5.16+. Please upgrade your Milvus instance.`
     );
   }
   logger.info('Milvus version verified', { version });

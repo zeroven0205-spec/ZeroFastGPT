@@ -492,7 +492,7 @@ export const SearchDatasetTestBodySchema = z
       description: '知识库 ID'
     }),
     text: z.string().optional().default('').meta({
-      example: 'FastGPT 是什么',
+      example: 'gptGO 是什么',
       description: '搜索文本'
     }),
     queryImageUrls: z
@@ -575,7 +575,7 @@ export const SearchDatasetTestBodySchema = z
       anyOf: [
         {
           required: ['text'],
-          properties: { text: { type: 'string', minLength: 1, example: 'FastGPT 是什么' } }
+          properties: { text: { type: 'string', minLength: 1, example: 'gptGO 是什么' } }
         },
         {
           required: ['queryImageUrls'],

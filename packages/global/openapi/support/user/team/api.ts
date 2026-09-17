@@ -246,7 +246,7 @@ export const TeamListItemSchema = z
       description: '团队头像'
     }),
     teamName: z.string().meta({
-      example: 'FastGPT 团队',
+      example: 'gptGO 团队',
       description: '团队名称'
     }),
     memberName: z.string().default('Member').meta({

@@ -1,6 +1,6 @@
 ---
 title: 'V4.15.0'
-description: 'FastGPT V4.15.0 Release Notes'
+description: 'gptGO V4.15.0 Release Notes'
 releaseTime: '2026-06-30'
 upgradeTags:
   - CONFIG
@@ -13,7 +13,7 @@ import { Alert } from '@/components/docs/Alert';
 
 ### 1. Environment Variable Changes
 
-#### 1.1 fastgpt-app and fastgpt-pro
+#### 1.1 gptGO-app and gptGO-pro
 
 ##### Check required variables
 
@@ -114,13 +114,13 @@ Code Sandbox adds security-related environment variables such as `SANDBOX_API_MA
 | `SANDBOX_REQUEST_MAX_BODY_MB`     | `5`     | Maximum request body size for one sandbox network request, in MB.                                     |
 | `SANDBOX_QUEUE_ID_CONCURRENCY`    | Empty   | Number of requests with the same `queueId` that may enter execution at once. Empty disables queueing. |
 
-#### 1.3 fastgpt-plugin
+#### 1.3 gptGO-plugin
 
 The plugin service has been reworked. You must add `AUTH_TOKEN` and `FASTGPT_BASE_URL`, and update the `MONGODB_URI` variable:
 
 1. Set `AUTH_TOKEN` for `fastgpt-plugin`. It must be at least 32 characters long.
 2. Set `PLUGIN_TOKEN` in both `fastgpt` and `fastgpt-pro` to the same value as `fastgpt-plugin`'s `AUTH_TOKEN`.
-3. Change the database name in `fastgpt-plugin`'s `MONGODB_URI` so it does not conflict with FastGPT's MongoDB database name. Example: `mongodb://myusername:mypassword@fastgpt-mongo:27017/fastgpt-plugin?authSource=admin`.
+3. Change the database name in `fastgpt-plugin`'s `MONGODB_URI` so it does not conflict with gptGO's MongoDB database name. Example: `mongodb://myusername:mypassword@fastgpt-mongo:27017/fastgpt-plugin?authSource=admin`.
 
 **Additional variables you may adjust**
 
@@ -212,7 +212,7 @@ DEPLOYMENT_ENVIRONMENT=
 
 ### 2. OpenSandbox Changes (as needed)
 
-See the [4.15 deployment YAML](https://doc.fastgpt.cn/deploy/docker/v4.15/cn/docker-compose.pg.yml) for the complete OpenSandbox setup. The 4.15 Docker Compose deployment file already includes OpenSandbox Server, Volume Manager, Agent Sandbox Proxy, and the image pre-pull services.
+See the [4.15 deployment YAML](https://github.com/zeroven0205-spec/) for the complete OpenSandbox setup. The 4.15 Docker Compose deployment file already includes OpenSandbox Server, Volume Manager, Agent Sandbox Proxy, and the image pre-pull services.
 
 For this upgrade, focus on:
 
@@ -223,16 +223,16 @@ You can overwrite your deployment directly with the new OpenSandbox template.
 
 ### 3. Image Changes
 
-- Update fastgpt-app (FastGPT main service) image tag: v4.15.0
-- Update fastgpt-pro (FastGPT commercial edition) image tag: v4.15.0
-- Update fastgpt-code-sandbox image tag: v4.15.0
-- Update fastgpt-plugin image tag: v1.0.0
+- Update gptGO-app (gptGO main service) image tag: v4.15.0
+- Update gptGO-pro (gptGO commercial edition) image tag: v4.15.0
+- Update gptGO-code-sandbox image tag: v4.15.0
+- Update gptGO-plugin image tag: v1.0.0
 - Update aiproxy image tag: v0.6.5
 
 If `opensandbox` is enabled, also update:
 
-- fastgpt-agent-sandbox-proxy image tag: v0.2.0
-- fastgpt-agent-sandbox image tag: v0.2.0
+- gptGO-agent-sandbox-proxy image tag: v0.2.0
+- gptGO-agent-sandbox image tag: v0.2.0
 
 ### 4. Start Services
 
@@ -242,10 +242,10 @@ Run `docker compose up -d` to restart services.
 
 After upgrading the plugin service, reinstall all legacy system tools:
 
-1. Download the [zip package](<https://github.com/labring/fastgpt-img/raw/refs/heads/main/fastgpt-official-plugins(1).zip>) that contains all system tools.
+1. Download the [zip package](https://github.com/zeroven0205-spec/) that contains all system tools.
 2. Open the `fastgpt` web app, click `Admin` in the navbar, click Add Plugin, click `Import/Update Plugin`, upload the zip package, and confirm.
 
-You can also install them one by one from the plugin marketplace: [https://v2.marketplace.fastgpt.cn](https://v2.marketplace.fastgpt.cn). The environment variable default now points to this address, so no marketplace-related variables are required.
+You can also install them one by one from the plugin marketplace: [https://github.com/zeroven0205-spec/](https://github.com/zeroven0205-spec/). The environment variable default now points to this address, so no marketplace-related variables are required.
 
 ### 6. Run Migration Scripts
 
@@ -253,7 +253,7 @@ Before running scripts:
 
 1. Back up MongoDB, object storage, and your current deployment configuration.
 2. Upgrade `fastgpt-app` / `fastgpt-pro` to image versions that include these root-admin APIs.
-3. Prepare a reachable FastGPT `{{host}}` and `{{rootkey}}`. All APIs below require `rootkey`.
+3. Prepare a reachable gptGO `{{host}}` and `{{rootkey}}`. All APIs below require `rootkey`.
 
 #### 6.1 Clean Duplicate appId-chatId Records (optional, but recommended)
 
@@ -365,7 +365,7 @@ curl -X POST 'https://{{host}}/api/admin/dataClean/initSandboxArchive' \
 
 ## Major Impacts
 
-1. API Key behavior has changed. FastGPT no longer distinguishes between app keys and system keys; only system keys are kept. For OpenAI SDK compatibility, pass the token as `apikey-appId`. Existing API keys remain compatible and continue to work. For details, see the [FastGPT API documentation](../../../openapi/intro).
+1. API Key behavior has changed. gptGO no longer distinguishes between app keys and system keys; only system keys are kept. For OpenAI SDK compatibility, pass the token as `apikey-appId`. Existing API keys remain compatible and continue to work. For details, see the [gptGO API documentation](../../../openapi/intro).
 2. Some APIs now enforce stricter data format validation. If you see a `zod parse error`, please submit an issue. It may be caused by legacy data or custom data structures that do not match the declared schema.
 3. LLM request traces now enforce team isolation. `llm_request_records` stores `teamId`, `GET /api/core/ai/record/getRecord` queries by `{ requestId, teamId }`, and the unique index changes to `{ teamId, requestId }`. Trace records written before this upgrade do not contain `teamId` and can no longer be queried; the UI will treat them as expired. Export relevant logs or keep original request details before upgrading if you need to investigate historical calls. If your self-hosted deployment has `SYNC_INDEX` disabled, run an index sync after upgrading so the old `requestId_1` unique index is removed.
 
@@ -375,7 +375,7 @@ curl -X POST 'https://{{host}}/api/admin/dataClean/initSandboxArchive' \
 2. Reworked the Agent V2 loop logic to improve stability for multi-step tool calls and orchestration.
 3. Sandbox now supports custom npm and pip sources.
 4. Reworked the plugin system architecture, added plugin-level runtime config, and moved system tool execution to local-pool.
-5. The commercial edition now supports local direct-connect debugging for FastGPT plugins.
+5. The commercial edition now supports local direct-connect debugging for gptGO plugins.
 6. Reworked the chatbox UI with quick scroll-to-bottom, model-generated chat titles, and smoother streaming output.
 7. Added LLM-generated chat titles.
 8. Added the Loop node and deprecated the legacy batch execution node.

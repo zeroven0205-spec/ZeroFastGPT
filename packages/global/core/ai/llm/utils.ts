@@ -19,7 +19,7 @@ export const normalizeToolResponseContent = (response?: string) =>
 /**
  * 构造 OpenAI Chat Completions 风格的流式 delta 响应片段。
  *
- * FastGPT 多个 SSE 场景都会向前端输出这种结构，统一放在 LLM 公共层避免各业务重复维护。
+ * gptGO 多个 SSE 场景都会向前端输出这种结构，统一放在 LLM 公共层避免各业务重复维护。
  */
 export const createChatCompletionDeltaResponse = ({
   text,

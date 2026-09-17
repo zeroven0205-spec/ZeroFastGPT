@@ -1,6 +1,6 @@
 ---
 title: V4.8.1
-description: FastGPT V4.8.1 Release Notes
+description: gptGO V4.8.1 Release Notes
 releaseTime: '2024-05-24'
 upgradeTags:
   - MIGRATION
@@ -8,7 +8,7 @@ upgradeTags:
 
 ## Initialization Script
 
-From any terminal, send 1 HTTP request. Replace `{{rootkey}}` with the `rootkey` from your environment variables, and `{{host}}` with your FastGPT domain.
+From any terminal, send 1 HTTP request. Replace `{{rootkey}}` with the `rootkey` from your environment variables, and `{{host}}` with your gptGO domain.
 
 ```bash
 curl --location --request POST 'https://{{host}}/api/admin/initv481' \
@@ -20,7 +20,7 @@ Due to previously inconsistent collection names, this initialization will reset 
 
 ## Run Stale Data Cleanup
 
-From any terminal, send 1 HTTP request. Replace `{{rootkey}}` with the `rootkey` from your environment variables, and `{{host}}` with your FastGPT domain.
+From any terminal, send 1 HTTP request. Replace `{{rootkey}}` with the `rootkey` from your environment variables, and `{{host}}` with your gptGO domain.
 
 ```bash
 curl --location --request POST 'https://{{host}}/api/admin/clearInvalidData' \
@@ -34,4 +34,4 @@ After initialization, you can run this command. The previous scheduled cleanup t
 
 If you're using the Chat API, note that a new `event: updateVariables` event has been added for updating variables.
 
-[View the full release notes](https://github.com/labring/FastGPT/releases/tag/v4.8.1)
+[View the full release notes](https://github.com/zeroven0205-spec/)

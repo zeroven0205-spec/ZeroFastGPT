@@ -1,5 +1,5 @@
 {
   "title": "Troubleshooting",
-  "description": "Common issues and troubleshooting methods for FastGPT self-hosting",
+  "description": "Common issues and troubleshooting methods for gptGO self-hosting",
   "pages": ["attention", "faq", "methods", "model-errors", "s3-issues"]
 }

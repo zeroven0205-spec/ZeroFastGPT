@@ -1,6 +1,6 @@
 ---
 title: Dialog Boxes & HTML Rendering
-description: How to embed HTML code blocks in FastGPT via Markdown, with fullscreen, source code toggle, and other interactive features
+description: How to embed HTML code blocks in gptGO via Markdown, with fullscreen, source code toggle, and other interactive features
 ---
 
 | Source Mode                   | Preview Mode                  | Fullscreen Mode               |
@@ -9,11 +9,11 @@ description: How to embed HTML code blocks in FastGPT via Markdown, with fullscr
 
 ### 1. Design Background
 
-While Markdown natively supports embedded HTML tags, many platforms restrict HTML rendering for security reasons -- especially for dynamic content, interactive elements, and external resources. These restrictions limit flexibility when authoring complex documents that need embedded HTML. To address this, FastGPT uses `iframe` to embed and render HTML content, combined with the `sandbox` attribute to ensure safe rendering.
+While Markdown natively supports embedded HTML tags, many platforms restrict HTML rendering for security reasons -- especially for dynamic content, interactive elements, and external resources. These restrictions limit flexibility when authoring complex documents that need embedded HTML. To address this, gptGO uses `iframe` to embed and render HTML content, combined with the `sandbox` attribute to ensure safe rendering.
 
 ### 2. Feature Overview
 
-This feature extends FastGPT's Markdown rendering to support embedded HTML content. Since rendering uses an iframe, the content height cannot be determined automatically, so FastGPT sets a fixed height for the iframe. JavaScript execution within the HTML is not supported.
+This feature extends gptGO's Markdown rendering to support embedded HTML content. Since rendering uses an iframe, the content height cannot be determined automatically, so gptGO sets a fixed height for the iframe. JavaScript execution within the HTML is not supported.
 
 ### 3. Technical Implementation
 
@@ -35,7 +35,7 @@ Simply use a Markdown code block with the language set to `html`. For example:
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Welcome to FastGPT</title>
+    <title>Welcome to gptGO</title>
   </head>
   <body>
     <nav>

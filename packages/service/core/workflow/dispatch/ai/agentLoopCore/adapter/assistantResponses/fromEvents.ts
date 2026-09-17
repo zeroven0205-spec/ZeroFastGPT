@@ -94,7 +94,7 @@ const upsertAgentAsk = ({
 };
 
 /**
- * 将 agent-loop 元事件写入 FastGPT assistantResponses。
+ * 将 agent-loop 元事件写入 gptGO assistantResponses。
  *
  * plan 快照用于恢复 agent-loop 运行时状态；agentPlanUpdate 只用于还原工具调用历史。
  * agent-loop 输出层会只保留最后一条 plan 快照，并把完成态收敛成 null 终止标记。

@@ -41,7 +41,7 @@ export type ChatCompletionSystemMessageParam = z.infer<
 
 /* ---------- User Input message:  ChatCompletionContentPart schemas ----------
  * openai SDK 不导出 runtime zod schema，这里手写对齐 SDK 的联合类型，
- * 并加上 FastGPT 的扩展字段：所有分支可选 `key`，以及自定义 `file_url` 分支。
+ * 并加上 gptGO 的扩展字段：所有分支可选 `key`，以及自定义 `file_url` 分支。
  * 外部再扩展新分支：
  *   z.discriminatedUnion('type', [
  *     ...ChatCompletionContentPartSchema.options,
@@ -87,7 +87,7 @@ export const ChatCompletionContentPartFileSchema = z.object({
   }),
   key: z.string().optional()
 });
-// FastGPT 自定义扩展：外链文件
+// gptGO 自定义扩展：外链文件
 export const ChatCompletionContentPartFileTypeSchema = z.object({
   type: z.literal('file_url'),
   name: z.string().optional(),
@@ -144,7 +144,7 @@ export type ChatCompletionFunctionMessageParam = z.infer<
  * Assistant message: 对齐 openai SDK 的 ChatCompletionAssistantMessageParam
  * - content: 文本或 text/refusal part 数组，可空
  * - tool_calls / function_call（已废弃）/ audio / refusal 全部可选
- * - 新增 FastGPT 扩展 `interactive` 字段
+ * - 新增 gptGO 扩展 `interactive` 字段
  */
 // SDK 的 refusal content part（仅出现在 assistant 消息里）
 export const ChatCompletionContentPartRefusalSchema = z.object({
@@ -182,10 +182,10 @@ export const ChatCompletionAssistantMessageParamSchema = z.object({
   tool_calls: z.array(ChatCompletionMessageToolCallSchema).optional().meta({
     description: '工具调用'
   }),
-  // FastGPT 自定义扩展。为避免与 workflow/interactive 形成循环依赖，此处用 z.any() 占位，
+  // gptGO 自定义扩展。为避免与 workflow/interactive 形成循环依赖，此处用 z.any() 占位，
   // 真实类型见 packages/global/core/workflow/template/system/interactive/type.ts:WorkflowInteractiveResponseType
   interactive: z.any().optional().meta({
-    description: '交互式响应（FastGPT 自定义扩展）'
+    description: '交互式响应（gptGO 自定义扩展）'
   }),
   // 下面的几个，目前系统没用到
   audio: z.object({ id: z.string() }).nullish(),
@@ -217,7 +217,7 @@ export type ChatCompletionDeveloperMessageParam = z.infer<
 
 /**
  * ChatCompletionMessageParam: 6 个 role 的 discriminated union
- * 每个分支附加 FastGPT 全局扩展字段：reasoning_content / dataId / hideInUI
+ * 每个分支附加 gptGO 全局扩展字段：reasoning_content / dataId / hideInUI
  */
 const messageParamExtraFields = {
   reasoning_content: z.string().optional(),
@@ -267,7 +267,7 @@ export type CompletionFinishReason = z.infer<typeof CompletionFinishReasonSchema
 export * from 'openai';
 export * from 'openai/resources';
 
-// openai v6 把 ChatCompletionTool 拆成 function | custom 联合，FastGPT 内部仅产/消费 function
+// openai v6 把 ChatCompletionTool 拆成 function | custom 联合，gptGO 内部仅产/消费 function
 import type {
   ChatCompletionFunctionTool,
   ChatCompletionReasoningEffort

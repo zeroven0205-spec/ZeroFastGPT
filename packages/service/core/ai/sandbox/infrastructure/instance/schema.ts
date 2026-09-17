@@ -18,7 +18,7 @@ import {
 /**
  * sandbox 实例记录集合。
  *
- * 记录 FastGPT 业务归属和远端 provider 资源的映射关系，远端资源本身不在 Mongo 中保存。
+ * 记录 gptGO 业务归属和远端 provider 资源的映射关系，远端资源本身不在 Mongo 中保存。
  */
 export const collectionName = 'agent_sandbox_instances_v2';
 
