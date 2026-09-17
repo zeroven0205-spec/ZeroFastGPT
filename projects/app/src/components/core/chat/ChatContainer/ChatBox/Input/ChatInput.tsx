@@ -92,7 +92,7 @@ const ChatInput = ({
   );
   const appName = useContextSelector(ChatItemContext, (v) => v.chatBoxData.app.name);
   const placeholderAppName =
-    chatType === ChatTypeEnum.home ? 'FastGPT' : appName || 'FastGPT';
+    chatType === ChatTypeEnum.home ? 'AI Platform' : appName || 'AI Platform';
   const appNamePlaceholderParts = useMemo(() => {
     const placeholderText = String(
       t('common:core.chat.Type a message to app', {

@@ -1,48 +1,15 @@
 import React from 'react';
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import { getAppEntryPath } from '@/web/core/appEntry/route';
-import { useAppEntryBrand } from './AppEntryBrandProvider';
+import AppEntryWorkbench from './AppEntryWorkbench';
 
 type HomeProps = {
   appKey: string;
+  appId: string;
 };
 
-export const AppEntryHome = ({ appKey }: HomeProps) => {
-  const router = useRouter();
-  const { brand } = useAppEntryBrand();
-
-  return (
-    <Flex
-      minH="100%"
-      direction="column"
-      align="center"
-      justify="center"
-      gap="24px"
-      px="24px"
-      py="48px"
-    >
-      <Box textAlign="center">
-        <Text fontSize="24px" fontWeight="700">
-          {brand.name}
-        </Text>
-        {brand.description && (
-          <Text mt="8px" color="gray.500" fontSize="14px">
-            {brand.description}
-          </Text>
-        )}
-      </Box>
-      <Button
-        color="white"
-        bg={brand.primaryColor || '#3370FF'}
-        _hover={{ bg: brand.primaryColor || '#3370FF' }}
-        onClick={() => router.push(getAppEntryPath(appKey, 'chat'))}
-      >
-        开始使用
-      </Button>
-    </Flex>
-  );
-};
+/** AppEntry 登录后的业务工作台；现有独立 Chat 页面继续由 /chat 路由承载。 */
+export const AppEntryHome = ({ appKey, appId }: HomeProps) => (
+  <AppEntryWorkbench appKey={appKey} appId={appId} />
+);
 
 export const AppEntryPlaceholder = ({
   title,
@@ -51,12 +18,18 @@ export const AppEntryPlaceholder = ({
   title: string;
   description: string;
 }) => (
-  <Flex minH="100%" direction="column" align="center" justify="center" gap="8px" px="24px">
-    <Text fontSize="20px" fontWeight="600">
-      {title}
-    </Text>
-    <Text color="gray.500" fontSize="14px" textAlign="center">
-      {description}
-    </Text>
-  </Flex>
+  <div
+    style={{
+      minHeight: '100%',
+      display: 'grid',
+      placeItems: 'center',
+      padding: 24,
+      textAlign: 'center'
+    }}
+  >
+    <div>
+      <div style={{ fontSize: 20, fontWeight: 600 }}>{title}</div>
+      <div style={{ marginTop: 8, color: '#718096', fontSize: 14 }}>{description}</div>
+    </div>
+  </div>
 );
