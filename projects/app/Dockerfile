@@ -28,6 +28,7 @@ WORKDIR /app
 
 ARG proxy
 ARG base_url
+ARG BUILD_NODE_MAX_OLD_SPACE_SIZE=4096
 
 # copy common node_modules and one project node_modules
 COPY package.json pnpm-workspace.yaml .npmrc tsconfig.json eslint.config.mjs ./
@@ -41,8 +42,13 @@ RUN [ -z "$proxy" ] || sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /
 
 RUN apk add --no-cache libc6-compat && npm install -g pnpm@10.33.2
 
-ENV NODE_OPTIONS="--max-old-space-size=4096"
+ENV NODE_OPTIONS="--max-old-space-size=${BUILD_NODE_MAX_OLD_SPACE_SIZE}"
 ENV NEXT_PUBLIC_BASE_URL=$base_url
+# Next.js evaluates a few server modules while collecting page data. These are
+# build-only placeholders; runtime credentials are injected by Compose and the
+# standalone output is scrubbed of .env files below.
+ENV FILE_TOKEN_KEY=build-only-file-token-key
+ENV STORAGE_DOWNLOAD_URL_MODE=short-proxy
 # Build SDK workspace packages first so subpath exports like
 # @fastgpt-sdk/otel/logger have generated dist type files.
 RUN pnpm build:sdks
@@ -57,12 +63,18 @@ RUN rm -rf projects/app/.next/standalone/node_modules/.pnpm/@next+rspack-binding
     projects/app/.next/standalone/node_modules/.pnpm/*-linux-x64-gnu@*/ \
     projects/app/.next/standalone/node_modules/.pnpm/@img+sharp-libvips-linux-x64@*/
 
+# Runtime configuration is injected by Docker Compose. Do not ship build-time .env
+# files in the standalone image, because NEXT_PHASE=phase-production-build can
+# make the production process skip runtime instrumentation initialization.
+RUN find projects/app/.next/standalone -type f -name '.env*' -delete
+
 # --------- runner -----------
 FROM node:24.16.0-alpine AS runner
 WORKDIR /app
 
 ARG proxy
 ARG base_url
+ARG NODE_MAX_OLD_SPACE_SIZE=2048
 
 # create user and use it
 RUN addgroup --system --gid 1001 nodejs
@@ -99,6 +111,7 @@ COPY --chown=nextjs:nodejs ./projects/app/data/test.mp3 /app/data/test.mp3
 COPY --chown=nextjs:nodejs ./projects/app/data/GeoLite2-City.mmdb /app/data/GeoLite2-City.mmdb
 
 ENV NODE_ENV=production
+ENV NODE_OPTIONS="--max-old-space-size=${NODE_MAX_OLD_SPACE_SIZE}"
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV NEXT_PUBLIC_BASE_URL=$base_url
@@ -107,4 +120,4 @@ EXPOSE 3000
 
 USER nextjs
 
-ENTRYPOINT ["node","--max-old-space-size=4096","./projects/app/server.js"]
+ENTRYPOINT ["node","./projects/app/server.js"]

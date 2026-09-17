@@ -25,7 +25,8 @@ x-aiproxy-token: &x-aiproxy-token 'token'
 # 数据库连接相关配置
 x-share-db-config: &x-share-db-config
   MONGODB_URI: mongodb://myusername:mypassword@fastgpt-mongo:27017/fastgpt?authSource=admin
-  DB_MAX_LINK: 100
+  # 4 vCPU / 8 GiB 单机默认使用低连接池；可通过 .env 覆盖。
+  DB_MAX_LINK: ${FASTGPT_SHARED_DB_MAX_LINK:-20}
   REDIS_URL: redis://default:mypassword@fastgpt-redis:6379
   # @see https://doc.fastgpt.cn/self-host/config/object-storage
   STORAGE_VENDOR: minio # minio | aws-s3 | cos | oss
@@ -41,8 +42,8 @@ x-share-db-config: &x-share-db-config
 # Log 配置
 x-log-config: &x-log-config
   LOG_ENABLE_CONSOLE: true
-  LOG_CONSOLE_LEVEL: debug
-  LOG_ENABLE_OTEL: false
+  LOG_CONSOLE_LEVEL: ${FASTGPT_LOG_CONSOLE_LEVEL:-info}
+  LOG_ENABLE_OTEL: ${FASTGPT_LOG_ENABLE_OTEL:-false}
   LOG_OTEL_LEVEL: info
   LOG_OTEL_URL: http://localhost:4318/v1/logs
 # 容器运行环境可能会自动注入 HTTP_PROXY/HTTPS_PROXY。
@@ -53,16 +54,17 @@ x-no-proxy-config: &x-no-proxy-config
 
 # FastGPT 主服务的 Agent Sandbox 配置
 x-agent-sandbox-config: &x-agent-sandbox-config
-  AGENT_SANDBOX_PROVIDER: opensandbox
+  # Agent Sandbox 默认关闭；启用时还需要 docker compose --profile agent-sandbox。
+  AGENT_SANDBOX_PROVIDER: ${FASTGPT_AGENT_SANDBOX_PROVIDER:-}
   AGENT_SANDBOX_PROXY_SECRET: *x-agent-sandbox-proxy-secret
   # 浏览器访问 agent-sandbox-proxy 的 WebSocket 地址。
   AGENT_SANDBOX_PROXY_URL: *x-agent-sandbox-proxy-url
   # 浏览器访问 Sandbox 文件预览的 HTTP(S) 地址。
   AGENT_SANDBOX_PREVIEW_PROXY_URL: *x-agent-sandbox-preview-proxy-url
   # 沙盒规模大小
-  AGENT_SANDBOX_CPU_COUNT: 1
-  AGENT_SANDBOX_MEMORY_MIB: 2048
-  AGENT_SANDBOX_STORAGE_SIZE_GI: 1
+  AGENT_SANDBOX_CPU_COUNT: ${FASTGPT_AGENT_SANDBOX_CPU_COUNT:-1}
+  AGENT_SANDBOX_MEMORY_MIB: ${FASTGPT_AGENT_SANDBOX_MEMORY_MIB:-1024}
+  AGENT_SANDBOX_STORAGE_SIZE_GI: ${FASTGPT_AGENT_SANDBOX_STORAGE_SIZE_GI:-1}
   # 不活跃判断阈值
   AGENT_SANDBOX_SUSPEND_MINUTES: 60
   # 长期不活跃判断阈值
@@ -169,8 +171,9 @@ services:
     networks:
       - data
     restart: always
+    mem_limit: ${FASTGPT_REDIS_MEMORY_LIMIT:-1.25g}
     command: |
-      redis-server --requirepass mypassword --loglevel warning --maxclients 10000 --appendonly yes --save 60 10 --maxmemory 4gb --maxmemory-policy noeviction
+      redis-server --requirepass mypassword --loglevel warning --maxclients 10000 --appendonly yes --save 60 10 --maxmemory ${FASTGPT_REDIS_MAX_MEMORY:-1gb} --maxmemory-policy noeviction
     healthcheck:
       test: ['CMD', 'redis-cli', '-a', 'mypassword', 'ping']
       interval: 10s
@@ -183,9 +186,7 @@ services:
     image: registry.cn-hangzhou.aliyuncs.com/fastgpt/minio:RELEASE.2025-09-07T16-13-09Z
     container_name: fastgpt-minio
     restart: always
-    ports:
-      - 9000:9000
-      - 9001:9001
+    # MinIO 只供 Compose 内部服务访问，低资源生产部署不发布管理端口。
     networks:
       - data
     environment:
@@ -202,7 +203,8 @@ services:
 
   fastgpt-app:
     container_name: fastgpt-app
-    image: registry.cn-hangzhou.aliyuncs.com/fastgpt/fastgpt:v4.17.0
+    # 可通过部署目录 .env 指向本次构建的镜像；未设置时使用发布默认镜像。
+    image: ${FASTGPT_APP_IMAGE:-registry.cn-hangzhou.aliyuncs.com/fastgpt/fastgpt:v4.17.0}
     ports:
       - 3000:3000
     networks:
@@ -224,10 +226,15 @@ services:
       fastgpt-plugin:
         condition: service_healthy
     restart: always
+    mem_limit: ${FASTGPT_APP_MEMORY_LIMIT:-3g}
+    cpus: ${FASTGPT_APP_CPUS:-2.5}
+    pids_limit: ${FASTGPT_APP_PIDS_LIMIT:-512}
     environment:
       # 完整变量请参考: https://github.com/labring/FastGPT/blob/main/projects/app/.env.template
       <<: [*x-share-db-config, *x-vec-config, *x-log-config, *x-no-proxy-config, *x-agent-sandbox-config]
       HOSTNAME: 0.0.0.0
+      # Dockerfile 不再硬编码运行时堆上限，允许低资源部署通过 .env 控制。
+      NODE_OPTIONS: "--max-old-space-size=${FASTGPT_APP_MAX_OLD_SPACE_SIZE:-2048}"
       # ==================== 基础配置 ====================
       # 必填。客户端访问 FastGPT 时使用的地址，由协议、主机和可选端口组成，用于补全文件资源路径。例如 https://fastgpt.cn；本地开发可使用 http://localhost:3000。
       FE_DOMAIN: *x-fe-domain
@@ -236,7 +243,7 @@ services:
       # root 密码，用户名为: root。如果需要修改 root 密码，直接修改这个环境变量，并重启即可。
       DEFAULT_ROOT_PSW: *x-default-root-psw
       # 数据库最大连接数
-      DB_MAX_LINK: 20
+      DB_MAX_LINK: ${FASTGPT_APP_DB_MAX_LINK:-20}
       # 自动同步索引
       SYNC_INDEX: true
       # 系统变量替换等同步字符串处理的最大字符数，单位 M，范围 1~100
@@ -268,18 +275,18 @@ services:
 
        # ==================== 开源版特有配置，商业版这部分配置会在 admin 看板 ====================
       # 知识库文件解析队列最大并发数
-      DATASET_PARSE_MAX_PROCESS: 10
+      DATASET_PARSE_MAX_PROCESS: ${FASTGPT_DATASET_PARSE_MAX_PROCESS:-2}
       # 向量训练队列最大并发数
-      VECTOR_MAX_PROCESS: 10
+      VECTOR_MAX_PROCESS: ${FASTGPT_VECTOR_MAX_PROCESS:-2}
       # 问答拆分队列最大并发数
-      QA_MAX_PROCESS: 10
+      QA_MAX_PROCESS: ${FASTGPT_QA_MAX_PROCESS:-2}
       # 图片理解模型处理队列最大并发数
-      VLM_MAX_PROCESS: 10
+      VLM_MAX_PROCESS: ${FASTGPT_VLM_MAX_PROCESS:-2}
 
       # 向量检索 hnsw ef_search 参数，仅对 PG / OB / OpenGauss 生效
-      HNSW_EF_SEARCH: 100
+      HNSW_EF_SEARCH: ${FASTGPT_HNSW_EF_SEARCH:-80}
       # 向量检索最大扫描数据量，仅对 PG 生效
-      HNSW_MAX_SCAN_TUPLES: 100000
+      HNSW_MAX_SCAN_TUPLES: ${FASTGPT_HNSW_MAX_SCAN_TUPLES:-50000}
 
       # 自定义 PDF 解析服务配置
       CUSTOM_PDF_PARSE_URL:
@@ -297,6 +304,9 @@ services:
     networks:
       - codesandbox
     restart: always
+    mem_limit: ${FASTGPT_CODE_SANDBOX_MEMORY_LIMIT:-768m}
+    cpus: ${FASTGPT_CODE_SANDBOX_CPUS:-1}
+    pids_limit: ${FASTGPT_CODE_SANDBOX_PIDS_LIMIT:-128}
     security_opt:
       - no-new-privileges:true
     environment:
@@ -307,16 +317,16 @@ services:
       # Maximum API JSON body size (MB), including variables
       SANDBOX_API_MAX_BODY_MB: 8
       # Execution timeout per request (ms)
-      SANDBOX_MAX_TIMEOUT: 60000
+      SANDBOX_MAX_TIMEOUT: ${FASTGPT_SANDBOX_MAX_TIMEOUT:-60000}
       # Maximum allowed memory per user code execution (MB)
       # Note: System automatically adds 50MB for runtime overhead
       # Actual process limit = SANDBOX_MAX_MEMORY_MB + 50MB
-      SANDBOX_MAX_MEMORY_MB: 256
-      SANDBOX_MAX_OUTPUT_MB: 10
+      SANDBOX_MAX_MEMORY_MB: ${FASTGPT_SANDBOX_MAX_MEMORY_MB:-256}
+      SANDBOX_MAX_OUTPUT_MB: ${FASTGPT_SANDBOX_MAX_OUTPUT_MB:-10}
 
       # ===== Process Pool =====
       # Number of pre-warmed worker processes (JS + Python)
-      SANDBOX_POOL_SIZE: 5
+      SANDBOX_POOL_SIZE: ${FASTGPT_SANDBOX_POOL_SIZE:-2}
 
       # ===== Network Request Limits =====
       # Whether to check if the request is to a private network
@@ -377,6 +387,8 @@ services:
     image: sandbox-registry.cn-zhangjiakou.cr.aliyuncs.com/opensandbox/server:v0.2.2
     container_name: fastgpt-opensandbox-server
     restart: always
+    profiles:
+      - agent-sandbox
     networks:
       - app
     volumes:
@@ -403,6 +415,8 @@ services:
     image: registry.cn-hangzhou.aliyuncs.com/fastgpt/fastgpt-agent-volume-manager:v0.3.0
     container_name: fastgpt-volume-manager
     restart: always
+    profiles:
+      - agent-sandbox
     networks:
       - app
     volumes:
@@ -444,6 +458,8 @@ services:
     image: registry.cn-hangzhou.aliyuncs.com/fastgpt/fastgpt-agent-sandbox-proxy:v0.3.0
     container_name: fastgpt-agent-sandbox-proxy
     restart: always
+    profiles:
+      - agent-sandbox
     networks:
       - app
     ports:

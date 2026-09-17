@@ -533,11 +533,55 @@ is_v415_deploy() {
         { [ "$DEPLOY_VERSION" = "$LOCAL_DEPLOY_VERSION" ] && grep -q 'fastgpt:v4\.15' "$LOCAL_COMPOSE_PATH" 2>/dev/null; }
 }
 
+# main 版本面向 4 vCPU / 8 GiB 主机时默认关闭 Agent Sandbox；如果显式设置
+# FASTGPT_ENABLE_AGENT_SANDBOX=true，才要求配置 Sandbox Proxy 地址和端口。
 # v4.14 以及未定义该服务的本地 Compose 不需要 Sandbox Proxy 地址和端口配置。
+is_agent_sandbox_profiled() {
+    local file="$1"
+
+    [ -f "$file" ] || return 1
+    awk '
+        /^  fastgpt-agent-sandbox-proxy:[[:space:]]*$/ {
+            in_service = 1
+            next
+        }
+        in_service && /^  [^[:space:]]/ {
+            exit
+        }
+        in_service && /^    profiles:[[:space:]]*$/ {
+            in_profiles = 1
+            next
+        }
+        in_profiles && /^      - agent-sandbox[[:space:]]*$/ {
+            found = 1
+            exit
+        }
+        END {
+            exit found ? 0 : 1
+        }
+    ' "$file"
+}
+
 is_sandbox_proxy_deploy() {
     [ "$DEPLOY_VERSION" != "v4.14" ] || return 1
-    [ "$DEPLOY_VERSION" != "$LOCAL_DEPLOY_VERSION" ] ||
-        grep -qE '^  fastgpt-agent-sandbox-proxy:[[:space:]]*(#.*)?$' "$LOCAL_COMPOSE_PATH"
+
+    if [ "$DEPLOY_VERSION" = "main" ] && [ "$AGENT_SANDBOX_ENABLED" != true ]; then
+        return 1
+    fi
+
+    if [ "$DEPLOY_VERSION" = "$LOCAL_DEPLOY_VERSION" ]; then
+        grep -qE '^  fastgpt-agent-sandbox-proxy:[[:space:]]*(#.*)?$' "$LOCAL_COMPOSE_PATH" ||
+            return 1
+        if [ "$AGENT_SANDBOX_ENABLED" = false ]; then
+            is_agent_sandbox_profiled "$LOCAL_COMPOSE_PATH" && return 1
+            return 0
+        fi
+        if [ -z "$AGENT_SANDBOX_ENABLED" ] && is_agent_sandbox_profiled "$LOCAL_COMPOSE_PATH"; then
+            return 1
+        fi
+    fi
+
+    return 0
 }
 
 request_sandbox_preview_proxy_url() {
@@ -615,6 +659,19 @@ configure_sandbox_proxy_urls() {
     fi
     if [ -n "$preview_url" ]; then
         echo "已更新 Sandbox 预览地址为: $preview_url"
+    fi
+}
+
+configure_agent_sandbox_provider() {
+    [ "$AGENT_SANDBOX_ENABLED" = true ] || return 0
+    [ "$DEPLOY_VERSION" = "main" ] || [ "$DEPLOY_VERSION" = "$LOCAL_DEPLOY_VERSION" ] || return 0
+
+    if LC_ALL=C grep -qE '^  AGENT_SANDBOX_PROVIDER:' docker-compose.yml; then
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            sed -i '' 's|^  AGENT_SANDBOX_PROVIDER:.*|  AGENT_SANDBOX_PROVIDER: opensandbox|g' docker-compose.yml
+        else
+            sed -i 's|^  AGENT_SANDBOX_PROVIDER:.*|  AGENT_SANDBOX_PROVIDER: opensandbox|g' docker-compose.yml
+        fi
     fi
 }
 
@@ -808,6 +865,13 @@ LOCAL_DEPLOY_LABEL="本地 docker-compose.yml"
 NON_INTERACTIVE=false
 if [ -n "$FASTGPT_NON_INTERACTIVE" ]; then
     NON_INTERACTIVE="$(normalize_bool_env FASTGPT_NON_INTERACTIVE "$FASTGPT_NON_INTERACTIVE")"
+fi
+
+# main 版本的低资源默认值。旧版本维持原有行为；如需在 main 上恢复 Agent
+# Sandbox，必须显式设置 FASTGPT_ENABLE_AGENT_SANDBOX=true，并使用对应 Compose profile。
+AGENT_SANDBOX_ENABLED=""
+if [ -n "$FASTGPT_ENABLE_AGENT_SANDBOX" ]; then
+    AGENT_SANDBOX_ENABLED="$(normalize_bool_env FASTGPT_ENABLE_AGENT_SANDBOX "$FASTGPT_ENABLE_AGENT_SANDBOX")"
 fi
 
 # 可选宿主机端口覆盖：只改变 Compose 映射左侧，容器端口和容器间访问地址不变。
@@ -1224,6 +1288,7 @@ if [ "$SANDBOX_PROXY_EXPECTED" = true ]; then
 fi
 
 configure_fe_domain
+configure_agent_sandbox_provider
 if [ "$SANDBOX_PROXY_EXPECTED" = true ]; then
     configure_sandbox_proxy_urls
 fi
@@ -1403,9 +1468,13 @@ else
     echo "  注意: docker-compose.yml 未自动生成登录密码、服务 Token、应用密钥和组件密码。"
     echo "        生产环境启动前请手动修改默认凭证。"
 fi
-if LC_ALL=C grep -q "opensandbox-agent-sandbox-image" docker-compose.yml; then
+if [ "$SANDBOX_PROXY_EXPECTED" = true ]; then
     echo "  1. 预拉取镜像: docker compose --profile prepull pull"
-    echo "  2. 启动服务:   docker compose up -d"
+    if is_agent_sandbox_profiled docker-compose.yml; then
+        echo "  2. 启动服务:   docker compose --profile agent-sandbox up -d"
+    else
+        echo "  2. 启动服务:   docker compose up -d"
+    fi
     if [ "$NEEDS_S3_EXTERNAL_ENDPOINT" = true ] && [ "$SANDBOX_PROXY_EXPECTED" = true ]; then
         echo "  3. 网络配置:   FastGPT、Sandbox Proxy、S3 请按上方映射配置防火墙或反向代理"
     elif [ "$NEEDS_S3_EXTERNAL_ENDPOINT" = true ]; then

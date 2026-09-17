@@ -1,5 +1,37 @@
 ## 更新 docker compose 脚本
 
+### 4 vCPU / 8 GiB 低资源部署
+
+当前 `version/main` 的生产 Compose 默认按低资源单机运行：
+
+- 默认只启动 FastGPT 核心服务和低配 Code Sandbox；
+- Agent Sandbox Server、Proxy、Volume Manager 使用 `agent-sandbox` profile，不会被普通 `docker compose up -d` 启动；
+- 不要在该规格主机上选择本机 Milvus、OceanBase、SeekDB 或 OpenGauss，优先使用 PostgreSQL + pgvector；
+- App、Redis、Code Sandbox、知识库处理并发和 HNSW 参数均可使用部署目录 `.env` 覆盖；
+- 本次重新构建的 App 镜像可通过 `FASTGPT_APP_IMAGE` 指向，不需要修改生成后的 Compose 文件。
+
+低资源参数示例：
+
+```text
+deploy/low-resource.env.example
+```
+
+部署时将示例复制到 Compose 文件同目录的 `.env`，再执行：
+
+```bash
+docker compose config --quiet
+docker compose pull
+docker compose up -d
+```
+
+只有评估过额外内存、CPU、磁盘和 Docker socket 风险后，才使用：
+
+```bash
+docker compose --profile agent-sandbox up -d
+```
+
+修改 `version/main/docker-compose.template.yml` 后，必须执行 `node deploy/init.mjs`，同步生成公开下载的 Compose 文件。
+
 ### 正常更新（不动服务，只改版本）
 
 1. 更新 `version/{version}/args.json` 中的版本号，例如 `version/v4.14/args.json` 或 `version/main/args.json`
