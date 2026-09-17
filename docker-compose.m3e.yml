@@ -1,7 +1,7 @@
 services:
   fastgpt-m3e:
-    image: fastgpt-m3e:cpu-compat-20260915-v4
     platform: linux/amd64
+    image: registry.cn-hangzhou.aliyuncs.com/fastgpt_docker/m3e-large-api:latest
     container_name: fastgpt-m3e
     restart: always
     env_file:
@@ -9,11 +9,4 @@ services:
     ports:
       - '127.0.0.1:6008:6008'
     networks:
-      aiproxy:
-        aliases:
-          - fastgpt-m3e
-
-networks:
-  aiproxy:
-    external: true
-    name: fastgpt_aiproxy
+      - aiproxy

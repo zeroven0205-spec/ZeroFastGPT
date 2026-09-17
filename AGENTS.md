@@ -36,6 +36,24 @@ FastGPT 是一个 AI Agent 构建平台,通过 Flow 提供开箱即用的数据�
 
 常用开发命令见 [FastGPT 开发命令](./.agents/code/commands.md)。
 
+## Git 分支、远程与推送执行规范
+
+所有 Git 分支、远程同步、Pull Request、发布和推送操作必须遵守 [分支开发与发布管理规范](./.agents/design/git/branch-development-management.md)以及[Git 操作命令规范](./.agents/code/commands.md#git-远程与推送执行规范)。以下规则为强制规则：
+
+- 分支模型固定为：普通开发分支 `feat/*`/`fix/*`/`refactor/*`/`docs/*`/`chore/*` → `dev` → `main`。
+- `dev` 是集成、测试和验收分支；`main` 是生产稳定和正式发布分支。普通开发不得直接在 `dev` 或 `main` 上进行。
+- 个人独占功能分支允许 rebase 到最新 `origin/dev`；已共享、已推送或已有 PR 的功能分支默认 merge `origin/dev`，未经协作者确认不得 rebase 并 force push。
+- 所有开发分支的 PR 必须创建在项目自有仓库 `https://github.com/zeroven0205-spec/ZeroFastGPT/`，base 分支固定为 `dev`；开发分支不得直接 PR 到 `main` 或其他仓库。
+- 普通功能 PR 合入 `dev` 必须使用 Squash Merge，合入后删除功能分支；只有 `dev -> main` 验收发布 PR 可以进入 `main`，且必须使用 Merge Commit，不得使用 Squash/Rebase Merge 破坏长期分支祖先关系。
+- 生产 hotfix 从 `origin/main` 创建，但必须先通过 `hotfix/* -> dev` PR，验收后再由 `dev -> main` 发布。
+- 本地开发 Git 只允许配置项目自有仓库 `origin`，固定地址为 `git@github.com:zeroven0205-spec/ZeroFastGPT.git`；所有拉取、推送和 PR 均围绕该仓库执行。禁止新增、保留或使用任何外部官方仓库 remote、跟踪分支或同步流程。功能分支只能跟踪 `origin` 下的同名远程分支，`main` 应跟踪 `origin/main`。
+- 需要引入外部代码时，只能使用用户已经提供并落盘的 patch、压缩包或本地代码分支，创建 `import/external-*` 分支后 PR 到 `dev`；不得直接连接外部官方仓库。
+- `dev` 和 `main` 正常情况下只能通过 PR 更新，禁止直接 push；禁止向 `dev`、`main`、`release/*` 使用任何 force push。
+- rebase 已推送分支、大范围同步或其他高风险历史操作前，应创建 `backup/*`；工作区有未提交内容时还必须使用具名 `git stash push -u` 保存。禁止使用 `git reset --hard`、`git clean -fd` 丢弃或覆盖本地修改，除非已有可验证备份且用户明确授权。
+- 创建或审核 PR 前必须检查仓库为 `zeroven0205-spec/ZeroFastGPT`、base 为 `dev`；只有 `dev -> main` 是允许进入 `main` 的发布 PR。
+- 任何 Git 操作前必须确认本地只存在项目 `origin` remote；发现其他 remote、外部 remote-tracking ref 或外部仓库关联时必须停止操作并清理。
+- 任何远程写入前必须检查当前分支、工作区、冲突状态、remote、跟踪关系和待推送提交；Agent 执行 `git push`、删除远程分支或修改远程标签前，必须获得用户针对具体 remote 和 branch 的明确授权。
+
 ## 测试
 
 项目使用 Vitest 进行测试并生成覆盖率报告。主要测试命令:
