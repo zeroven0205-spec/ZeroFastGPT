@@ -101,6 +101,8 @@ type Props = OutLinkChatAuthProps &
 export type ChatBoxFeatures = {
   feedbackType?: `${FeedbackTypeEnum}`;
   mark?: boolean;
+  /** 文件上传入口和拖拽上传开关；默认保持现有 Chat 行为。 */
+  fileUpload?: boolean;
   /** 语音识别输入开关。 */
   voice?: boolean;
   /** AI 回复朗读和自动 TTS 开关。 */
@@ -124,6 +126,7 @@ const resolveChatBoxFeatures = (
 } => ({
   feedbackType: features?.feedbackType ?? FeedbackTypeEnum.hidden,
   mark: features?.mark ?? false,
+  fileUpload: features?.fileUpload ?? true,
   voice: features?.voice ?? true,
   tts: features?.tts ?? true,
   inputGuide: features?.inputGuide ?? true,
@@ -156,6 +159,7 @@ const ChatBox = ({
   wideLogo: _wideLogo,
   squareLogo: _squareLogo,
   slogan: _slogan,
+  presentation: _presentation,
   quickAppList: _quickAppList,
   onSwitchQuickApp: _onSwitchQuickApp,
   EmptyState,
@@ -780,7 +784,11 @@ const ChatBoxContainer = (props: Props) => {
   const resolvedFeatures = resolveChatBoxFeatures(props.features);
 
   return (
-    <ChatProvider {...props} enableTTS={resolvedFeatures.tts}>
+    <ChatProvider
+      {...props}
+      enableFileUpload={resolvedFeatures.fileUpload}
+      enableTTS={resolvedFeatures.tts}
+    >
       <QuickReplyContextProvider enableQuickReplies={resolvedFeatures.quickReplies}>
         <ChatBox {...props} />
       </QuickReplyContextProvider>

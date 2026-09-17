@@ -2,6 +2,8 @@ import { Box, Button, Flex, Textarea, useColorMode } from '@chakra-ui/react';
 import MyIcon from '@fastgpt/web/components/common/Icon';
 import type { AgentAskQuestionInteractive } from '@fastgpt/global/core/workflow/template/system/interactive/type';
 import { useTranslation } from 'next-i18next';
+import { useContextSelector } from 'use-context-selector';
+import { ChatBoxContext } from '../Provider';
 import {
   type KeyboardEvent,
   useCallback,
@@ -276,6 +278,11 @@ const AgentAskComposer = ({
   onSubmit: (answers: string[]) => void;
 }) => {
   const { t } = useTranslation();
+  const agentAskCustomAnswer = useContextSelector(
+    ChatBoxContext,
+    (value) => value.presentation?.agentAskCustomAnswer
+  );
+  const customAnswerLabel = agentAskCustomAnswer ?? t('chat:interactive.agent_ask.custom_answer');
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Answers>({});
   const [selectedOptionIndexes, setSelectedOptionIndexes] = useState<Record<string, number>>({});
@@ -604,7 +611,7 @@ const AgentAskComposer = ({
                 fontSize={'sm'}
                 lineHeight={5}
                 value={customValue}
-                aria-label={t('chat:interactive.agent_ask.custom_answer')}
+                aria-label={customAnswerLabel}
                 onChange={(event) => {
                   resizeCustomTextarea(event.currentTarget);
                   const value = event.currentTarget.value;
@@ -693,7 +700,7 @@ const AgentAskComposer = ({
                     WebkitLineClamp: 1
                   }}
                 >
-                  {customValue || t('chat:interactive.agent_ask.custom_answer')}
+                  {customValue || customAnswerLabel}
                 </Box>
               </Flex>
             </Button>

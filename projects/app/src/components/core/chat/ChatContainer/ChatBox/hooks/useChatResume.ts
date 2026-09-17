@@ -126,6 +126,10 @@ export const useChatResume = ({
   const setChatRecords = useContextSelector(ChatRecordContext, (v) => v.setChatRecords);
   const refreshChatRecords = useContextSelector(ChatRecordContext, (v) => v.refreshChatRecords);
   const isChatting = useContextSelector(ChatBoxContext, (v) => v.isChatting);
+  const formatDisplayError = useContextSelector(
+    ChatBoxContext,
+    (value) => value.presentation?.formatError
+  );
   const isChattingRef = useLatest(isChatting);
   const documentVisibility = useDocumentVisibility();
   const resumeStatusCheckingRef = useRef(false);
@@ -537,8 +541,11 @@ export const useChatResume = ({
         scrollToBottom('auto');
 
         if (isStreamError) {
+          const fallbackError = t('common:core.chat.error.Chat error');
           toast({
-            title: t(getErrText(error, t('common:core.chat.error.Chat error') as any)),
+            title:
+              formatDisplayError?.(error, fallbackError) ??
+              t(getErrText(error, fallbackError as any)),
             status: 'error',
             duration: 5000,
             isClosable: true

@@ -3,6 +3,7 @@ import { ChatFileTypeEnum, ChatSourceTypeEnum } from '@fastgpt/global/core/chat/
 import {
   getUploadChatFileType,
   isChatFileAllowedBySelectConfig,
+  resolveChatFileSelectConfig,
   resolveChatFileUploadMode
 } from '@/components/core/chat/ChatContainer/ChatBox/utils/file';
 import { ChatTypeEnum } from '@/components/core/chat/ChatContainer/ChatBox/constants';
@@ -48,6 +49,38 @@ describe('resolveChatFileUploadMode', () => {
         sourceType: ChatSourceTypeEnum.chatAgentHelper
       })
     ).toBe('runtime');
+  });
+});
+
+describe('resolveChatFileSelectConfig', () => {
+  const configured = {
+    maxFiles: 5,
+    canSelectFile: true,
+    canSelectImg: true,
+    canSelectAudio: true,
+    canSelectVideo: true,
+    canSelectCustomFileExtension: true,
+    customFileExtensionList: ['dat'],
+    customPdfParse: true
+  };
+
+  it('preserves the App file config when the page capability is enabled', () => {
+    expect(resolveChatFileSelectConfig({ fileSelectConfig: configured, enabled: true })).toBe(
+      configured
+    );
+  });
+
+  it('closes every file entry when the page capability is disabled', () => {
+    expect(resolveChatFileSelectConfig({ fileSelectConfig: configured, enabled: false })).toEqual({
+      maxFiles: 0,
+      canSelectFile: false,
+      canSelectImg: false,
+      canSelectAudio: false,
+      canSelectVideo: false,
+      canSelectCustomFileExtension: false,
+      customFileExtensionList: [],
+      customPdfParse: false
+    });
   });
 });
 

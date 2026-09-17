@@ -7,6 +7,7 @@ import { getErrText } from '@fastgpt/global/common/error/utils';
 import { ChatRoleEnum } from '@fastgpt/global/core/chat/constants';
 import { delChatRecordById } from '@/web/core/chat/record/api';
 import { ChatRecordContext } from '@/web/core/chat/context/chatRecordContext';
+import { ChatBoxContext } from '../Provider';
 import { WorkflowRuntimeContext } from '../../context/workflowRuntimeContext';
 import { formatChatValue2InputType } from '../utils/chatValue';
 import type { ChatBoxInputType, SendPromptFnType } from '../type';
@@ -41,6 +42,10 @@ export const useChatRecordActions = ({ sendPrompt }: UseChatRecordActionsProps) 
   const { toast } = useToast();
   const { t } = useTranslation();
   const [isRecordActionLoading, setIsRecordActionLoading] = useState(false);
+  const formatDisplayError = useContextSelector(
+    ChatBoxContext,
+    (value) => value.presentation?.formatError
+  );
 
   const chatRecords = useContextSelector(ChatRecordContext, (v) => v.chatRecords);
   const setChatRecords = useContextSelector(ChatRecordContext, (v) => v.setChatRecords);
@@ -96,7 +101,7 @@ export const useChatRecordActions = ({ sendPrompt }: UseChatRecordActionsProps) 
       } catch (error) {
         toast({
           status: 'warning',
-          title: t(getErrText(error, 'Retry failed'))
+          title: formatDisplayError?.(error, 'Retry failed') ?? t(getErrText(error, 'Retry failed'))
         });
       }
       setIsRecordActionLoading(false);
@@ -132,7 +137,7 @@ export const useChatRecordActions = ({ sendPrompt }: UseChatRecordActionsProps) 
       } catch (error) {
         toast({
           status: 'warning',
-          title: t(getErrText(error, 'Edit failed'))
+          title: formatDisplayError?.(error, 'Edit failed') ?? t(getErrText(error, 'Edit failed'))
         });
       } finally {
         setIsRecordActionLoading(false);

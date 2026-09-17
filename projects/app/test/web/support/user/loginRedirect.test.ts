@@ -397,4 +397,12 @@ describe('login redirect helpers', () => {
       '/login?lastRoute=%2Fapp%2Fdetail%3FappId%3Dapp-1&lastTmbId=tmb-a'
     );
   });
+
+  it('routes AppEntry auth failures to the branded login page', () => {
+    expect(
+      getAuthLoginRedirectPath({ lastRoute: '/app/customer-service/chat?chatId=chat-1' })
+    ).toBe(
+      '/app/customer-service/login?returnTo=%2Fapp%2Fcustomer-service%2Fchat%3FchatId%3Dchat-1'
+    );
+  });
 });

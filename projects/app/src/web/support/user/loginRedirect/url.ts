@@ -1,5 +1,7 @@
 import { safeEncodeURIComponent } from '@/web/common/utils/uri';
 import { getCurrentAuthTmbId } from '../currentAuthTmbId';
+import { subRoute } from '@fastgpt/web/common/system/utils';
+import { getAppEntryKeyFromPublicPath, getAppEntryLoginPath } from '@/web/core/appEntry/route';
 
 export const LAST_TMB_ID_QUERY_KEY = 'lastTmbId';
 
@@ -17,6 +19,15 @@ export const getAuthLoginRedirectPath = ({
   lastRoute: string;
   lastTmbId?: string;
 }) => {
+  const routeWithoutSubPath =
+    subRoute && lastRoute.startsWith(`${subRoute}/app/`)
+      ? lastRoute.slice(subRoute.length)
+      : lastRoute;
+  const appEntryKey = getAppEntryKeyFromPublicPath(routeWithoutSubPath);
+  if (appEntryKey) {
+    return getAppEntryLoginPath({ appKey: appEntryKey, returnTo: routeWithoutSubPath });
+  }
+
   const query = [`lastRoute=${safeEncodeURIComponent(lastRoute)}`];
 
   if (lastTmbId) {

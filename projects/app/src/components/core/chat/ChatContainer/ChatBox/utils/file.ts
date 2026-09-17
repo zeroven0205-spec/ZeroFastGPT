@@ -19,6 +19,31 @@ export const resolveChatFileUploadMode = ({
   return 'runtime';
 };
 
+/**
+ * 根据页面级能力开关收敛 App 的文件选择配置。
+ * 关闭时保留无关字段，但显式关闭所有入口，确保选择、拖拽和粘贴路径得到同一结果。
+ */
+export const resolveChatFileSelectConfig = ({
+  fileSelectConfig,
+  enabled
+}: {
+  fileSelectConfig: AppFileSelectConfigType;
+  enabled: boolean;
+}): AppFileSelectConfigType =>
+  enabled
+    ? fileSelectConfig
+    : {
+        ...fileSelectConfig,
+        maxFiles: 0,
+        canSelectFile: false,
+        canSelectImg: false,
+        customPdfParse: false,
+        canSelectVideo: false,
+        canSelectAudio: false,
+        canSelectCustomFileExtension: false,
+        customFileExtensionList: []
+      };
+
 export const getUploadChatFileType = (file: File) => {
   if (file.type.includes('image')) return ChatFileTypeEnum.image;
   if (file.type.includes('audio')) return ChatFileTypeEnum.audio;

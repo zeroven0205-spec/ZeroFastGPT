@@ -14,6 +14,7 @@ import {
   buildChatSourceQuery
 } from '@fastgpt/service/core/chat/source';
 import type { OutLinkChatAuthProps } from '@fastgpt/global/support/permission/chat';
+import { authAppEntryChatTarget } from '@/service/core/appEntry/config';
 
 /* 
   检查chat的权限：
@@ -226,6 +227,13 @@ export async function authChatTargetCrud({
   per = ReadPermissionVal,
   ...props
 }: ChatTargetAuthParams): Promise<AuthChatTargetCrudResult> {
+  await authAppEntryChatTarget({
+    req: props.req,
+    sourceType,
+    sourceId,
+    per
+  });
+
   if (sourceType === ChatSourceTypeEnum.app) {
     const authRes = await authChatCrud({
       ...props,
